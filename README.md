@@ -17,7 +17,7 @@ Agent skills (`SKILL.md` format) for making videos with AI coding agents such as
 
 ```bash
 # everything in this repo
-npx skills add <your-github-user>/ai-editing-tool --full-depth
+npx skills add krish9937/ai-editing-tool --full-depth
 
 # HyperFrames only, from the original source (recommended for updates)
 npx skills add heygen-com/hyperframes --full-depth
