@@ -1,0 +1,13 @@
+{
+  "name": "linkutm",
+  "site": "https://linkutm.com",
+  "colors": { "paper": "#fbfaf7", "app": "#f6f5f3", "ink": "#111111", "dim": "#6b7280", "accent": "#ff6200", "accent2": "#ffad05", "dark": "#0f0d0b", "cream": "#f1ece4", "green": "#16a34a" },
+  "fonts": { "ui": "Inter", "mono": "JetBrains Mono" },
+  "logo": { "mark": "logo-mark.svg (∞ black #0D0D0D + orange gradient #FFAD05→#FF6200)", "wordmark": "logo-wordmark.svg" },
+  "voice": { "provider": "elevenlabs", "voiceName": "Smit voice", "voiceId": "A2BCts5YeXP98cv3XDKS", "model": "eleven_multilingual_v2", "hookModel": "eleven_v3", "speed": 1.08, "spellOut": { "GA4": "G A 4", "linkutm": "link U T M" } },
+  "captions": { "style": "typewriter", "font": "mono", "sizePx1080": 58, "maxWordsPerChunk": 4 },
+  "cta": { "line": "Track every campaign link in one place. Try linkutm free, at linkutm.com.", "button": "Start for free" },
+  "rules": { "coverFace": false, "hookAtFrame0": true, "firstFrameShowsHookText": true, "endWith": "cta-page" },
+  "safeZone9x16": { "x0": 60, "x1": 880, "y0": 250, "y1": 1500 },
+  "music": { "default": "user-supplied or ElevenLabs Music; quiet bed vol≈0.16, ducked" }
+}

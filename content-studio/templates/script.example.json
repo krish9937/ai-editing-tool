@@ -1,0 +1,17 @@
+{
+  "brand": "linkutm",
+  "format": "9x16", "size": [1080, 1920], "fps": 30,
+  "type": "webinar-clip",
+  "goal": "viewer tries linkutm free",
+  "audio": { "voice": "work/clip_voice.wav", "hook": "work/hook.wav", "music": "assets/bed.mp3", "lufs": -14 },
+  "scenes": [
+    { "id": "hook", "component": "Opener", "from": 0, "until": "hook:end", "props": { "footage": "smit_listening.mp4", "firstFrameText": "WAIT! Let me save thirty minutes of your day!" } },
+    { "id": "problem", "component": "GA4Explorations", "fromWord": "if", "props": { "filters": 4 } },
+    { "id": "switch", "component": "AppEvents", "fromWord": "linkutm,", "props": { "highlight": "connected" } },
+    { "id": "click", "component": "LinkRowClick", "fromWord": "click" },
+    { "id": "payoff", "component": "LinkGA4Page", "fromWord": "90", "props": { "range": "Last 90 days", "illustrative": true } },
+    { "id": "cta", "component": "CtaPage", "after": "voice:end", "props": { "line": "brand.cta.line", "button": "brand.cta.button" } }
+  ],
+  "layout": { "bottomPanel": { "face": "work/clip_face.mp4", "captions": "typewriter" } },
+  "notes": ["timing anchored to words from words.json; never guessed", "illustrative numbers labelled in captions/notes"]
+}

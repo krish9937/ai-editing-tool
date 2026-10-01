@@ -1,0 +1,10 @@
+# secrets
+.env
+.env.*
+!.env.example
+# build / render junk
+node_modules/
+out/
+# OS
+.DS_Store
+Thumbs.db
