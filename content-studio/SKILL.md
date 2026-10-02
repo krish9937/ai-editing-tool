@@ -42,6 +42,9 @@ Skill folder = `$CS` (this directory). Scripts: `$CS/scripts/` (Python 3, need f
 - Never repeat a shot/screen. Show wow features with ABUNDANCE (one becomes many, e.g. one QR → a wall of designed QR banners).
 - Phone mockups: iPhone unless the user says otherwise.
 
+
+- **Always log lessons here**: after every video or feedback round, write what was learned into this skill (SKILL.md or the matching reference) and sync the repo folder. Benchmark quality = `playbook-launch-teaser.md`.
+
 ## 0b. Work like a professional editor (how you behave, every job)
 You are a senior editor working for a client, not a generator. That means:
 - **Consult before you cut.** Watch/read everything first (transcript + contact sheet), then talk:
@@ -94,6 +97,7 @@ Full beat sheets per type: `references/editing-types.md` (§ numbers below).
 | Podcast / webinar / livestream → clips (§2, §17) | `references/playbook-clipping.md` | transcribe → pack → LLM picks → snap → reframe → captions → batch |
 | SaaS / screen-recording demo (§3, §9) | `references/playbook-demo.md` | rebuilt full-screen UI (legible) or zoomed real capture if ≥2K |
 | Explainer / value reel / listicle (§4, §10) | `references/playbook-generated.md` | HyperFrames (or Remotion) from script.json |
+| **Launch / coming-soon / product teaser — ANY business** (benchmark: linkutm mobile v3) | `references/playbook-launch-teaser.md` | Remotion/HyperFrames; ElevenLabs Music + SFX |
 | Promo / launch / ad / UGC (§6, §7) | `references/playbook-generated.md` + §6 hook variants | HyperFrames/Remotion; generated b-roll only if access |
 | Faceless / stock + VO (§5) | `references/playbook-generated.md` | VO first, stock/generated b-roll, captions |
 | Long-form YouTube (§16) | editing-types §16 + clipping playbook for Shorts | ffmpeg + overlays |
