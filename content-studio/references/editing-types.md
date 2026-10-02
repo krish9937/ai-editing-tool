@@ -384,3 +384,8 @@ Research compiled 2026-10-01 for an autonomous video-production skill. Sources a
 - https://gen.pro/blog/top-10-hooks-education-creators
 - https://www.vozo.ai/blogs/youtube/profitable-faceless-youtube-niches
 - https://subscribr.ai/youtube-strategy/grow-faceless-youtube-channel-seo-secrets
+
+## Filmed-screen promo (screen-in-camera) — added 2026
+Motion-graphics ad shown on a filmed laptop/phone screen; hero-object number story, mascot
+characters, word slams, hand-drawn circle, meta "made with AI" reveal + comment-keyword CTA.
+Full technique glossary + rules: `style-filmed-screen-promo.md`.
