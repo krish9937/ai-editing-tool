@@ -81,3 +81,8 @@ colours, own characters, own story). Capability VERIFIED: test comp
   - **Built drop**: if generated music has no drop, make one in the edit: lowpass the bar before (450 Hz),
     0.24 s silence, full track back on the reveal beat. Fit BPM/phase by autocorrelation of the onset envelope.
   - Headline per section (2–4 words) with fast word stagger; plate behind text when it sits over busy art.
+- v3 notes (user loved v2, asked for): the OUTRO needs CONTEXT — one sentence on what the product is, then the
+  launch lockup pinned at the bottom (white card: app icon + product name + "Coming soon"). Show the real
+  dashboard in depth (scroll to the donut/charts) rather than one card. "Abundance" needs VARIETY: vary module
+  shape, corner style, gradient, centre icon and card layout; only some items get a text label. Never leave a
+  blank/black screen between beats — keep the last screen alive through the music gap.
