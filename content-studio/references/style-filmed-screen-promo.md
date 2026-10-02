@@ -57,3 +57,13 @@ colours, own characters, own story). Capability VERIFIED: test comp
 3. Render the promo 16:10 → play on the laptop and film (preferred) **or** wrap in the simulated
    laptop room (9:16), as in `StyleTestFilmedScreen.tsx`.
 4. Add the static top caption, mix VO + music (−14 LUFS), QA the frame-0 text and the safe box.
+
+## App launch teaser variant ("coming soon", phone) — 2026
+- Rebuild screens from the app's SOURCE (theme tokens, verbatim labels, real widget/splash) — a sub-agent
+  extracting a spec from the repo is fast and makes the UI exact. Never show a feature the code doesn't
+  have (e.g. push notifications that aren't wired).
+- Generate the music FIRST (ElevenLabs Music `force_instrumental`; check the take's RMS curve — one take
+  came back near-silent), then map beats: hits → hard cuts + camera kick + flash; riser → accelerating
+  montage of earlier screens; 0.2 s black on the stop; impact → the app's real splash + "Coming soon."
+- Phone at ~1.8× a 390-pt screen in a 1080 frame; camera focus-zooms (1.12–1.2) on the active area so
+  UI text stays readable; "show taps" circles sell the interaction; static top caption from frame 0.
