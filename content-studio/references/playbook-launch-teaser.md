@@ -43,3 +43,11 @@ an event, a property, a service, a course.
 - QR/variant system: one SVG path per module style (fast), finder styles, gradients, centre icons, card layouts.
 - Audio: music bed + impact SFX on the landing + pops on spawns (ElevenLabs sound-generation); loudnorm −14 LUFS.
 - QA: `scripts/qa.py` (frame count, LUFS, first second) + stills at every beat before the full render.
+
+## 5. Post copy for a launch teaser (LinkedIn / X / Instagram)
+- LinkedIn: founder voice, hook line about the pain → "so we're bringing X to Y" → 3–4 emoji bullets of real
+  features → who it's for (a concrete moment) → "coming soon" + early-access comment CTA; link in FIRST comment; 3–5 hashtags.
+- X: one ≤280-char post (hook + what + "Coming soon 👀"), optional 2-tweet thread with features + CTA.
+- Instagram: 3 short lines (one per feature) + "Comment WORD for early access" + 5 hashtags max; give cover text + alt text.
+- Only promise a comment-keyword CTA if someone (or ManyChat) will actually reply. Add the launch month if known.
+- Example: `Desktop/linkutm-mobile-COMING-SOON-CAPTIONS.md` (2026).
