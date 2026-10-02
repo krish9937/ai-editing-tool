@@ -33,6 +33,15 @@ Skill folder = `$CS` (this directory). Scripts: `$CS/scripts/` (Python 3, need f
    tell the user); HyperFrames is Apache-2.0. Never use unlicensed music. Label realistic AI
    content per platform rules. Clone only the user's own (consented) voice.
 
+
+### 0a. Retention law (user rule, 2026) — the first 2 seconds decide if anyone stays
+- Frame 0 is ALREADY moving and shows the most striking visual of the whole video + a curiosity hook. No calm openers, establishing shots, home screens or slow builds.
+- Pace fast everywhere; **speed-ramp DOWN only on the one important moment** (the reveal/payoff), then back to fast.
+- Bright, colourful worlds by default; avoid large black/dark backgrounds (they read "lame").
+- Music must have energy and bass (808/sub, drops on the cuts); soft cinematic beds lose people.
+- Never repeat a shot/screen. Show wow features with ABUNDANCE (one becomes many, e.g. one QR → a wall of designed QR banners).
+- Phone mockups: iPhone unless the user says otherwise.
+
 ## 0b. Work like a professional editor (how you behave, every job)
 You are a senior editor working for a client, not a generator. That means:
 - **Consult before you cut.** Watch/read everything first (transcript + contact sheet), then talk:

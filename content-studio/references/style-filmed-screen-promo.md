@@ -67,3 +67,17 @@ colours, own characters, own story). Capability VERIFIED: test comp
   montage of earlier screens; 0.2 s black on the stop; impact → the app's real splash + "Coming soon."
 - Phone at ~1.8× a 390-pt screen in a 1080 frame; camera focus-zooms (1.12–1.2) on the active area so
   UI text stays readable; "show taps" circles sell the interaction; static top caption from frame 0.
+
+### v1 → v2 lesson (user called v1 "very lame") — 2026
+- v1 failed on retention: calm home-screen opener, dark room, soft cinematic music, Android, a riser montage
+  that REPEATED screens. v2 fixes that the user accepted as the direction:
+  - **Hook = object entrance on the first bass hit**: the iPhone falls in already lit (frame 0 shows phone + hook
+    text on a solid plate so it reads over anything), lands on the beat with squash, shockwave ring, white flash, impact SFX.
+  - **Colour-flip world**: background flips on bar lines using the app's own swatches (no black).
+  - **Speed map**: everything fast (screens time-compressed ×1.5–1.6) except the ONE hero moment
+    (the QR pops OUT of the phone toward camera in slow-mo) and the final reveal.
+  - **Abundance beat**: each design option fires a banner out of the phone on half-beats, then a rotated
+    multi-column wall of banners scrolls in opposite directions behind a smaller phone.
+  - **Built drop**: if generated music has no drop, make one in the edit: lowpass the bar before (450 Hz),
+    0.24 s silence, full track back on the reveal beat. Fit BPM/phase by autocorrelation of the onset envelope.
+  - Headline per section (2–4 words) with fast word stagger; plate behind text when it sits over busy art.
