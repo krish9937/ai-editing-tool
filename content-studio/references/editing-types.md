@@ -389,3 +389,7 @@ Research compiled 2026-10-01 for an autonomous video-production skill. Sources a
 Motion-graphics ad shown on a filmed laptop/phone screen; hero-object number story, mascot
 characters, word slams, hand-drawn circle, meta "made with AI" reveal + comment-keyword CTA.
 Full technique glossary + rules: `style-filmed-screen-promo.md`.
+
+## Motion showreel / hype montage — added 2026
+Music-only, 15–30 s, cuts on the beat grid accelerating to the end; one technique + one word per act;
+4-colour palette, 3-font type system, HUD/timecode overlay as glue. Full breakdown: `style-motion-showreel.md`.

@@ -90,6 +90,7 @@ Full beat sheets per type: `references/editing-types.md` (§ numbers below).
 | Long-form YouTube (§16) | editing-types §16 + clipping playbook for Shorts | ffmpeg + overlays |
 | Testimonial / case study / before-after (§12–13) | editing-types §12–13 | real footage first |
 | Filmed-screen promo (motion-graphics ad played on a filmed laptop, hero-object number story, meta "made with AI" + comment-keyword CTA) | `references/style-filmed-screen-promo.md` (technique names + rules) | Remotion/HyperFrames promo 16:10 → real phone filming or simulated laptop room |
+| Motion showreel / capability hype / brand sizzle (music-only beat-cut montage: decode intro, word-per-beat, dot grids, particles, 3D blobs, UI assembly, HUD overlay) | `references/style-motion-showreel.md` (structure, technique names, rules) | Remotion/HyperFrames; WebGL only for 3D blobs |
 | Motion graphics / kinetic type / logo sting (§8) | HyperFrames `motion-graphics` workflow | HyperFrames |
 | Captions only on existing footage | HyperFrames `embedded-captions` or `scripts` ASS burn | ffmpeg |
 | Deck/slides → video | HyperFrames `slideshow` | HyperFrames |
