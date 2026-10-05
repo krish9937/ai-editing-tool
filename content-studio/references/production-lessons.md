@@ -20,7 +20,7 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
 - Captions as a **typewriter in a dark monospace strip**, typed as words are spoken, no accents.
 - No dead space in 9:16: fill the bottom with the founder (big lip-synced face ~40% width +
   captions beside it), product above. Re-confirmed 2026 (glossary reel): even when the brief says "face only
-  in the hook", an empty bottom third gets called out — use the caption box + speaker card block by default.
+  in the hook", an empty bottom third gets called out. Fill it with BIGGER visuals + lower captions, NOT a face card (user rejected the face after the hook).
 - Cut-out hooks keep the speaker's REAL background; animations go between the footage and the matted speaker.
 
 ## Hook (first 1–3 s)

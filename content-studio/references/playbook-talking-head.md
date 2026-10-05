@@ -72,9 +72,12 @@ motion cutaways on feature words, CTA at the end. Example: `Desktop/linkutm-foun
 - Better source audio → keep processing LIGHT (highpass + gentle compression + loudnorm); heavy denoise/EQ made take 1 worse.
 
 ## Body layout: never leave the bottom third empty (user feedback 2026: "lot of blank space at the bottom")
-- 9:16 = visuals in y 240–1250, then a BOTTOM BLOCK y 1290–1880: dark typewriter caption box (left, x 40–585,
-  46 px mono, series label on top) + lip-synced speaker card (right, 430×590, white border, "LIVE" dot).
-  Captions on the LEFT keep text out of the IG action-button column; the face may sit under the buttons.
-- Speaker card video: cut the face track with `cut.py --video` from the SAME segs as the voice, then crop to the
-  card aspect around the face and re-encode small with `-g 15` (a 1440×2560 long-GOP file made Remotion's
-  OffthreadVideo time out on seeks).
+- If the brief is "face only in the hook", DON'T add a face card later (user rejected it: "dont show my face
+  after the hook"). Instead grow the visuals: scale the scene layer ~1.04 + shift it down (~90 px) so the
+  content spans y≈240–1360, centre short scenes (single cards) lower, and put the caption strip at y≈1410,
+  50 px. Below ~1650 is Instagram's caption/UI overlay — fine to leave as background.
+- If a face card IS wanted: caption box left (x 40–585) + lip-synced speaker card right (430×590); cut it with
+  `cut.py --video` from the same segs, crop around the face, re-encode small with `-g 15` (a 1440×2560
+  long-GOP file made OffthreadVideo time out on seeks and slowed the render a lot).
+- Render speed: drop heavy video layers you don't need, use `--concurrency` ≈ cores/2 (12 on a 20-core box);
+  45 s at 1440×2560 ≈ 5 min.
