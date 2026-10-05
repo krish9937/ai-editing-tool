@@ -40,3 +40,15 @@ motion cutaways on feature words, CTA at the end. Example: `Desktop/linkutm-foun
 - **Fact-check founder answers against the live website** (home, features, pricing, compare) and ship a fact sheet
   with the script: claim → source page, plus a "don't say" list (competitor prices/limits, retired offers,
   "coming soon" features, plan-gated features said as free). Flag inconsistencies found on the site.
+
+## Educational "glossary" reel from a selfie recording (added 2026)
+- Brief: value only, no product/selling; keep the speaker's VOICE + ~2 s of face (the hook line), rest = visuals.
+- Fact-check the script against the source page (glossary/term) before building; fix ASR quirks in captions
+  ("unknown wizards" → visitors) and light grammar, but never change meaning. Re-run ASR with medium.en for doubtful words.
+- Front-camera footage is mirrored → `hflip` it (shirt text reads correctly). iPhone HLG → plain scale + eq for SDR.
+- Face exit: the face shrinks into a rounded card and flies off while the first explainer screen rises (no hard cut).
+- "Detective" visual grammar: rebuild the real tool screen (GA4 report) → literal metaphor object (bucket of unknown
+  sessions) → sources fire clicks into it on their spoken words → consequence card (worked, 0 credit) → fix typed
+  live → SAME report with the after-numbers (before/after payoff is allowed to reuse the screen).
+- Scale check: first pass looked small/empty — every scene card ≥ 900 px wide, fonts ≥ 30 px, fill y 300–1260 above the caption strip.
+- Series chrome: tiny mono label "GLOSSARY · TERM" + small handle; no CTA. Template: `promo-video-studio/src/GlossaryDirectTraffic.tsx`.
