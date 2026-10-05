@@ -51,3 +51,17 @@ an event, a property, a service, a course.
 - Instagram: 3 short lines (one per feature) + "Comment WORD for early access" + 5 hashtags max; give cover text + alt text.
 - Only promise a comment-keyword CTA if someone (or ManyChat) will actually reply. Add the launch month if known.
 - Example: `Desktop/linkutm-mobile-COMING-SOON-CAPTIONS.md` (2026).
+
+## 6. Store-listing versions (App Store / Google Play) — rules checked 2026
+- **Google Play preview video** = a YouTube URL (single video, public/unlisted, embeddable, ads OFF, not
+  age-restricted, no timecode params). Portrait OK (no black bars). Only first 30 s autoplays. ≥80% real app
+  experience, app shown within 10 s. NO "Download/Install now" CTAs, no rankings/awards, no time-sensitive
+  taglines ("coming soon", dates), minimise logos/title screens; add captions.
+- **App Store app preview**: 15–30 s, ≤3 per device size, 30 fps max, H.264 10–12 Mbps or ProRes 422 HQ,
+  stereo AAC 256k; iPhone 6.9/6.5/6.3/6.1" = **886×1920** portrait (5.5" = 1080×1920). ONLY footage captured
+  from the app on device (screen recording) — no device frames/mockups, no hands, no non-app scenes; no prices,
+  no dates/seasonal lines; disclose login / subscription / IAP in footage or end frame; simple transitions.
+  → The teaser (iPhone mockup, colour-flip world) is fine for Play/social but NOT App-Store-safe; build a
+  separate full-screen screen-recording cut for Apple.
+- Converting a teaser for Play: drop "Coming soon" + store badges, make the hook line timeless
+  ("linkutm, now on your phone."), lockup = icon + name + 3 feature words. Loudnorm −14 LUFS / −1.5 dBTP.
