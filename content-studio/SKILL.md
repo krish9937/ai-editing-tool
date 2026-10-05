@@ -186,3 +186,8 @@ into one pass. Vague feedback ("not good") → ask WHAT (opening/middle/text/aud
 After every delivery or feedback round, append the lesson to `references/production-lessons.md`
 (and the user's memory), and re-copy this skill to the user's skills repo if they keep one
 (e.g. `C:/Users/Zenbook/OneDrive/Desktop/ai-editing-tool\content-studio`).
+
+### Delivery hygiene + default polish (user rule, 2026)
+- Put ONLY the finished video on the user's Desktop (one clear filename, replaced in place on revisions). Work files go to `D:\codes\work\<project>\` — never Desktop folders, never extra docs unless asked.
+- On any user footage, by default: enhance + boost the voice (EQ presence, compression, de-ess, normalise; master −13 LUFS / −1.2 dBTP), denoise/sharpen the picture, render high quality (`--jpeg-quality=100 --crf=12`).
+- Motion defaults: fast entrances (0.12–0.3 s), punch-ins on key words; check every number/label stays inside its card (no edge clipping).
