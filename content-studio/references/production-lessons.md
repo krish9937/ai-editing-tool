@@ -79,3 +79,8 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   transcript (Hindi lines come out translated). Take exact Hinglish caption wording from the user's own earlier captions when available.
 - If Windows Application Control blocks PyAV, decode with ffmpeg to raw 16 kHz PCM and import faster-whisper with a stub `av` module.
 - Can't hear the audio? Verify each cut end by transcribing just [end−2 s, end] and checking the last word.
+- (reel-01 v1→v2 feedback) Founder wanted: **4K output** (render `--resolution=portrait-4k`, face track at native 2160 width),
+  **real-world visuals researched on the web** (real F1 circuit geometry from bacinger/f1-circuits GeoJSON, CC-licensed
+  Commons photos/satellite with credits), the **named thing shown when spoken** ("F1" slam on "in F1"), **face NOT over-cropped**
+  (no punch-in on a split screen), and **continuous camera motion** — flat illustrated cards cut one after another read as "a slideshow".
+  Research the real story first (here: McDonald's "The Golden Zone", TBWA Colombia, Interlagos 2026) before designing.
