@@ -21,3 +21,16 @@ raise energy, one clap for sync. Phone HDR (HLG) is fine — convert with a plai
 ## Common failures
 Face too small in a wide shot (crop in, 1.5–2× is fine from 4K) · eye-line off · captions over
 the mouth · dead air at the start · ending on "so yeah…" instead of the payoff.
+
+## Founder interview / Q&A shoot (added 2026)
+One shoot → one long video + one reel per question. Prep a script file with ~10 questions and a
+spoken-style sample answer each, written from the founder's OWN past words (mine webinar/podcast
+transcripts for their phrasing and stories). Shoot rules to give the user:
+- 4K 16:9, founder centred (so a 9:16 crop works), eye level, window light, lav mic on the founder.
+- Interviewer beside the camera; founder looks at the interviewer.
+- **Founder repeats the question in the answer** ("What makes X different is…") → every answer stands alone as a reel.
+- 2 s pause after each question/answer; 20–40 s answers; restart stumbled sentences.
+- Competitor questions: answer with what the product does, no attacks; only verifiable claims.
+- Add a rapid-fire round (1–3 word answers) — easy fast reel.
+Edit: each reel opens on the punchiest line of the answer (hook in the first 2 s), question as on-screen text,
+motion cutaways on feature words, CTA at the end. Example: `Desktop/linkutm-founder-interview-SCRIPT.md`.
