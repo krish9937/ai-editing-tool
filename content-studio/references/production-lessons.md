@@ -69,3 +69,13 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   delivery (scripts/qa.py).
 - When feedback is vague ("not good"), ask WHAT is bad (opening / middle / text / audio) before
   rebuilding — one round of questions beats three wrong renders.
+
+## Environment / pipeline gotchas (reel-01, 2026-10-05)
+- iPhone HLG footage: clips cut from it KEEP the arib-std-b67/bt2020 tags even after a plain-scale "SDR" grade.
+  HyperFrames then takes its HDR path (stalled at 1 frame in 15 min). Retag before compositing
+  (`-c copy -bsf:v h264_metadata=colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1`) and render with `--sdr`.
+  A 59 s 1080×1920 render then takes ~4.5 min on the laptop.
+- Hinglish speech: whisper `language="hi"` (small/medium) produces garbage; `language="en"` gives a usable near-verbatim
+  transcript (Hindi lines come out translated). Take exact Hinglish caption wording from the user's own earlier captions when available.
+- If Windows Application Control blocks PyAV, decode with ffmpeg to raw 16 kHz PCM and import faster-whisper with a stub `av` module.
+- Can't hear the audio? Verify each cut end by transcribing just [end−2 s, end] and checking the last word.
