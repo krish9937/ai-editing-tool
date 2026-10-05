@@ -52,3 +52,18 @@ motion cutaways on feature words, CTA at the end. Example: `Desktop/linkutm-foun
   live → SAME report with the after-numbers (before/after payoff is allowed to reuse the screen).
 - Scale check: first pass looked small/empty — every scene card ≥ 900 px wide, fonts ≥ 30 px, fill y 300–1260 above the caption strip.
 - Series chrome: tiny mono label "GLOSSARY · TERM" + small handle; no CTA. Template: `promo-video-studio/src/GlossaryDirectTraffic.tsx`.
+
+## Hook: speaker cut out with visuals BEHIND the head (user-approved 2026)
+- First 2–3 s = the speaker saying the hook/problem line, background replaced by a bright colour world; the key
+  word set huge BEHIND the head (text-behind-subject), animated on the spoken words (slam, strike-through on "not"),
+  data pill + chips + icons orbiting behind; slight push-in. Then a whip-up + white flash into full-screen visuals
+  exactly on the music drop.
+- Matting: `npx hyperframes remove-background in.mp4 -o out.webm --quality best` (u2net_human_seg, CPU, ~3 s/frame).
+  Needs ffmpeg AND ffprobe on PATH; Remotion's bundled ffmpeg lacks the rawvideo demuxer → use a folder with the
+  full ffmpeg-static ffmpeg.exe + Remotion's ffprobe.exe (D:\codes\work\bin). Use `<OffthreadVideo transparent>`.
+  Hide desk/laptop remnants with a bottom gradient in the bg colour.
+- Music: pick a generated track with a built-in stop/drop, measure it (RMS at 50 ms), and delay it so the drop
+  lands on the hook→visuals cut. Mix music OUTSIDE the render with sidechaincompress keyed by the voice; target
+  music ≈ 12 dB under the voice (e.g. −27 vs −14.5 LUFS), master −13 LUFS / −1.2 dBTP.
+- If the user re-records/re-exports, align new words to old by index (difflib) and remap time instead of re-animating.
+- Better source audio → keep processing LIGHT (highpass + gentle compression + loudnorm); heavy denoise/EQ made take 1 worse.
