@@ -37,3 +37,6 @@ motion cutaways on feature words, CTA at the end. Example: `Desktop/linkutm-foun
 - **User preference (2026):** default to ONE bigger open question (e.g. "Why did you build X and what makes it
   different?") answered in 60–90 s, with a 5-step answer flow for the founder: punch line first (hook) →
   problem story → 2–3 differences → who it's for → CTA. Multi-question lists felt like too much; offer them only if asked.
+- **Fact-check founder answers against the live website** (home, features, pricing, compare) and ship a fact sheet
+  with the script: claim → source page, plus a "don't say" list (competitor prices/limits, retired offers,
+  "coming soon" features, plan-gated features said as free). Flag inconsistencies found on the site.
