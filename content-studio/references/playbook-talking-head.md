@@ -54,16 +54,27 @@ motion cutaways on feature words, CTA at the end. Example: `Desktop/linkutm-foun
 - Series chrome: tiny mono label "GLOSSARY · TERM" + small handle; no CTA. Template: `promo-video-studio/src/GlossaryDirectTraffic.tsx`.
 
 ## Hook: speaker cut out with visuals BEHIND the head (user-approved 2026)
-- First 2–3 s = the speaker saying the hook/problem line, background replaced by a bright colour world; the key
+- **Keep the ORIGINAL filmed background** (user rejected a flat orange replacement): depth sandwich =
+  layer 1 the real footage, layer 2 the animations, layer 3 the matted speaker (same frames, same transform as
+  layer 1 so they stay aligned). Key word in brand colour + white stroke + shadow so it reads on a real wall;
+  keep pills/cards in the corners so the head doesn't hide them.
+- First 2–3 s = the speaker saying the hook/problem line; the key
   word set huge BEHIND the head (text-behind-subject), animated on the spoken words (slam, strike-through on "not"),
   data pill + chips + icons orbiting behind; slight push-in. Then a whip-up + white flash into full-screen visuals
   exactly on the music drop.
 - Matting: `npx hyperframes remove-background in.mp4 -o out.webm --quality best` (u2net_human_seg, CPU, ~3 s/frame).
   Needs ffmpeg AND ffprobe on PATH; Remotion's bundled ffmpeg lacks the rawvideo demuxer → use a folder with the
   full ffmpeg-static ffmpeg.exe + Remotion's ffprobe.exe (D:\codes\work\bin). Use `<OffthreadVideo transparent>`.
-  Hide desk/laptop remnants with a bottom gradient in the bg colour.
 - Music: pick a generated track with a built-in stop/drop, measure it (RMS at 50 ms), and delay it so the drop
   lands on the hook→visuals cut. Mix music OUTSIDE the render with sidechaincompress keyed by the voice; target
   music ≈ 12 dB under the voice (e.g. −27 vs −14.5 LUFS), master −13 LUFS / −1.2 dBTP.
 - If the user re-records/re-exports, align new words to old by index (difflib) and remap time instead of re-animating.
 - Better source audio → keep processing LIGHT (highpass + gentle compression + loudnorm); heavy denoise/EQ made take 1 worse.
+
+## Body layout: never leave the bottom third empty (user feedback 2026: "lot of blank space at the bottom")
+- 9:16 = visuals in y 240–1250, then a BOTTOM BLOCK y 1290–1880: dark typewriter caption box (left, x 40–585,
+  46 px mono, series label on top) + lip-synced speaker card (right, 430×590, white border, "LIVE" dot).
+  Captions on the LEFT keep text out of the IG action-button column; the face may sit under the buttons.
+- Speaker card video: cut the face track with `cut.py --video` from the SAME segs as the voice, then crop to the
+  card aspect around the face and re-encode small with `-g 15` (a 1440×2560 long-GOP file made Remotion's
+  OffthreadVideo time out on seeks).
