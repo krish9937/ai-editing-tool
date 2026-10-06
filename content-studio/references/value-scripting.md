@@ -55,3 +55,12 @@ Write the product as a table first: feature → what changes in the viewer's lif
 - Trust: links on your own name (yourshop.com/…) instead of random short links.
 - Proof on site: free plan (25 links/month, no credit card); quote "linkutm keeps every campaign link clean and
   consistent across our whole team" — Aakash, GTM Expert. CTA "Start for free".
+
+## 4. Built example (2026-10-06): linkutm "Which half?" (`promo-video-studio/src/LinkutmPromoValue.tsx`)
+Visual grammar for a non-technical value promo: famous quote on old paper + a banknote torn in half (half greys
+"wasted", halves shuffle with "?" on "which half") → the 4 places you promote as real-looking mini UIs (Instagram
+post, WhatsApp chat, printed poster, influencer story) with coins flying from a budget bar into each → "New orders"
+counter + red "?" on each place ("but from where?") → calendar flip "NEXT MONTH", coins fly again → brand drop →
+each place gets its own link chip / QR → cards morph into a "Clicks this month" scoreboard + city chips → weak rows
+"Paused", budget sliders move money to the winner → CTA. Only show what the product measures (clicks/scans/where),
+never claim it counts sales.
