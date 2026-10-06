@@ -75,3 +75,11 @@ never claim it counts sales.
 - Story beats: everything she tried pops in with coins from the till → café packed (guests pop in) → "?" on every
   prop → calendar flips "NEXT MONTH", coins fly again → brand drop from her phone → each prop gets its own link/QR →
   "a week later" laptop with clicks & scans → flyers crossed, coins move to the winner → café busy, she waves → CTA.
+
+## 6. Know if the client sells a PRODUCT or a SERVICE (JewelleryOS lesson, 2026-10-06)
+I built two promos treating JewelleryOS as SaaS ("replace your Excel"); the user corrected: it's a SERVICE that builds
+a custom system for each jeweller. Before scripting, state in one line "what they sell, to whom, how it's delivered"
+(product / done-for-you service / marketplace…) and confirm it with the user. Signals of a service: "requirement-based
+quote", "custom work", "how we work with you", "discuss your requirement", portfolio of client builds.
+Story shape for a service: the client's customer (persona) has a goal → hard questions → the service team builds it
+around them (not a template) → each deliverable appears → one connected result → life after → CTA.
