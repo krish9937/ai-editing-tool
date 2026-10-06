@@ -122,3 +122,10 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   gold dust, kinetic word hits on spoken numbers. Flat cards on a pastel background read as "bad".
 - "No excitement" → eleven_v3 stability 0.0 with [excited]/[dramatic]/[thrilled] tags + exclamation marks + CAPS on
   the hit words; faster read (47.9 s vs 50.5 s).
+- "Visuals bland → use fluid animations" (JewelleryOS, 2026-10-06): one liquid thread that morphs between scenes
+  beats separate card scenes. Recipe: SVG goo filter (feGaussianBlur σ16–28 + feColorMatrix alpha 34 −14) on circles
+  with a gold radial gradient + drop-shadow glow; liquid flood = ring of growing metaballs (recede FULLY to r=0 or a
+  leftover sphere sits behind the next scene); cards grow from a droplet (size/radius/position lerp, content fades in
+  at k>0.55) and melt back; orbit droplets merge into a ring of beads → swap to the 3D ring. Living gradient bg (2–3
+  slowly drifting radial gradients), vignette, grain; kinetic words land with scaleY 0.6→1 + blur.
+  Don't leave tiny floating "thread" blobs on top of text — they read as random peanuts.
