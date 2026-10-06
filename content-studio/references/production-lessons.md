@@ -107,3 +107,4 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
 - Whiteboard/handwriting in the footage: "pop" it — clip a copy of the real footage around the writing, scale it
   up with a shadow as the words are spoken, and draw a marker ring around it (static camera → fixed regions).
 - Tape/stamp effects: unroll (scaleX from one edge) instead of flying in from off-panel; avoid back-easing overshoot.
+- Whiteboard: user prefers a simple highlighter sweep on the real handwriting, REMOVED when that point is done (not lifted/scaled copies or persistent rings). Bottle label: one word only, fully hidden by the tape.
