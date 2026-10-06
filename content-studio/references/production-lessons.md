@@ -99,3 +99,11 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   tags ([casual], [amused], [laughs softly], [frustrated], [sighs], [warmly], [confident], [excited], [cheerful]),
   stability 0.5 (0.0 misread "built" as "build"). v3 with-timestamps alignment is loose (±0.5 s) → re-time words
   with faster-whisper by difflib-matching and verify on the RMS curve.
+
+## Mixed-language footage (Hindi/English, 2026-10-06 Heinz reel)
+- ALWAYS detect language before cutting: run multilingual faster-whisper (`medium`, language=None) — `medium.en`
+  silently turns Hindi into fake English ("I don't know how to say that…") and I cut real words from the hook.
+- User rule: lines spoken in Hindi get NO subtitles (here: the hook); subtitles start after it.
+- Whiteboard/handwriting in the footage: "pop" it — clip a copy of the real footage around the writing, scale it
+  up with a shadow as the words are spoken, and draw a marker ring around it (static camera → fixed regions).
+- Tape/stamp effects: unroll (scaleX from one edge) instead of flying in from off-panel; avoid back-easing overshoot.
