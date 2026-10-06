@@ -64,3 +64,14 @@ counter + red "?" on each place ("but from where?") → calendar flip "NEXT MONT
 each place gets its own link chip / QR → cards morph into a "Clicks this month" scoreboard + city chips → weak rows
 "Paused", budget sliders move money to the winner → CTA. Only show what the product measures (clicks/scans/where),
 never claim it counts sales.
+
+## 5. Built example: storytelling promo, 16:9 (linkutm café story, `src/LinkutmCafeStory.tsx`)
+- Layout 16:9: illustrated stage on the left (1300 px), a chat panel on the right as the SUBTITLES.
+- Chat-bubble subtitles: each spoken phrase = one message; words appear as spoken; "typing…" dots + header
+  status before the next message; narrator bubbles left/white, the character's emotional beats right/brand gradient;
+  stack with a bottom-anchored flex column (browser measures heights — no overlap), older messages fade.
+- Code-drawn flat character (Riya) with moods per beat: happy / neutral / excited / confused (+ "?" marks) /
+  sigh (closed eyes + sweat drop) / amused; she waves at the start and holds up her phone on the brand drop.
+- Story beats: everything she tried pops in with coins from the till → café packed (guests pop in) → "?" on every
+  prop → calendar flips "NEXT MONTH", coins fly again → brand drop from her phone → each prop gets its own link/QR →
+  "a week later" laptop with clicks & scans → flyers crossed, coins move to the winner → café busy, she waves → CTA.
