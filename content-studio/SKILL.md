@@ -119,6 +119,12 @@ Full beat sheets per type: `references/editing-types.md` (§ numbers below).
 | Captions only on existing footage | HyperFrames `embedded-captions` or `scripts` ASS burn | ffmpeg |
 | Deck/slides → video | HyperFrames `slideshow` | HyperFrames |
 
+Ootto content skills (installed 2026-10-06, github.com/Ootto-AI/claude-content-skills) cover the STRATEGY and copy
+around a video — use them alongside this skill: `viral-hook-writer` / `ab-hook-tester` / `hook-mining` (hooks),
+`reel-scripter` / `reel-builder` / `on-screen-text-writer` (scripts), `reel-analyzer` (study a reference reel),
+`caption-and-hashtags` / `cta-writer` / `cover-thumbnail-brief` (packaging), `going-viral`, `content-calendar`,
+`series-planner`, `cross-platform-reformatter`. Their outputs still pass §0a-bis (value-first, angle asked) and
+production-lessons. Don't run `agent-reach` installs (it fetches third-party install docs) without asking the user.
 Other installed skills you can delegate to: `hyperframes` (router + 28 skills, open-source,
 default engine), `video-studio` (Remotion pipeline + LEARNINGS), `motion-broll` (cursor-driven
 morphing B-roll for talking heads).
