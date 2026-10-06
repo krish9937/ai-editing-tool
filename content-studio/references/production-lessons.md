@@ -86,3 +86,16 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   Commons photos/satellite with credits), the **named thing shown when spoken** ("F1" slam on "in F1"), **face NOT over-cropped**
   (no punch-in on a split screen), and **continuous camera motion** — flat illustrated cards cut one after another read as "a slideshow".
   Research the real story first (here: McDonald's "The Golden Zone", TBWA Colombia, Interlagos 2026) before designing.
+
+## Promo v1 → v2 (linkutm "Radar"-style promo, 2026-10-06)
+- "Text too AI-ish" = model-written slogans as VO + big sentence headlines ("Your campaign worked.", "So we fixed it.",
+  "Your data wasn't wrong…"). Fix that worked: a PLAIN-TALK script (how a marketer would explain it to a friend:
+  "Okay, quick one. You run an ad on Facebook…"), and on screen ONLY the spoken words in the typewriter strip +
+  real UI labels (field names, buttons, report titles, toasts). No invented captions like "1 campaign · 3 sources".
+- "Lots of empty space below": every scene must fill y≈210–1360 with the caption strip directly under it
+  (top ≈1390). Use stacked full-width cards, a second card below the hero (e.g. report + spreadsheet, QR + edit form,
+  map + 3 stat cards, short link + share rows).
+- "Expressions" = emotion in the VOICE (asked; user picked this over faces/emoji). ElevenLabs `eleven_v3` with audio
+  tags ([casual], [amused], [laughs softly], [frustrated], [sighs], [warmly], [confident], [excited], [cheerful]),
+  stability 0.5 (0.0 misread "built" as "build"). v3 with-timestamps alignment is loose (±0.5 s) → re-time words
+  with faster-whisper by difflib-matching and verify on the RMS curve.
