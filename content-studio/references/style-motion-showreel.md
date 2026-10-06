@@ -79,3 +79,18 @@ Render at 60 fps only if the platform keeps it (IG/YT do); otherwise 30.
   filter-state dimming, 3D card tilt, odometer/rolling digits, line-art map + geo zoom, gradient flood wipe, glowing CTA pill.
 - For this user: frame-0 must already show a big hook word (the reference opens on a tiny "Someone" — weak); keep it
   bright; 16:9-in-9:16 wastes ~2/3 of the screen — prefer full 9:16 unless the "made with AI" framing is the point.
+- BUILT 2026-10-06: `promo-video-studio/src/LinkutmPromoRadar.tsx` (linkutm promo in this style, full 9:16, 42 s, Emma VO).
+  Reusable pieces: `Say` (word-synced blur-in kinetic line from TTS alignment), zoom-through + 3-strip word split,
+  person cards that MATCH-CUT into report rows, built drop + orange circle-flood logo reveal, rule toggles,
+  rail carousel + cursor pick + filter-dimming, long→short URL collapse with domain box, 3D-tilted printed QR +
+  destination slot-swap, line-art world map (d3-geo → `world-map-data.ts`) + count-up + geo zoom + 3 stat cards,
+  rows-merge payoff with the arithmetic shown, glowing shimmer CTA pill.
+- TTS timing: ElevenLabs `/v1/text-to-speech/{id}/with-timestamps` gives character alignment → merge spelled
+  tokens ("G A 4"→GA4, "link U T M"→linkutm) → word list drives every animation. No whisper needed.
+- Music: generate, measure drop/bar grid, offset so the drop = product reveal word, duplicate a bar so the
+  breakdown lands on the reassurance line, re-enter the groove on the final brand word (built drop: lowpass bar +
+  0.2 s gap). Mix VO + SFX + music outside Remotion (sidechain), master −14 LUFS.
+- Remotion on this machine sometimes fails with "spawn UNKNOWN" at the stitch step / ffprobe crash on audio:
+  render `--sequence --image-format=jpeg` and encode with D:\codes\work\bin\ffmpeg; keep Audio out of the comp.
+  Fix single moments by re-rendering `--frames=a-b` into the same sequence folder.
+- Odometer digit columns with background-clip:text glitch in Chrome → plain tabular number with blurred low digits.
