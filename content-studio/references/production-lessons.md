@@ -108,3 +108,10 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   up with a shadow as the words are spoken, and draw a marker ring around it (static camera → fixed regions).
 - Tape/stamp effects: unroll (scaleX from one edge) instead of flying in from off-panel; avoid back-easing overshoot.
 - Whiteboard: user prefers a simple highlighter sweep on the real handwriting, REMOVED when that point is done (not lifted/scaled copies or persistent rings). Bottle label: one word only, fully hidden by the tape.
+- Expressive ElevenLabs voice (user: "Emma lacked expression — make it like Jessica"): eleven_v3, stability 0.0
+  (Creative) + strong tags ([tired] [sighs] [exasperated] [worried] [frustrated] [annoyed] [warmly] [excited]
+  [delighted] [proud]), CAPS for one stressed word, "..." for pauses. Creative mode mispronounces sometimes
+  (e.g. "builds") → make 2–3 takes, verify with medium.en, splice the bad line from another take at a silence.
+- Client brand promo (JewelleryOS, 2026-10-06): pull the exact brand from the site (CSS hex counts, @font-face
+  families, /logo.svg, og:image + product images) and rebuild their UI in their tokens; dark brand photo for the
+  problem act → their light UI world after the drop.
