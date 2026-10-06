@@ -34,6 +34,9 @@ Skill folder = `$CS` (this directory). Scripts: `$CS/scripts/` (Python 3, need f
    content per platform rules. Clone only the user's own (consented) voice.
 
 
+### 0a-bis. Value-first scripts (user rule, 2026)
+Before ANY script: run `references/value-scripting.md` (features → money/time/growth, jargon ban, relatable person, café-owner test). Assume a non-technical viewer unless told otherwise.
+
 ### 0a. Retention law (user rule, 2026) — the first 2 seconds decide if anyone stays
 - Frame 0 is ALREADY moving and shows the most striking visual of the whole video + a curiosity hook. No calm openers, establishing shots, home screens or slow builds.
 - Pace fast everywhere; **speed-ramp DOWN only on the one important moment** (the reveal/payoff), then back to fast.
