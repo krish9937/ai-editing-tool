@@ -129,3 +129,11 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   at k>0.55) and melt back; orbit droplets merge into a ring of beads → swap to the 3D ring. Living gradient bg (2–3
   slowly drifting radial gradients), vignette, grain; kinetic words land with scaleY 0.6→1 + blur.
   Don't leave tiny floating "thread" blobs on top of text — they read as random peanuts.
+- Gemini TTS (user's Google AI Studio key; models gemini-3.8-flash-tts / 2.5-*-preview-tts via generativelanguage
+  v1beta generateContent, responseModalities AUDIO, prebuiltVoiceConfig voiceName): sounds far less "AI" than the
+  ElevenLabs ads voices for this user. Use the structured prompt — "# AUDIO PROFILE … ## THE SCENE … ### DIRECTOR'S
+  NOTES (per-line emotions) … #### TRANSCRIPT" — only the transcript is spoken. Plain instructions or [bracket] cues in
+  the text get READ ALOUD. Output = base64 PCM s16le 24 kHz mono. Female voices tried: Sulafat (warm), Despina (smooth),
+  Kore (firm/confident, user's pick). Free tier rate-limits pro-tts (429).
+- Anchor every animation to words by TEXT (find "website", "builder", "today"…) not by index, so swapping the VO
+  (new voice / edited script) re-times the whole film automatically.
