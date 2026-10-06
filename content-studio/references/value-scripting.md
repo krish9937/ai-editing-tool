@@ -83,3 +83,7 @@ a custom system for each jeweller. Before scripting, state in one line "what the
 quote", "custom work", "how we work with you", "discuss your requirement", portfolio of client builds.
 Story shape for a service: the client's customer (persona) has a goal → hard questions → the service team builds it
 around them (not a template) → each deliverable appears → one connected result → life after → CTA.
+
+## 7. Brand voice = FIRST PERSON (user rule, 2026-10-06)
+When the video is the brand's own promo, the narrator IS the brand: "we", "we're JewelleryOS", "we build…",
+never "they"/"the company". Third person only for the customer in the story ("Kavya", "her customers").
