@@ -77,6 +77,14 @@ client asks to see it) — plus your recommendation and why. Only cheap, reversi
 before approval: transcribing, reading/planning, contact sheets of the client's own footage.
 If the client says "just do it / you decide", state the theme you chose in one line and proceed.
 
+## 0d. ALWAYS ask (user rules, 2026-10-06) — never assume these
+- **Orientation** every video: 9:16 (Reels/Shorts/TikTok) · 4:5 (feed) · 1:1 · 16:9 (YouTube/LinkedIn) — or several.
+- **Subtitle style** every video, and do NOT reuse the last video's style by default. Offer 3–4 fresh options that
+  suit the story/brand (e.g. handwritten marker, chat bubbles, sticker captions, word-pop, typewriter strip,
+  kinetic headline, minimal lower subtitle) and recommend one. Log which style each video used.
+- **Script angle** (problem-solving / storytelling / technical / demo / proof / educational / hype…) with a
+  recommendation for the market (see `references/value-scripting.md`).
+
 ## 1. Intake — ONE round, defaults pre-filled (ask the user; in Claude Code use AskUserQuestion, ≤4 per call)
 Skip anything already answered or remembered (check memory/brand files first).
 1. **Type + goal** (route table §2) and the ONE action the viewer should take.
