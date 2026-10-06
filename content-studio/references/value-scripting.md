@@ -1,5 +1,21 @@
 # Value-first scripting for NON-technical viewers (user rule, 2026-10-06)
 
+## 0. ALWAYS ask the script ANGLE first (user rule) — never default to technical
+In the intake, ask which kind of video this is, and RECOMMEND one based on the market/audience:
+| Angle | Best when | Example |
+|---|---|---|
+| Problem-solving / value (money · time · growth) | broad / non-technical buyers, owners, SMBs | "Half my ad money is wasted — which half?" |
+| Storytelling (a person + a moment + a turn) | consumer, local business, emotional products, founders | "Meet Riya, she runs a café…" |
+| Technical / how-it-works | experts, devs, marketers who already know the category | "Your GA4 shows Facebook, facebook and FB…" |
+| Demo / walkthrough | users evaluating the tool, onboarding | screen + clicks |
+| Social proof / testimonial / case study | trust-sensitive, B2B, higher price | customer result, quote |
+| Educational / value tip (no selling) | top-of-funnel growth content | glossary reels |
+| Hype / launch teaser | announcements, coming soon | mobile teaser v3 |
+| Founder / behind-the-scenes, UGC-style, comparison | personal brands, challengers | "why we built it", "X vs Y" |
+Recommend per market: SMB/consumer → problem-solving or story; marketers/agencies → technical-light + proof;
+developers → technical/demo; launch → hype. Offer 2–3 scripts in the chosen angle (and one in another angle if useful).
+
+
 User feedback on the linkutm promo v2: "the script is too technical… assume a guy who is not related to links,
 campaign tracking, GA4… a person will only watch if we provide value: saves time or money or grows the individual
 or the company." Every promo/explainer script goes through this before it's shown to the user.
