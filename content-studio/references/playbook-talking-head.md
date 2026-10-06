@@ -81,3 +81,18 @@ motion cutaways on feature words, CTA at the end. Example: `Desktop/linkutm-foun
   long-GOP file made OffthreadVideo time out on seeks and slowed the render a lot).
 - Render speed: drop heavy video layers you don't need, use `--concurrency` ≈ cores/2 (12 on a 20-core box);
   45 s at 1440×2560 ≈ 5 min.
+
+## Visuals ABOVE the head + sticker captions (user pick, 2026-10-06, Heinz reel `src/HeinzReel.tsx`)
+- One "paper card" (case file / whiteboard grid, tape corners, red tab) sits in the empty space above the speaker;
+  its box is defined PER SHOT (indoor ceiling vs balcony sky) and springs between positions on each shot cut.
+  Scene content is authored in a fixed 900×600 box and scaled to fit, so the same scenes work in every shot.
+- Doodle kit: marker font (PermanentMarker), stroke draw-on paths, rubber stamps (scale-in + multiply), tape
+  strips that fly in and slap on, generic illustrated product (never the real logo artwork).
+- Sticker captions: one chunk (2–6 words) per sticker, rotating palette (brand red / mustard / white / black)
+  with thick white die-cut border + shadow, tilt ±2–4°, spring pop; ONLY spoken words are rendered (sticker grows
+  word by word) — rendering future words invisibly leaves big empty sticker boxes. Use per-word margins, not
+  flex columnGap.
+- Multi-shot phone footage: check mirroring PER SHOT (front cam mirrored, rear cam not — whiteboard text shows it);
+  grade per shot (backlit balcony: lift shadows with curves); cut voice + video from one segs list.
+- Easing.back can return ~1e-16 instead of 0 → guard "is visible" checks with > 0.001.
+- Remotion here: `--sequence` render + own ffmpeg encode; never pipe the render into `grep -m` (kills it).
