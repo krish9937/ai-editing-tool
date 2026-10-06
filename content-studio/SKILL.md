@@ -82,6 +82,7 @@ If the client says "just do it / you decide", state the theme you chose in one l
 - **Subtitle style** every video, and do NOT reuse the last video's style by default. Offer 3–4 fresh options that
   suit the story/brand (e.g. handwritten marker, chat bubbles, sticker captions, word-pop, typewriter strip,
   kinetic headline, minimal lower subtitle) and recommend one. Log which style each video used.
+- **Audience type** (B2B serious buyers vs consumers): B2B → NO cartoon characters/props; premium minimal (type, thin-line art, clean UI cards, 3D objects).
 - **Script angle** (problem-solving / storytelling / technical / demo / proof / educational / hype…) with a
   recommendation for the market (see `references/value-scripting.md`).
 
