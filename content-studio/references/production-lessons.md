@@ -115,3 +115,10 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
 - Client brand promo (JewelleryOS, 2026-10-06): pull the exact brand from the site (CSS hex counts, @font-face
   families, /logo.svg, og:image + product images) and rebuild their UI in their tokens; dark brand photo for the
   problem act → their light UI world after the drop.
+- "Visuals very bad" on a flat-UI promo (JewelleryOS v1) → what fixed it: (1) understand the product first (read every
+  product page; show its REAL features/labels/figures), (2) a real-time 3D hero object (three.js via @remotion/three:
+  procedural ring + RoomEnvironment reflections, render with --gl=angle; one WebGL canvas at a time; dpr 1.5),
+  (3) dark cinematic stage + glass panels in CSS 3D perspective with slow camera moves, (4) light sweeps, sparkles,
+  gold dust, kinetic word hits on spoken numbers. Flat cards on a pastel background read as "bad".
+- "No excitement" → eleven_v3 stability 0.0 with [excited]/[dramatic]/[thrilled] tags + exclamation marks + CAPS on
+  the hit words; faster read (47.9 s vs 50.5 s).
