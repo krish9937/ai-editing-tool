@@ -67,3 +67,15 @@ Remotion/HyperFrames + CSS/SVG/canvas — straightforward. Particles → text: c
 (2–5k points). Metaballs/chrome: needs WebGL (`@remotion/three` + a shader material, or a HyperFrames
 GLSL shader) — the one heavier piece; a 2D fallback is SVG goo-filter blobs with gradient fills.
 Render at 60 fps only if the platform keeps it (IG/YT do); otherwise 30.
+
+## Variant: "framed narrated product promo" (IG DeHOxk6Omwi, 2026 — spec D:\codes\video-ideas\ig6\VISUAL-SPEC.md)
+- 16:9 motion piece inside a 9:16 black frame, static top "formula" header (tool icons + = 🔥) and a static
+  comment-keyword line under the panel. The panel is the only moving thing.
+- Narrated story arc: relatable pain (someone else won) → why you missed it → "so we fixed it" → product name reveal →
+  3–4 features each with ONE visual → proof numbers (rolling-digit counter on a line map, geo zoom) → reassurance line
+  → CTA pill (waitlist / link in bio).
+- Technique names: word-by-word kinetic type + blur-in (focus pull), zoom-through type, accent-word colour,
+  underline draw-on, social-post / document UI cards, curved text on a planet-horizon arc, timeline-rail carousel,
+  filter-state dimming, 3D card tilt, odometer/rolling digits, line-art map + geo zoom, gradient flood wipe, glowing CTA pill.
+- For this user: frame-0 must already show a big hook word (the reference opens on a tiny "Someone" — weak); keep it
+  bright; 16:9-in-9:16 wastes ~2/3 of the screen — prefer full 9:16 unless the "made with AI" framing is the point.
