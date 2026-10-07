@@ -167,3 +167,8 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   (smears); keep them or ask for a capture with the widget closed. Measure crops on a gridded copy and
   double-check the grid's y labels (I mis-read one section by 100 px).
 - User asked about render time: offer a 0.5-scale preview first, and final encode with preset medium (not slow).
+- **Arabic subtitles (RTL) over an English VO:** one Arabic line per spoken English sentence (`[firstWord, lastWord, text]`),
+  revealed word-by-word across the sentence, `dir="rtl"`, Almarai 800 + Amiri gold for *accent* groups. Keep the
+  conjunction و attached to its word (never "و *word*"), and glue punctuation tokens onto the previous word.
+- **Gemini TTS:** never quote transcript phrases inside DIRECTOR'S NOTES — it reads them aloud. Describe style generally,
+  then check every take with whisper for extra lines before using it.
