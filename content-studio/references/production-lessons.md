@@ -172,3 +172,8 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   conjunction و attached to its word (never "و *word*"), and glue punctuation tokens onto the previous word.
 - **Gemini TTS:** never quote transcript phrases inside DIRECTOR'S NOTES — it reads them aloud. Describe style generally,
   then check every take with whisper for extra lines before using it.
+- (reel-02) HyperFrames/GSAP gotchas: tweening x/y/rotation on an SVG <g> that has a `transform="translate()"` attribute
+  REPLACES it — wrap: outer <g transform> + inner animated <g>. For procedural drawing (waves) redraw in the timeline's
+  `onUpdate` (runs after all child tweens), not in a clock tween, or seeks render stale state.
+  Word-pop captions: auto-fit font-size to the frame width after setting text.
+  Never wait on "no chrome.exe" — the user's own browser keeps running; wait on the output file / the render log line instead.
