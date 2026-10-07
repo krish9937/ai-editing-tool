@@ -101,6 +101,7 @@ Then write `project.md` (brief, decisions, checkpoint log) next to the work and 
 in 4–6 lines. For anything paid or long, wait for an explicit go.
 
 ## 2. Route by type → load the playbook
+All styles the user has shown/approved (with comps + verdicts): `references/style-catalog.md` — check it first.
 Full beat sheets per type: `references/editing-types.md` (§ numbers below).
 
 | Request | Playbook | Engine |
