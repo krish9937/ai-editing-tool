@@ -137,3 +137,20 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   Kore (firm/confident, user's pick). Free tier rate-limits pro-tts (429).
 - Anchor every animation to words by TEXT (find "website", "builder", "today"…) not by index, so swapping the VO
   (new voice / edited script) re-times the whole film automatically.
+
+## 2026-10-07 — JewelleryOS v4: client's website source + POS
+- **Client gives website source → use THEIR elements, not approximations.** Copy `public/` assets (logo svg, product renders,
+  icon sets) into `public/<brand>/site/` and rebuild their UI components 1:1 in Remotion (same tokens, copy, formulas —
+  e.g. their PricingConfigurator maths). Shared cards live in `src/jos/SiteCards.tsx`. Brand accent = their headline trick
+  (Instrument Serif italic accent word) applied to kinetic subtitles.
+- **Feature honesty:** check the site copy before naming a feature. JOS "POS" is custom-scoped work → said as
+  "Her billing counter, connected to all of it" + scan → weigh → GST invoice → ripple (stock, CRM, website, report).
+- **Show the real website:** `scripts/site_scroll_capture.mjs` (raw CDP, no puppeteer) scrolls the live site in 600px
+  steps; stitch shot0 + rows 300–900 of each next shot into one long image → scroll it inside a browser frame at the CTA.
+  Tall-window `--screenshot` does NOT work (scroll-reveal/sticky sections stay blank).
+- **Windows App Control started blocking `remotion.exe` (compositor) → "spawn UNKNOWN".** Don't touch security settings;
+  local patch in `node_modules/@remotion/renderer/dist/offthread-video-server.js` wraps startCompositor in try/catch with a
+  stub (backup `.orig`). Works for comps without <OffthreadVideo>. Re-apply after `npm install`. Never run two renders at
+  once (browser connect timeout).
+- **Changing one line of an ElevenLabs take cheaply:** generate only the changed lines (v3), trim silence, loudnorm to
+  the take, splice at word boundaries from the whisper words → re-transcribe → word file → comps re-time themselves.
