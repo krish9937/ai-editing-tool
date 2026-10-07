@@ -177,3 +177,9 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   `onUpdate` (runs after all child tweens), not in a clock tween, or seeks render stale state.
   Word-pop captions: auto-fit font-size to the frame width after setting text.
   Never wait on "no chrome.exe" — the user's own browser keeps running; wait on the output file / the render log line instead.
+- (reel-02 v3) User asked for: brand colours (Škoda emerald #0E3A2F + electric #78FAAE), REAL symbols (Fluent Emoji 3D, MIT, +
+  real logos from Commons) not drawn figures, face NOT zoomed → cut the speaker out (`hyperframes remove-background`) and place
+  them ~70% size, low, with visuals behind; "crazy" motion = shakes, punch-ins, shockwave rings, shatter, icon rain, confetti.
+  Perf: remove-background uses ~6% CPU single process (~2 s/frame @1080p) → split into 5 chunks and run in parallel (~2× faster,
+  watch RAM), concat VP9-alpha webms with `-c copy` (alpha survives). 4K render with a transparent webm hit Node heap OOM →
+  `NODE_OPTIONS=--max-old-space-size=7168` + `--low-memory-mode --workers=3`.
