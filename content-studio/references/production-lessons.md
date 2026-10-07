@@ -160,3 +160,10 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   (bug: `F("aur")` hit "store aur appointment" and skipped a whole scene). Print the anchor list and sanity-check it.
 - **Client widget → video:** copy their real stylesheet (`:host`→`.vai-host`), render the same class markup with fake
   data, and pin CSS keyframes to the frame: `el.getAnimations({subtree:true}).forEach(a=>{a.pause();a.currentTime=frame/fps*1000})`.
+- **Device-frame outro (MacBook → iPhone → iPad → line-up):** `src/jos/Devices.tsx` (CSS space-grey frames +
+  `Crop` helper that re-flows real crops of a desktop full-page capture into phone/tablet layouts) and
+  `src/jos/DeviceShowcase.tsx` (spring "track" of [time, {x,y,scale,rotY}] states per device, VO-anchored).
+  Full-page captures repeat fixed widgets (chat bubble) once per viewport — don't inpaint over content
+  (smears); keep them or ask for a capture with the widget closed. Measure crops on a gridded copy and
+  double-check the grid's y labels (I mis-read one section by 100 px).
+- User asked about render time: offer a 0.5-scale preview first, and final encode with preset medium (not slow).
