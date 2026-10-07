@@ -154,3 +154,9 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   once (browser connect timeout).
 - **Changing one line of an ElevenLabs take cheaply:** generate only the changed lines (v3), trim silence, loudnorm to
   the take, splice at word boundaries from the whisper words → re-transcribe → word file → comps re-time themselves.
+- **Hinglish VO supplied by the user (Gemini):** whisper `--lang en` TRANSLATES Hinglish → use it only for sentence
+  boundaries; place the approved Roman-Hinglish script words along voiced RMS time by syllable weight
+  (`D:\codes\work\jewelleryos\hinglish\align.py`). Re-pick anchors on unique words — "aur"/"ek"/"aaj" repeat
+  (bug: `F("aur")` hit "store aur appointment" and skipped a whole scene). Print the anchor list and sanity-check it.
+- **Client widget → video:** copy their real stylesheet (`:host`→`.vai-host`), render the same class markup with fake
+  data, and pin CSS keyframes to the frame: `el.getAnimations({subtree:true}).forEach(a=>{a.pause();a.currentTime=frame/fps*1000})`.
