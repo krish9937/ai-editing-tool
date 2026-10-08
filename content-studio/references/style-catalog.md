@@ -26,15 +26,20 @@ Read this when picking a direction; each row points to the deep reference + the 
 | B2B cinematic product promo | B2B (product) | real-time 3D ring (three.js), glass panels in 3D perspective, gold dust, light sweeps | `JewelleryOSPromoV2.tsx` | superseded (client is a SERVICE) |
 | B2B story with cartoons | — | — | `JewelleryOSStory.tsx` | ✗ "cartoonish" for B2B |
 | **B2B fluid film** (current B2B benchmark) | B2B service | researched pain hook, liquid-gold metaball thread (flood reveal, droplets→cards→melt, merge into ring → 3D ring), living gradient, stretch kinetic type, first-person brand VO | `JewelleryOSFluid.tsx` | "good, make it more refined" → refined |
+| **Client-website-accurate film** (JOS v4) | brand gives site source | copy their public assets + rebuild their UI 1:1 (`templates/SiteCards.tsx`), honest feature wording (POS = "billing counter, connected"), live-site scroll via `scripts/site_scroll_capture.mjs` | `JewelleryOSFluid.tsx` | accepted |
+| **Client widget in video** | brand gives component source | their real stylesheet + class markup, CSS keyframes pinned to frame (`templates/AssistantWidget.tsx` + `voiceStyles.ts`) | `jos/AssistantWidget.tsx` | "looking good" |
+| **Device-frame outro** (MacBook → iPhone → iPad → line-up) | proof / "we built this" ending | CSS space-grey frames, desktop capture re-flowed into phone/tablet crops, VO-anchored springs (`templates/Devices.tsx`, `DeviceShowcase.tsx`) | `jos/DeviceShowcase.tsx` | delivered |
+| **Hinglish VO** (user- or Gemini-made) | Indian SMB audience | Roman-Hinglish kinetic subtitles, script aligned to audio (`scripts/align_script_to_audio.example.py`), Gemini TTS (`scripts/gemini_tts.py`) | `JewelleryOSFluid.tsx`, `JewelleryOSStoryV2.tsx` | delivered |
+| **English VO + Arabic subtitles** | Gulf / Arabic market | one Arabic line per spoken sentence, RTL word reveal, Almarai + Amiri gold accents (`templates/ArabicSubtitleFilm.example.tsx`) | `JewelleryOSFluidAR.tsx` | delivered |
 
 ## C. Subtitle styles used (never reuse the last one by default — ask)
-dark typewriter strip · chat bubbles · sticker captions · elegant lower-third · kinetic spoken words (Radar / fluid) ·
+dark typewriter strip · chat bubbles · Roman-Hinglish kinetic words · Arabic RTL line reveal · sticker captions · elegant lower-third · kinetic spoken words (Radar / fluid) ·
 karaoke (older) · handwritten marker / bold word-pop / censor-bar (offered).
 
 ## D. Voices
 User's own recording (best) · Smit clone (founder, ElevenLabs) · Emma / Riya Rao (ElevenLabs v3 with emotion tags —
 user later found ElevenLabs "very AI" for B2B) · **Gemini TTS Kore** with AUDIO PROFILE/DIRECTOR'S NOTES prompt (current
-pick for B2B). Brand promos speak in FIRST person ("we").
+pick for B2B; `scripts/gemini_tts.py`; never quote transcript lines in the notes). User may also supply Gemini audio. Brand promos speak in FIRST person ("we").
 
 ## E. Standing rules (where they live)
 Retention first 2 s, value-first + angle question, orientation + subtitle style + audience type asked every time,
