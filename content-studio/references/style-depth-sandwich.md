@@ -35,3 +35,18 @@ Always CHANGE the editing style between reels and fine-tune every render. Never 
   texture + a stop-motion jitter on a still of the speaker).
 - Captions: tiny all-caps at the bottom, one keyword coloured (green/yellow); warm grade + vignette; comparison cards (#1 #2 #3 with a blurred ???).
 - Sandwich order: footage → text/graphic → matte copy of the speaker. Matte sources: rough mask, rotoscope, AI removal (use RVM).
+
+## Matting performance (learned 2026-10-08, reel-03)
+- RVM ONNX: leave onnxruntime threads at the DEFAULT (forcing intra_op threads to 20 was 14× slower on this laptop).
+- The full-res refiner is the cost: run RVM at 720x1280 (downsample 0.4) and upscale the alpha (`scripts/rvm_fast.py`), about 0.3 s/f.
+- Run ONE process (each ORT session already uses all cores); 3 parallel processes oversubscribe and crawl.
+- Don't run whisper at the same time as matting. Write the alpha as grey H.264, then alphamerge + VP9 in parallel chunks.
+
+## Reel-03 build notes (2026-10-08): worlds + depth graphics, as it was built
+- Photoreal plates: Figma `generate_image` (gpt-image-2.5) at 1152x2048 → 864x1536 output; soft upscale reads as natural depth of field
+  behind the speaker. Props (e.g. a rocket) on a chroma-green background, keyed with alpha = 1 − (g − max(r,b)) and despill g ≤ max(r,b).
+- When the speaker sits on furniture the matte can't separate (beanbag), use a bust framing in the replaced worlds: CSS mask
+  `linear-gradient(#000 61%, transparent 71%)` on the speaker plus a world-coloured fog at the bottom (a prop like the rocket can cover the fade line).
+- Big behind-the-head words: auto-fit to 1010 px width; centre them ~40 px above the head centre so the head occludes them.
+- RENDER SPEED: every <video> is frame-extracted for its whole data-duration. Trim short-use clips with data-start/data-duration/
+  data-media-start (room plate, silhouette copy) → the 4K render went from 0.25 to 1.6 fps.
