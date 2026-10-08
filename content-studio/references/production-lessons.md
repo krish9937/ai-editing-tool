@@ -182,3 +182,20 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   Perf: remove-background uses ~6% CPU single process (~2 s/frame @1080p) → split into 5 chunks and run in parallel (~2× faster,
   watch RAM), concat VP9-alpha webms with `-c copy` (alpha survives). 4K render with a transparent webm hit Node heap OOM →
   `NODE_OPTIONS=--max-old-space-size=7168` + `--low-memory-mode --workers=3`.
+- **Long-form tutorial (20+ chapters, ~25 min, 16:9):** one Remotion comp PER CHAPTER from a shared engine
+  (`ChapterDef` = card → "Before you start" → body → recap that bridges to the next chapter; VO-word-anchored with
+  `makeAt(W)(phrase, after)`), render + encode each chapter separately (cache the mp4s), concat with `-c copy`, then
+  ONE continuous audio track (VO at chapter offsets, looped ducked music, sfx) → loudnorm. Chapter offsets must come
+  from exact frame counts (decode `-f null` and read `frame=`); `time=` from a `-c copy` pass under-reports ~0.1 s/chapter.
+  YouTube timestamps = cumulative offsets (first must be 0:00).
+- **Anchor misses are silent** → make `makeAt` `console.warn("MISS " + phrase)` once, and render one still per comp
+  with the Node API (`bundle` once, `renderStill` many, `onBrowserLog`) to list every miss. Whisper splits spoken
+  domains/slugs ("bit .ly", "mix -up", "Q2ACME") — anchor on the first token and merge pairs in the caption builder.
+  The same trick logs scene starts + cursor-click times per comp → place whoosh/click sfx automatically.
+- **Before rendering long pieces, write chapters against ESTIMATED word timings** (syllable-based from the script)
+  so layout can be checked with still contact sheets while the VO is still being generated.
+- **Gemini TTS free tier = 10 requests/day per model** (429 `GenerateRequestsPerDayPerProjectPerModel-FreeTier`).
+  For many chapters, send 2–3 chapters per request ("leave a two-second pause between chapters"), then split the
+  batch at each chapter's first words from the whisper transcript. Ask the user: enable billing, wait for the reset,
+  or switch model (a different model sounds different → re-record everything for consistency).
+- Windows Chrome has no flag emoji (renders as letters "US") — use letter badges deliberately or SVG flags.
