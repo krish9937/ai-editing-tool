@@ -24,3 +24,14 @@ Dilate the stable alpha 8–12 px, keep only the largest component, and fade the
 Render a separate outline layer under the cut-out.
 ## Rule from the user
 Always CHANGE the editing style between reels and fine-tune every render. Never reuse last reel's look by default.
+
+## Second reference (YouTube GUUPEwH7XE8, Olufemii, "Text Behind Person"), studied 2026-10-08
+- **Extended display text behind the head:** ultra-wide heavy caps ("FRAME BY FRAME", "WORKFLOW", "CONTENT"), white with a
+  red offset/extrude shadow, flicker-on or slam; the head/mic occlude the middle letters. One word per beat, centred on the head.
+- **Laser beams behind the subject:** red lines crossing behind the head on emphasis words (cheap, very punchy).
+- **Line-art behind the subject:** white wings and a halo (or any icon) appear behind the speaker on a joke, with a white-flash world swap.
+- **Silhouette wipe:** the speaker turns into a flat solid-colour silhouette (from the matte) as a transition into the next beat.
+- **Printed-photo stop-motion:** the frame looks printed on paper and is moved by hands (tactile break; fake it with a paper
+  texture + a stop-motion jitter on a still of the speaker).
+- Captions: tiny all-caps at the bottom, one keyword coloured (green/yellow); warm grade + vignette; comparison cards (#1 #2 #3 with a blurred ???).
+- Sandwich order: footage → text/graphic → matte copy of the speaker. Matte sources: rough mask, rotoscope, AI removal (use RVM).
