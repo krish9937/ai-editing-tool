@@ -23,14 +23,14 @@ Read this when picking a direction; each row points to the deep reference + the 
 | Radar-style promo v1/v2 | brand promo | kinetic text → v2: captions + UI labels, fill the frame | `LinkutmPromoRadar(V2).tsx` | v2 still "too technical" |
 | **Value promo (problem-solving)** | non-technical buyers | famous-quote hook, torn banknote, mini real-looking UIs, coins/budget bar, scoreboard, budget sliders | `LinkutmPromoValue.tsx` | accepted |
 | **Storytelling 16:9 (consumer)** | SMB/consumer | persona story, illustrated world + character moods, chat-bubble subtitles | `LinkutmCafeStory.tsx` | posted (IG/X/YT/LI copy written) |
-| B2B cinematic product promo | B2B (product) | real-time 3D ring (three.js), glass panels in 3D perspective, gold dust, light sweeps | `JewelleryOSPromoV2.tsx` | superseded (client is a SERVICE) |
-| B2B story with cartoons | — | — | `JewelleryOSStory.tsx` | ✗ "cartoonish" for B2B |
-| **B2B fluid film** (current B2B benchmark) | B2B service | researched pain hook, liquid-gold metaball thread (flood reveal, droplets→cards→melt, merge into ring → 3D ring), living gradient, stretch kinetic type, first-person brand VO | `JewelleryOSFluid.tsx` | "good, make it more refined" → refined |
-| **Client-website-accurate film** (JOS v4) | brand gives site source | copy their public assets + rebuild their UI 1:1 (`templates/SiteCards.tsx`), honest feature wording (POS = "billing counter, connected"), live-site scroll via `scripts/site_scroll_capture.mjs` | `JewelleryOSFluid.tsx` | accepted |
-| **Client widget in video** | brand gives component source | their real stylesheet + class markup, CSS keyframes pinned to frame (`templates/AssistantWidget.tsx` + `voiceStyles.ts`) | `jos/AssistantWidget.tsx` | "looking good" |
-| **Device-frame outro** (MacBook → iPhone → iPad → line-up) | proof / "we built this" ending | CSS space-grey frames, desktop capture re-flowed into phone/tablet crops, VO-anchored springs (`templates/Devices.tsx`, `DeviceShowcase.tsx`) | `jos/DeviceShowcase.tsx` | delivered |
-| **Hinglish VO** (user- or Gemini-made) | Indian SMB audience | Roman-Hinglish kinetic subtitles, script aligned to audio (`scripts/align_script_to_audio.example.py`), Gemini TTS (`scripts/gemini_tts.py`) | `JewelleryOSFluid.tsx`, `JewelleryOSStoryV2.tsx` | delivered |
-| **English VO + Arabic subtitles** | Gulf / Arabic market | one Arabic line per spoken sentence, RTL word reveal, Almarai + Amiri gold accents (`templates/ArabicSubtitleFilm.example.tsx`) | `JewelleryOSFluidAR.tsx` | delivered |
+| B2B cinematic product promo | B2B (product) | real-time 3D ring (three.js), glass panels in 3D perspective, gold dust, light sweeps | — | superseded (client is a SERVICE) |
+| B2B story with cartoons | — | — | — | ✗ "cartoonish" for B2B |
+| **B2B fluid film** (current B2B benchmark) | B2B service | researched pain hook, liquid-gold metaball thread (flood reveal, droplets→cards→melt, merge into ring → 3D ring), living gradient, stretch kinetic type, first-person brand VO | — | "good, make it more refined" → refined |
+| **Client-website-accurate film** | brand gives site source | copy their public assets + rebuild their UI 1:1 (one shared cards module per client, kept in the project), honest wording for custom-scoped features, live-site scroll via `scripts/site_scroll_capture.mjs` | — | accepted |
+| **Client widget in video** | brand gives component source | their real stylesheet + class markup, CSS keyframes pinned to frame (copy their stylesheet into the project only, never into the skill) | — | "looking good" |
+| **Device-frame outro** (MacBook → iPhone → iPad → line-up) | proof / "we built this" ending | CSS space-grey frames, desktop capture re-flowed into phone/tablet crops, VO-anchored springs (`templates/Devices.tsx`) | — | delivered |
+| **Hinglish VO** (user- or Gemini-made) | Indian SMB audience | Roman-Hinglish kinetic subtitles, script aligned to audio (`scripts/align_script_to_audio.py`), Gemini TTS (`scripts/gemini_tts.py`) | — | delivered |
+| **English VO + Arabic subtitles** | Gulf / Arabic market | one Arabic line per spoken sentence, RTL word reveal, Almarai + Amiri gold accents (`templates/RtlSubtitles.tsx`) | — | delivered |
 
 ## C. Subtitle styles used (never reuse the last one by default — ask)
 dark typewriter strip · chat bubbles · Roman-Hinglish kinetic words · Arabic RTL line reveal · sticker captions · elegant lower-third · kinetic spoken words (Radar / fluid) ·

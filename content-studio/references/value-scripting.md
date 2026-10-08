@@ -76,8 +76,8 @@ never claim it counts sales.
   prop → calendar flips "NEXT MONTH", coins fly again → brand drop from her phone → each prop gets its own link/QR →
   "a week later" laptop with clicks & scans → flyers crossed, coins move to the winner → café busy, she waves → CTA.
 
-## 6. Know if the client sells a PRODUCT or a SERVICE (JewelleryOS lesson, 2026-10-06)
-I built two promos treating JewelleryOS as SaaS ("replace your Excel"); the user corrected: it's a SERVICE that builds
+## 6. Know if the client sells a PRODUCT or a SERVICE (lesson, 2026-10-06)
+I once built two promos treating a client as SaaS ("replace your Excel"); the user corrected: it's a SERVICE that builds
 a custom system for each jeweller. Before scripting, state in one line "what they sell, to whom, how it's delivered"
 (product / done-for-you service / marketplace…) and confirm it with the user. Signals of a service: "requirement-based
 quote", "custom work", "how we work with you", "discuss your requirement", portfolio of client builds.
@@ -85,5 +85,5 @@ Story shape for a service: the client's customer (persona) has a goal → hard q
 around them (not a template) → each deliverable appears → one connected result → life after → CTA.
 
 ## 7. Brand voice = FIRST PERSON (user rule, 2026-10-06)
-When the video is the brand's own promo, the narrator IS the brand: "we", "we're JewelleryOS", "we build…",
-never "they"/"the company". Third person only for the customer in the story ("Kavya", "her customers").
+When the video is the brand's own promo, the narrator IS the brand: "we", "we're <Brand>", "we build…",
+never "they"/"the company". Third person only for the customer in the story (the persona, "her customers").

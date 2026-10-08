@@ -112,17 +112,17 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   (Creative) + strong tags ([tired] [sighs] [exasperated] [worried] [frustrated] [annoyed] [warmly] [excited]
   [delighted] [proud]), CAPS for one stressed word, "..." for pauses. Creative mode mispronounces sometimes
   (e.g. "builds") → make 2–3 takes, verify with medium.en, splice the bad line from another take at a silence.
-- Client brand promo (JewelleryOS, 2026-10-06): pull the exact brand from the site (CSS hex counts, @font-face
+- Client brand promo (2026-10-06): pull the exact brand from the site (CSS hex counts, @font-face
   families, /logo.svg, og:image + product images) and rebuild their UI in their tokens; dark brand photo for the
   problem act → their light UI world after the drop.
-- "Visuals very bad" on a flat-UI promo (JewelleryOS v1) → what fixed it: (1) understand the product first (read every
+- "Visuals very bad" on a flat-UI promo (client v1) → what fixed it: (1) understand the product first (read every
   product page; show its REAL features/labels/figures), (2) a real-time 3D hero object (three.js via @remotion/three:
   procedural ring + RoomEnvironment reflections, render with --gl=angle; one WebGL canvas at a time; dpr 1.5),
   (3) dark cinematic stage + glass panels in CSS 3D perspective with slow camera moves, (4) light sweeps, sparkles,
   gold dust, kinetic word hits on spoken numbers. Flat cards on a pastel background read as "bad".
 - "No excitement" → eleven_v3 stability 0.0 with [excited]/[dramatic]/[thrilled] tags + exclamation marks + CAPS on
   the hit words; faster read (47.9 s vs 50.5 s).
-- "Visuals bland → use fluid animations" (JewelleryOS, 2026-10-06): one liquid thread that morphs between scenes
+- "Visuals bland → use fluid animations" (2026-10-06): one liquid thread that morphs between scenes
   beats separate card scenes. Recipe: SVG goo filter (feGaussianBlur σ16–28 + feColorMatrix alpha 34 −14) on circles
   with a gold radial gradient + drop-shadow glow; liquid flood = ring of growing metaballs (recede FULLY to r=0 or a
   leftover sphere sits behind the next scene); cards grow from a droplet (size/radius/position lerp, content fades in
@@ -138,13 +138,12 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
 - Anchor every animation to words by TEXT (find "website", "builder", "today"…) not by index, so swapping the VO
   (new voice / edited script) re-times the whole film automatically.
 
-## 2026-10-07 — JewelleryOS v4: client's website source + POS
+## 2026-10-07 — client gives website source
 - **Client gives website source → use THEIR elements, not approximations.** Copy `public/` assets (logo svg, product renders,
   icon sets) into `public/<brand>/site/` and rebuild their UI components 1:1 in Remotion (same tokens, copy, formulas —
-  e.g. their PricingConfigurator maths). Shared cards live in `src/jos/SiteCards.tsx`. Brand accent = their headline trick
-  (Instrument Serif italic accent word) applied to kinetic subtitles.
-- **Feature honesty:** check the site copy before naming a feature. JOS "POS" is custom-scoped work → said as
-  "Her billing counter, connected to all of it" + scan → weigh → GST invoice → ripple (stock, CRM, website, report).
+  e.g. their own pricing formula). Keep the rebuilt cards in one shared module per client (in the project, never in the skill). Brand accent = their headline trick
+  (e.g. their serif-italic accent word) applied to kinetic subtitles.
+- **Feature honesty:** check the site copy before naming a feature. if a feature is custom-scoped work, word it that way (e.g. "your billing counter, connected") and show the flow, not a product claim.
 - **Show the real website:** `scripts/site_scroll_capture.mjs` (raw CDP, no puppeteer) scrolls the live site in 600px
   steps; stitch shot0 + rows 300–900 of each next shot into one long image → scroll it inside a browser frame at the CTA.
   Tall-window `--screenshot` does NOT work (scroll-reveal/sticky sections stay blank).
@@ -156,13 +155,13 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   the take, splice at word boundaries from the whisper words → re-transcribe → word file → comps re-time themselves.
 - **Hinglish VO supplied by the user (Gemini):** whisper `--lang en` TRANSLATES Hinglish → use it only for sentence
   boundaries; place the approved Roman-Hinglish script words along voiced RMS time by syllable weight
-  (`D:\codes\work\jewelleryos\hinglish\align.py`). Re-pick anchors on unique words — "aur"/"ek"/"aaj" repeat
+  (`scripts/align_script_to_audio.py`). Re-pick anchors on unique words — "aur"/"ek"/"aaj" repeat
   (bug: `F("aur")` hit "store aur appointment" and skipped a whole scene). Print the anchor list and sanity-check it.
 - **Client widget → video:** copy their real stylesheet (`:host`→`.vai-host`), render the same class markup with fake
   data, and pin CSS keyframes to the frame: `el.getAnimations({subtree:true}).forEach(a=>{a.pause();a.currentTime=frame/fps*1000})`.
-- **Device-frame outro (MacBook → iPhone → iPad → line-up):** `src/jos/Devices.tsx` (CSS space-grey frames +
+- **Device-frame outro (MacBook → iPhone → iPad → line-up):** `templates/Devices.tsx` (CSS space-grey frames +
   `Crop` helper that re-flows real crops of a desktop full-page capture into phone/tablet layouts) and
-  `src/jos/DeviceShowcase.tsx` (spring "track" of [time, {x,y,scale,rotY}] states per device, VO-anchored).
+  a per-project showcase comp (spring "track" of [time, {x,y,scale,rotY}] states per device, VO-anchored).
   Full-page captures repeat fixed widgets (chat bubble) once per viewport — don't inpaint over content
   (smears); keep them or ask for a capture with the widget closed. Measure crops on a gridded copy and
   double-check the grid's y labels (I mis-read one section by 100 px).

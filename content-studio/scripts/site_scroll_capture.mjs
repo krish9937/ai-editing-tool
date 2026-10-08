@@ -1,8 +1,9 @@
-// Scroll-capture jewelleryos.com via raw CDP (no puppeteer). usage: node shoot.mjs <outdir>
+// Scroll-capture any website via raw Chrome DevTools Protocol (no puppeteer).
+// usage: node site_scroll_capture.mjs <url> <outdir>  -> s000.jpg... (stitch shot0 + rows 300-900 of each next shot)
 import { spawn } from "node:child_process";
 import { writeFileSync } from "node:fs";
-const out = process.argv[2];
-const chrome = spawn("C:/Program Files/Google/Chrome/Application/chrome.exe", ["--headless=new", "--disable-gpu", "--hide-scrollbars", "--remote-debugging-port=9333", "--user-data-dir=C:/Users/Zenbook/.claude/jobs/82f12438/tmp/chr3", "--window-size=1440,900", "about:blank"]);
+const url = process.argv[2], out = process.argv[3];
+const chrome = spawn("C:/Program Files/Google/Chrome/Application/chrome.exe", ["--headless=new", "--disable-gpu", "--hide-scrollbars", "--remote-debugging-port=9333", `--user-data-dir=${process.env.TEMP || "/tmp"}/scroll-capture-profile`, "--window-size=1440,900", "about:blank"]);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 await sleep(2500);
 const tabs = await (await fetch("http://127.0.0.1:9333/json")).json();
@@ -13,7 +14,7 @@ ws.onmessage = (m) => { const d = JSON.parse(m.data); if (d.id && pend[d.id]) { 
 const send = (method, params = {}) => new Promise((r) => { const i = ++id; pend[i] = r; ws.send(JSON.stringify({ id: i, method, params })); });
 await send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1.5, mobile: false });
 await send("Page.enable");
-await send("Page.navigate", { url: "https://jewelleryos.com/" });
+await send("Page.navigate", { url });
 await sleep(7000);
 const h = (await send("Runtime.evaluate", { expression: "document.documentElement.scrollHeight", returnByValue: true })).result.value;
 console.log("height", h);
