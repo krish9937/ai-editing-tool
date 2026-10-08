@@ -199,3 +199,6 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   batch at each chapter's first words from the whisper transcript. Ask the user: enable billing, wait for the reset,
   or switch model (a different model sounds different → re-record everything for consistency).
 - Windows Chrome has no flag emoji (renders as letters "US") — use letter badges deliberately or SVG flags.
+- (reel-04, user: "very bad", wants SHARPER) Never upscale the speaker: render at native source res (1440x2560 source → 1440x2560 out, not 4K)
+  or ask for 4K capture. Matte at ≥1080p (RVM downsample 0.25 is fast enough single-process). Only use plates/backgrounds ≥ output res.
+  Final: unsharp 5:5:0.6, crf ≤14. QA with 100% face/edge crops, not just contact sheets.
