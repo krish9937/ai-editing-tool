@@ -50,3 +50,17 @@ Always CHANGE the editing style between reels and fine-tune every render. Never 
 - Big behind-the-head words: auto-fit to 1010 px width; centre them ~40 px above the head centre so the head occludes them.
 - RENDER SPEED: every <video> is frame-extracted for its whole data-duration. Trim short-use clips with data-start/data-duration/
   data-media-start (room plate, silhouette copy) → the 4K render went from 0.25 to 1.6 fps.
+
+## Reel-03 v2 (2026-10-08): what fixed "the visuals look like stickers"
+- Static AI plates + slow zoom read as cheap stickers. Use MOVING backgrounds: real public-domain footage (NASA images-api:
+  launch slow-mo sped up, Orion animation, ISS Earth) cropped to 9:16 and/or own renders (Three.js 3D props with PBR + RoomEnvironment,
+  procedural layered vector worlds with parallax, designed UI panels) — never a flat still.
+- Own 3D prop the speaker sits on (Three.js rocket): ACES tone mapping + exposure ~1.5, white clearcoat body, brand stripe, additive
+  shader flame + glow sprite, deterministic smoke; render from `hf-seek` time; put the canvas ABOVE any bottom fog.
+- Head-anchored character (mascot sits on the head): track head-top per frame from the alpha matte (narrow column over the torso
+  centre, ignore hands), smooth 9 frames, put the element INSIDE the speaker container so scale/shake follow.
+- Animated stickers: Noto Animated Emoji Lottie (CC BY 4.0, fonts.gstatic.com/s/e/notoemoji/latest/<cp>/lottie.json) + die-cut white
+  keyline (4 stacked drop-shadows) + two-layer shadow; pop 0→1.18→0.94→1 (.12/.10/.12s), 12 fps "boil" jitter while idle.
+- Music: Mixkit (free licence) — pick by measured sub-bass energy (lowpass 90 Hz volumedetect); add own 808s (tanh sine glide) on
+  every scene change; sidechain-duck under the voice. Voice: arnndn (sh.rnnn) + EQ/de-ess/comp chain when DeepFilterNet/ElevenLabs unavailable.
+- User rules: start the reel the way it was recorded unless told otherwise; combine ALL skills; ask before switching asset strategy.
