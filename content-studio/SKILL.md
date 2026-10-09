@@ -151,6 +151,18 @@ Defaults (details + commands: `references/tools-opensource.md`; paid APIs: `refe
 - **Generated video/images** (only on access, after a 5 s test): Higgsfield/fal/Replicate
   aggregators, Veo/Kling/Sora/Runway; free: Wan 2.2 (GPU). Prefer real footage — it reads human.
 
+## 3a. GPU gate — detect hardware FIRST, every project (user rule, 2026-10-09)
+Run once at the start: `nvidia-smi --query-gpu=name,memory.total --format=csv` (NVIDIA), else
+`powershell "Get-CimInstance Win32_VideoController | Select Name,AdapterRAM"` (Windows) / `system_profiler SPDisplaysDataType` (macOS).
+- **Discrete GPU found (NVIDIA ≥ 6 GB, or Apple Silicon)** → use GPU-dependent tools freely: FilmCraft/LightCraft/PhotoCraft
+  (wgpu, build or install; FilmCraft NVENC H.264/HEVC export `hardwareEncoding`), ffmpeg `-c:v h264_nvenc/hevc_nvenc`,
+  RVM/BiRefNet/rembg matting on CUDA, local generators (Wan 2.2, ACE-Step, Kokoro), whisper on CUDA (`--device cuda`),
+  Three.js/WebGL renders at full concurrency. Record the GPU in project state.
+- **No discrete GPU (integrated only / unknown)** → do NOT silently start GPU-heavy tools. ASK the user first
+  (AskUserQuestion): run it slowly on CPU, use a cloud/paid API instead, or skip that step. Defaults that stay fine on CPU:
+  ffmpeg libx264, faster-whisper int8 on CPU, Remotion/HyperFrames, rvm_fast at reduced res.
+- Never assume the machine from a previous session — sessions move between devices.
+
 ## 4. The fast pipeline (preview ladder — each step ~10× cheaper than the next)
 1. **Ingest once**: conform footage to CFR 30, short GOP (`-g 15`), AAC 48 k; cache by ID.
    Phone HDR (HLG): plain scale + slight eq usually beats tonemapping.

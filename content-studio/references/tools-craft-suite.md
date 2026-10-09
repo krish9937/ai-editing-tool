@@ -7,6 +7,14 @@ don't resell the software). **Status: young (v0.4–0.5), Windows runtime barely
 This PC: no Rust toolchain, no NVIDIA GPU, and Windows App Control already blocks some native binaries → prefer the
 code-signed prebuilt release zips (portable) over building; if building: Rust (MSVC) ≥ 1.95 + VS C++ Build Tools.
 
+## On a GPU machine (see SKILL.md §3a GPU gate)
+Install the signed portable builds (GitHub releases storytold/filmcraft, /lightcraft, /photocraft → `*-windows-x64-portable.zip`)
+or build: `rustup` (MSVC, ≥1.95) + VS C++ Build Tools, then `cargo build --release -p filmcraft-cli` (likewise lightcraft-cli,
+photocraft-cli). Register MCP: `claude mcp add filmcraft-headless -- <abs>ilmcraft-cli.exe mcp --project <abs>\p.fcproj`,
+`claude mcp add lightcraft -- <abs>\lightcraft-cli.exe mcp <folder>`, `claude mcp add photocraft -- <abs>\photocraft-cli.exe mcp`.
+Pilot each on one real asset and compare against the ffmpeg path (loudness, colour, sharpness at 100 %) before trusting it.
+No GPU → ask the user before using these (they fall back to CPU and are slow).
+
 ## FilmCraft (Premiere-style editor) — headless finishing stage
 - `filmcraft-cli` (JSON out, exit 0/1/2), 650+ commands: `commands`, `describe <id>`, `--project p.fcproj --save import …`,
   `exec <cmd> k=v`, `run script.jsonl` (one `{"id","params"}` per line, `--keep-going`), `export out.mp4 --preset "YouTube 1080p Full HD"`.
