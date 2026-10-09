@@ -12,6 +12,7 @@ Read this when picking a direction; each row points to the deep reference + the 
 | 5 | @grafigator showreel | **motion showreel**: decode intro, word-per-beat, dot grids, metaballs, UI assembly, HUD | `references/style-motion-showreel.md`, `ig5` | — |
 | 6 | "Radar" waitlist promo | **framed narrated promo**: kinetic blur-in words, UI cards, map + counter, CTA pill | `style-motion-showreel.md` (variant), `ig6` | `LinkutmPromoRadar.tsx` |
 | 7 | Heinz reel (user's own footage) | talking head + whiteboard | `playbook-talking-head.md` | `HeinzReel.tsx` |
+| 8 | "Motion Designing is cooked" (Cevox) | **3D Bauhaus showreel**: numbered-chapter HUD, colour-per-section, travelling red-dot motif, shape match-cuts, word-does-what-it-says, primitive swarm | `references/style-motion-showreel.md` (2nd ref), `D:\codes\workef-reels\DeF8z3XoLdh\VISUAL-NOTES.md` | — |
 
 ## B. Formats built and their verdicts
 | Style | When | Key techniques | Comp | Verdict |

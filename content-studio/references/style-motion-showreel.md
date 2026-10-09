@@ -94,3 +94,21 @@ Render at 60 fps only if the platform keeps it (IG/YT do); otherwise 30.
   render `--sequence --image-format=jpeg` and encode with D:\codes\work\bin\ffmpeg; keep Audio out of the comp.
   Fix single moments by re-rendering `--frames=a-b` into the same sequence folder.
 - Odometer digit columns with background-clip:text glitch in Chrome → plain tabular number with blurred low digits.
+
+## Second reference (2026-10-09): Bauhaus-primary 3D showreel ("Motion Designing is cooked", 15 s, 16:9, 60 fps, 120 BPM)
+Full notes: `D:\codes\work\ref-reels\DeF8z3XoLdh\VISUAL-NOTES.md`. Same genre, different grammar — new moves to add:
+- **Numbered-chapter HUD** over a 15 s reel: `00 INTRO … 05 CHOREOGRAPHY` bottom-left, running timecode top-right,
+  project label top-left, progress scrubber bottom-right; HUD colour flips per background, hidden on the final logo.
+- **One background colour per section** from a 4-colour primary palette (red / electric blue / warm off-white / near-black
+  + yellow accent); the other colours appear only as objects. Light grain + vignette on flat colour.
+- **Travelling motif:** a red dot is the O in the title, the tunnel centre, the jelly blob, the swarm's hero sphere and the
+  logo's full stop — one object carries continuity across every scene.
+- **Shape match-cuts:** dolly INTO a shape (the O, a white disc) until its colour becomes the next background; hard section
+  changes use 2-bar solid colour wipes (6–8 frames).
+- **"Word does what it says"** at one word per beat: STRETCH (h-blur stretch), SPIN (rotational blur in drawn circles),
+  BOUNCE (staggered drop + ghost trails onto a line), SNAP (snap-in + underline wipe), each with its own background.
+- **Toy-like 3D**: ring tunnel fly-through, isometric cube grid growing in concentric height waves, glossy displaced-sphere
+  jelly blob with orbiting beads, InstancedMesh primitive swarm (burst → ring → helix) around a hero sphere; DOF + motion blur.
+- **Type wall:** rows of huge words scrolling in opposite directions, back rows tone-on-tone (same hue, darker).
+- **Impact frame → logo:** radial speed lines + single dot, logo mask-rises, typewriter subline with underscore cursor.
+- Edit grid: section = 1 bar (2 s); accelerate to 1 idea/beat in the climax, then a 3 s "breath" before the outro.
