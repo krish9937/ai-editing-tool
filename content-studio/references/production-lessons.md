@@ -202,3 +202,11 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
 - (reel-04, user: "very bad", wants SHARPER) Never upscale the speaker: render at native source res (1440x2560 source → 1440x2560 out, not 4K)
   or ask for 4K capture. Matte at ≥1080p (RVM downsample 0.25 is fast enough single-process). Only use plates/backgrounds ≥ output res.
   Final: unsharp 5:5:0.6, crf ≤14. QA with 100% face/edge crops, not just contact sheets.
+- (long-form tutorial, delivered) Batch-TTS splitting: scripts say "Chapter seven", whisper writes "Chapter 7" → map number
+  words → digits before matching chapter starts (silent split failure otherwise; flush every print). Check each take for the
+  BRAND NAME: count its occurrences in script vs transcript — Gemini once said "Linkoo" for "linkutm" (confirmed by a second
+  model) → re-record that chapter alone. Anchor matching must be space-insensitive ("time zone"/"timezone",
+  "geo targeting"/"geotargeting") and spelling-insensitive (organise/organize). Remotion names frames with as many digits as
+  needed (a <1000-frame comp → element-000.jpeg) → detect the digit count before ffmpeg `%0Nd`.
+  Render-as-voice-lands loop (render each chapter once its VO + anchors pass, else mark blocked) overlapped ~25 min of
+  render with the TTS step; total 25 min video ≈ 2.7 min render per video minute on this laptop.
