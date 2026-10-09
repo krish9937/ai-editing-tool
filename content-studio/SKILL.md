@@ -225,3 +225,32 @@ After every delivery or feedback round, append the lesson to `references/product
 - Put ONLY the finished video on the user's Desktop (one clear filename, replaced in place on revisions). Work files go to `D:\codes\work\<project>\` — never Desktop folders, never extra docs unless asked.
 - On any user footage, by default: enhance + boost the voice (EQ presence, compression, de-ess, normalise; master −13 LUFS / −1.2 dBTP), denoise/sharpen the picture, render high quality (`--jpeg-quality=100 --crf=12`).
 - Motion defaults: fast entrances (0.12–0.3 s), punch-ins on key words; check every number/label stays inside its card (no edge clipping).
+
+## 8. The user's standing preferences (mirrors Claude's memory — kept here so they travel to every device)
+- Intake: ask everything once; ALWAYS ask orientation + subtitle style (never reuse the last one); propose 2–3 themes and get
+  approval before ANY generation; act like a pro editor (options + notes, no surprise renders).
+- Hooks: spoken + catchy in the first second (no logo/music/text-only openings for VO videos); first 2 s decide retention —
+  fast, bright, bassy; slow-mo only on key moments; never repeat a screen.
+- Launch / hype reels: bass-heavy music (bass house, hard drop) + explosion FX on hits + ≥ 2 real-3D set pieces + real product
+  UI driving a live phone preview. Calm "clean motion" was judged "lame".
+- Readability: any text / feature explanation stays ≥ 2.5 s (slow only those windows; keep other motion at speed).
+- Scripts: value-first for non-technical viewers (time / money / growth; no UTM/GA4 jargon); brand promos speak in first person ("we").
+- Look: crafted, not AI-ish; recreate UI as original illustration/rebuilt components, never pasted screenshots; B2B = no cartoons.
+- Own-footage reels: fresh style each time, graphics behind the speaker (depth sandwich, RVM matte), sharp (no upscaling,
+  100 % crop QA), no colour grade unless asked, very low music under the voice.
+- Covers / thumbnails: never show the face (no-face version only).
+- Voice: ElevenLabs (user's cloned voice "Smit") or Gemini TTS (Leda / Kore) — whatever the project picked; check every take with whisper.
+- Delivery: Desktop = final mp4 only; all work files in `D:\codes\work\<project>`; QA (decode, −14 LUFS, true peak ≤ −1 dBTP) before delivering.
+- Combine all skills (old + new) on every video; log every lesson in `references/production-lessons.md` and sync the repo; push only when asked.
+- Hardware: run the §3a GPU gate first — GPU tools only with a GPU, otherwise ask.
+
+## 9. Setting up on a new device
+1. `git clone https://github.com/krish9937/ai-editing-tool` → copy each skill folder (content-studio, reel-maker,
+   shorts-from-long, video-studio, motion-broll, hyperframes…) into `~/.claude/skills/`.
+2. Memory: Claude Code keeps memory in `~/.claude/projects/<launch-folder-encoded>/memory/` (e.g. launched from
+   `C:\Windows\System32` → `C--Windows-System32`). Launch Claude once from the folder you will work in, then copy the old
+   `memory/*.md` into the NEW folder's `memory/` (names must match the new launch folder, or memory won't load).
+3. Project code + assets (Remotion studio, `D:\codes\work`) copy separately; API keys (`.env`) by a private channel — never git.
+4. Tools: ffmpeg, Node 20+, Python 3.12 (+ faster-whisper venv); on a GPU machine also the Craft suite
+   (`references/tools-craft-suite.md`, source zips in the repo's `tools-sources/`).
+
