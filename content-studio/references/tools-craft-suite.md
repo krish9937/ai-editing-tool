@@ -10,8 +10,8 @@ code-signed prebuilt release zips (portable) over building; if building: Rust (M
 ## On a GPU machine (see SKILL.md §3a GPU gate)
 Install the signed portable builds (GitHub releases storytold/filmcraft, /lightcraft, /photocraft → `*-windows-x64-portable.zip`)
 or build: `rustup` (MSVC, ≥1.95) + VS C++ Build Tools, then `cargo build --release -p filmcraft-cli` (likewise lightcraft-cli,
-photocraft-cli). Register MCP: `claude mcp add filmcraft-headless -- <abs>ilmcraft-cli.exe mcp --project <abs>\p.fcproj`,
-`claude mcp add lightcraft -- <abs>\lightcraft-cli.exe mcp <folder>`, `claude mcp add photocraft -- <abs>\photocraft-cli.exe mcp`.
+photocraft-cli). Register MCP: `claude mcp add filmcraft-headless -- <abs>/filmcraft-cli.exe mcp --project <abs>/p.fcproj`,
+`claude mcp add lightcraft -- <abs>/lightcraft-cli.exe mcp <folder>`, `claude mcp add photocraft -- <abs>/photocraft-cli.exe mcp`.
 Pilot each on one real asset and compare against the ffmpeg path (loudness, colour, sharpness at 100 %) before trusting it.
 No GPU → ask the user before using these (they fall back to CPU and are slow).
 
