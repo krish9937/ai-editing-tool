@@ -210,3 +210,9 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   needed (a <1000-frame comp → element-000.jpeg) → detect the digit count before ffmpeg `%0Nd`.
   Render-as-voice-lands loop (render each chapter once its VO + anchors pass, else mark blocked) overlapped ~25 min of
   render with the TTS step; total 25 min video ≈ 2.7 min render per video minute on this laptop.
+- (reel-04 "Claude Worlds", user's own footage, HyperFrames) Head-tracked wearables per world: compute a per-frame head track
+  `[x, top, width]` from the RVM matte (top-most opaque row + its width), draw props as own SVG at unit size (w=100) and
+  place them with `translate(x, top + w*k) scale(w/100)` — helmet (glass bubble + collar) in space, bush hat in jungle,
+  top hat in the graveyard; the mascot sits on the highest prop (seat = top − w*k per prop) and bobs. Keep explosions
+  (flash + shake + shockwave), no colour grade, music bed ≈ −24 dB under the voice. Example:
+  `templates/examples/head-props-worlds-reel.html`.

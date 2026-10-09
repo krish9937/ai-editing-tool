@@ -3,7 +3,7 @@
 #  - transcript.txt: ONLY the words to speak (strip [cues] first)
 #  - profile.txt (optional): AUDIO PROFILE / SCENE / DIRECTOR'S NOTES text. Never quote transcript lines in it.
 # Always re-check the take with transcribe.py: extra lines = regenerate.
-import json, sys, base64, urllib.request, urllib.error, subprocess, re
+import json, sys, os, base64, urllib.request, urllib.error, subprocess, re
 key, src, out = sys.argv[1:4]; voice = sys.argv[4] if len(sys.argv) > 4 else "Kore"
 text = re.sub(r"\[[^\]]*\]", "", open(src, encoding="utf-8").read())
 profile = open(sys.argv[5], encoding="utf-8").read() if len(sys.argv) > 5 else """# AUDIO PROFILE: a warm, confident brand narrator
@@ -21,5 +21,5 @@ except urllib.error.HTTPError as e:
     sys.exit(f"{e.code} {e.read()[:300]}")
 pcm = out + ".pcm"
 open(pcm, "wb").write(base64.b64decode(d["candidates"][0]["content"]["parts"][0]["inlineData"]["data"]))
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "s16le", "-ar", "24000", "-ac", "1", "-i", pcm, out], check=True)
+subprocess.run([os.environ.get("FFMPEG", "ffmpeg"), "-v", "error", "-y", "-f", "s16le", "-ar", "24000", "-ac", "1", "-i", pcm, out], check=True)
 print("ok", out)
