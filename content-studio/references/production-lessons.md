@@ -216,3 +216,6 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   top hat in the graveyard; the mascot sits on the highest prop (seat = top − w*k per prop) and bobs. Keep explosions
   (flash + shake + shockwave), no colour grade, music bed ≈ −24 dB under the voice. Example:
   `templates/examples/head-props-worlds-reel.html`.
+- Replacing one chapter's VO with a single Gemini take (instead of a batch split) can push the final mix to +3.8 dBTP:
+  single takes peak at 0 dBFS. Always end the master chain with a true-peak limiter after loudnorm
+  (`aresample=192000,alimiter=limit=0.78:level=false,aresample=48000`) — re-QA after every partial re-render.
