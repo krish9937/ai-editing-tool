@@ -135,6 +135,7 @@ morphing B-roll for talking heads).
 
 ## 3. Tool selection (open-source first)
 Defaults (details + commands: `references/tools-opensource.md`; paid APIs: `references/tools-ai-apis.md`):
+- `references/tools-craft-suite.md` — FilmCraft / LightCraft / PhotoCraft (headless CLI + MCP: grading, ducking, captions, covers, PSD templates) and ArtCraft 3D-blocking → image-to-video technique.
 - **Compose**: HyperFrames (HTML+GSAP, Apache-2.0, `npx hyperframes`) → Remotion if a Remotion
   project already exists / user is licensed. Math: Manim.
 - **Cut/encode/mix**: ffmpeg via `scripts/` (cut.py, mix.py, export.py).
