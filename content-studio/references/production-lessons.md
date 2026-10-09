@@ -219,3 +219,21 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
 - Replacing one chapter's VO with a single Gemini take (instead of a batch split) can push the final mix to +3.8 dBTP:
   single takes peak at 0 dBFS. Always end the master chain with a true-peak limiter after loudnorm
   (`aresample=192000,alimiter=limit=0.78:level=false,aresample=48000`) — re-QA after every partial re-render.
+- (Bio Pages launch promo, 9:16 music-only, 2026-10-09) User verdict on v1 "animations are really lame, song not good" →
+  v2 = bass-house track + EXPLOSIONS on every hit (flash, double shockwave, motion-blurred debris in brand colours, sparks,
+  warm glow puffs — NOT grey smoke — camera shake, RGB split for 0.12 s) + real product UI (editor dialogs driving the live
+  phone preview) + Cevox-style Three.js set pieces (ring tunnel into the drop, glossy displaced-icosphere blob with
+  RoomEnvironment reflections, cube "data city" rising in waves). Default to this energy for launch reels.
+- Rebuilding a Next.js/Tailwind client's CSS in Remotion: the @tailwindcss/webpack loader drops imported plain CSS →
+  inject it as a <style>{CSS_STRING}</style>. Extract the client's scoped section with a brace-aware parser (keep only
+  complete top-level blocks), never by line numbers. Copy their theme engine (themes.ts → themeToCssVars) verbatim and
+  render real themes; replace wall-clock CSS animations with frame-driven transforms.
+- Three.js product hook (drawer → phone): RoundedBoxGeometry radius must be ≤ depth/2 or the body bulges over the screen →
+  build phones as ExtrudeGeometry of a rounded-rect Shape with a small bevel; render screens as PNG textures made by a
+  helper comp (remotion still), preload them with delayRender BEFORE mounting <ThreeCanvas> (otherwise black screens);
+  camera near ≥ 4 (z-fighting stripes with near 0.1); NoToneMapping + stronger key light to keep whites white; shadows
+  "variance"; in 9:16 the horizontal FOV is tiny — size objects so they fit the width or the shot reads as a flat wall.
+- ElevenLabs Music API: composition_plan is rejected for music_v2_5 and force_instrumental only works with `prompt`;
+  sections ≥ 3000 ms; max 2 concurrent requests; music_length_ms is often ignored (28–51 s back) and the main drop
+  tends to land ~16 s → analyse onsets/sub-bass share per second and EDIT on bar lines (cut each segment to its own wav,
+  concat) so the drop hits the planned cut; add an aecho tail if the ending is cut short.
