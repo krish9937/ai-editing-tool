@@ -237,3 +237,8 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   sections ≥ 3000 ms; max 2 concurrent requests; music_length_ms is often ignored (28–51 s back) and the main drop
   tends to land ~16 s → analyse onsets/sub-bass share per second and EDIT on bar lines (cut each segment to its own wav,
   concat) so the drop hits the planned cut; add an aecho tail if the ending is cut short.
+- (Bio Pages promo v3) User: "slow down when text / feature explanation comes, I can't read it — keep other animations as is."
+  Fix without touching scene code: a scene-time → output-time map (`SLOW = [[from, to, extraSec], …]`, binary-search
+  inverse) that stretches ONLY reading windows; explosions/shake/HUD run on output time (boom times mapped), SFX times
+  mapped by the same table, and the music extended by whole bars (duplicate a drop bar per ~2 s of added time) so every
+  hit still lands. Inserted beats = zero-width windows `[t, t, len]` rendered by output time. Give each text card ≥ 2.5 s.
