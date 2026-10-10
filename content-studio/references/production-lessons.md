@@ -264,3 +264,8 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   split mixed meshes by each triangle's MAX height (min-height mis-sorts long hinge triangles); find the closing direction
   with a side-view angle test before animating. Hide an imperfect 3D→CSS hand-off behind a 0.26 s warm light flash.
 - User verdict on a hand-modelled MacBook: "laptop frame is not good" → for hero devices prefer a real licensed model.
+- DISK HYGIENE (2026-10-10: C: had 75 GB in %LOCALAPPDATA%\Temp): every `remotion render/still` and every Node-API
+  `bundle()` call leaves a `remotion-webpack-bundle-*` copy of the project (≈1 GB with a big public/ folder) plus headless
+  `puppeteer*`/chrome profiles in Temp, never deleted. After each delivery (and when stills scripts loop) remove them:
+  PowerShell `Get-ChildItem $env:LOCALAPPDATA\Temp -Directory | ? { $_.Name -like 'remotion-webpack-bundle-*' -or $_.Name -like 'puppeteer*' } | Remove-Item -Recurse -Force`
+  (only when no render is running). Bundle once per stills batch, keep public/ lean, and put render frames on D:.
