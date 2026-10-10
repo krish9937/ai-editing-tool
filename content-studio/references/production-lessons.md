@@ -242,3 +242,17 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   inverse) that stretches ONLY reading windows; explosions/shake/HUD run on output time (boom times mapped), SFX times
   mapped by the same table, and the music extended by whole bars (duplicate a drop bar per ~2 s of added time) so every
   hit still lands. Inserted beats = zero-width windows `[t, t, len]` rendered by output time. Give each text card ≥ 2.5 s.
+- (Bio Pages DESKTOP film, 16:9, 2026-10-10) User: "confetti used a lot — use other effects, multiple effects and motions;
+  intro must change; background is lame/plain; open a laptop". Rules: ONE debris explosion per film (the drop); every other
+  section change gets its own transition — lens-flare light sweep, RGB glitch slices, colour-bar wipe, shockwave rings + flash
+  (no debris), whip pan with motion blur, halftone dot-grid wipe, star sparkles, speed lines + zoom punch, particles converging
+  into the logo. Background = living dark studio: drifting colour blobs whose hue follows the section, volumetric light beams,
+  bokeh with depth blur, faint perspective grid, film grain, vignette — never a flat dark gradient.
+- "Exploded command center" technique: rebuild the real desktop UI as 4–5 CSS-3D layers (plate, sidebar, header, main, live
+  preview) with named poses (flat/assembled/exploded/focus-per-feature) interpolated by a key list; give layers +2…+8 px z
+  offsets when assembled (avoid z-fighting); keep focused layers ≤ 0.85 scale and put one-line section titles in a top band.
+- Three.js laptop intro: lid = ExtrudeGeometry slab hinged at the base's back edge (rotation.x from π/2 → −0.26);
+  the screen planes must sit IN FRONT of the lid's bevelled face (depth/2 + bevel + ε) or you see grey aluminium; the
+  RoomEnvironment reflection turns a dark floor grey → floor with envMapIntensity≈0, roughness 0.8 + scene fog to melt the
+  horizon; end the camera perpendicular to the screen at d = screenW / (2·tan(hfov/2)) so it matches a full-width CSS
+  dashboard (scale = 1920/1440) for a seamless cross-fade into the 3D layers.
