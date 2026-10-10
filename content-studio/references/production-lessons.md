@@ -256,3 +256,11 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   RoomEnvironment reflection turns a dark floor grey → floor with envMapIntensity≈0, roughness 0.8 + scene fog to melt the
   horizon; end the camera perpendicular to the screen at d = screenW / (2·tan(hfov/2)) so it matches a full-width CSS
   dashboard (scale = 1920/1440) for a seamless cross-fade into the 3D layers.
+- Need a real 3D product model (laptop, phone…) without a Sketchfab login? Use **Objaverse** (allenai/objaverse on Hugging
+  Face, ~800k Sketchfab models with their licences): download `object-paths.json.gz`, look up the Sketchfab UID
+  (last part of the model URL) → `glbs/<group>/<uid>.glb`, and check `metadata/<group>.json.gz` → `license` ("by" = CC BY 4.0,
+  commercial OK with credit; avoid "by-nc"). Keep a CREDITS.txt and put the credit line in the post description.
+  Inspect nodes/meshes (GLB JSON chunk), tint meshes to identify parts, re-parent lid meshes under a pivot at the hinge;
+  split mixed meshes by each triangle's MAX height (min-height mis-sorts long hinge triangles); find the closing direction
+  with a side-view angle test before animating. Hide an imperfect 3D→CSS hand-off behind a 0.26 s warm light flash.
+- User verdict on a hand-modelled MacBook: "laptop frame is not good" → for hero devices prefer a real licensed model.
