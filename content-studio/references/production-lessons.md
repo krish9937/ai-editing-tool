@@ -273,4 +273,4 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   launch rings/confetti at the tip and draw a glowing curve from the live fingertip to a context card. Mixed-language talk: detect language per 2.5 s window
   (faster-whisper detect_language) and suppress captions in Hindi windows. Render stability on a 16 GB laptop: 4K + 5 workers ran out of virtual memory;
   set FFMPEG_PROCESS_TIMEOUT_MS for long sources, HF_SEGMENTED_CAPTURE=true + --resume, and deliver 1080x1920 downscaled from 4K (sharp, about 3× faster).
-  The stats "count-up" landed at 199M/289M+ at the slide boundary — finish count-ups well before the slide ends.
+  Count-ups: finish them ≥0.5 s before the slide ends so the final number holds on screen.
