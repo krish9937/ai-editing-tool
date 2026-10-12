@@ -274,3 +274,9 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   (faster-whisper detect_language) and suppress captions in Hindi windows. Render stability on a 16 GB laptop: 4K + 5 workers ran out of virtual memory;
   set FFMPEG_PROCESS_TIMEOUT_MS for long sources, HF_SEGMENTED_CAPTURE=true + --resume, and deliver 1080x1920 downscaled from 4K (sharp, about 3× faster).
   Count-ups: finish them ≥0.5 s before the slide ends so the final number holds on screen.
+
+## Glossary explainer reels without footage (2026-10-12)
+- Match the brand's existing article art (here the linkutm glossary featured image: pastel gradient, navy line-art, doodles) — the user asked for exactly that style; reuse an existing brand avatar for recurring characters and keep their gender consistent with the script.
+- Gemini image models on a free-tier key have a quota of 0 — check before promising AI illustrations; fall back to code-drawn SVG/line art.
+- ffmpeg `amix` + `-shortest` can trim the video to the voice length: pad audio with `apad=whole_dur=<DUR>` and drop `-shortest`.
+- Re-rendering a frame range with `--frames=a-b --sequence` writes un-padded names (`element-126.jpeg`); rename to the padded pattern before encoding.
