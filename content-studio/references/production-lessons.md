@@ -278,5 +278,5 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
 ## Glossary explainer reels without footage (2026-10-12)
 - Match the brand's existing article art (here the linkutm glossary featured image: pastel gradient, navy line-art, doodles) — the user asked for exactly that style; reuse an existing brand avatar for recurring characters and keep their gender consistent with the script.
 - Gemini image models on a free-tier key have a quota of 0 — check before promising AI illustrations; fall back to code-drawn SVG/line art.
-- ffmpeg `amix` + `-shortest` can trim the video to the voice length: pad audio with `apad=whole_dur=<DUR>` and drop `-shortest`.
+- ffmpeg `amix` + `-shortest` can trim the video to the voice length: pad audio with `apad=whole_dur=<DUR>` and drop `-shortest`. Single-pass `loudnorm` on a padded mix silently dropped the last ~4 s of VO → do two-pass (mix to wav, measure ebur128, apply fixed gain + limiter). `sidechaincompress` ends when its side-chain ends → `apad` the side-chain (VO) or the music bed cuts with the voice. QA: check mean_volume per second over the last 6 s.
 - Re-rendering a frame range with `--frames=a-b --sequence` writes un-padded names (`element-126.jpeg`); rename to the padded pattern before encoding.
