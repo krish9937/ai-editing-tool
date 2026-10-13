@@ -274,19 +274,7 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   (faster-whisper detect_language) and suppress captions in Hindi windows. Render stability on a 16 GB laptop: 4K + 5 workers ran out of virtual memory;
   set FFMPEG_PROCESS_TIMEOUT_MS for long sources, HF_SEGMENTED_CAPTURE=true + --resume, and deliver 1080x1920 downscaled from 4K (sharp, about 3× faster).
   Count-ups: finish them ≥0.5 s before the slide ends so the final number holds on screen.
-
-## Glossary explainer reels without footage (2026-10-12)
-- Match the brand's existing article art (here the linkutm glossary featured image: pastel gradient, navy line-art, doodles) — the user asked for exactly that style; reuse an existing brand avatar for recurring characters and keep their gender consistent with the script.
-- Gemini image models on a free-tier key have a quota of 0 — check before promising AI illustrations; fall back to code-drawn SVG/line art.
-- ffmpeg `amix` + `-shortest` can trim the video to the voice length: pad audio with `apad=whole_dur=<DUR>` and drop `-shortest`. Single-pass `loudnorm` on a padded mix silently dropped the last ~4 s of VO → do two-pass (mix to wav, measure ebur128, apply fixed gain + limiter). `sidechaincompress` ends when its side-chain ends → `apad` the side-chain (VO) or the music bed cuts with the voice. QA: check mean_volume per second over the last 6 s.
-- Re-rendering a frame range with `--frames=a-b --sequence` writes un-padded names (`element-126.jpeg`); rename to the padded pattern before encoding.
-- Comparative ads: research the competitor claim from the competitor's OWN docs (support pages) before scripting; never name or imitate their brand ("some free link tools", made-up grey UI, fictional sponsor). Only claim what the client confirms for their product; no unverified numbers (speed, %).
-- Gemini TTS brand names: add a pronunciation line to the director's notes ('"linkutm" is said link-U-T-M') and merge the split words back in the subtitles.
-- If the user rejects a question round and repeats the brief, stop asking: pick sensible defaults, say which in one line, and build.
-- Market-wide competitive ad: map each rival's real pain point to one visual "gate" (ad wall, quota turnstile, click-cap meter, edit padlock, blank dashboard) — one beat each, on its key word, unnamed. Check the client's own limits before claiming the opposite (e.g. its free plan has a click cap).
-- ffmpeg filtergraphs: don't reuse one input pad in several atrim chains (silently wrong lengths) — `asplit` first, or cut/concat in numpy.
-- Never show a competitor's limit number that the client's own free plan shares (e.g. 1K clicks/mo) — it backfires; keep the gate generic.
-- Educational/glossary reels: anchor the script on a REAL, sourced case (who, when, the actual numbers) instead of a made-up example — the user asked for this explicitly; show a small source line on screen.
-- **Gemini TTS static at the end (fixed 2026-10-13):** the inlineData PCM ends with a C2PA provenance box (`C2PA`+size, then JUMBF `jumb`/`c2pa` boxes, ~6 KB). Decoded as s16le it is ~126 ms of loud static after the last word — the user heard it at the end of every Leda video. `gemini_tts.py` now cuts at the first `C2PA` (fallback `jumb`−4) before converting. QA: per-10 ms RMS of the VO's last second must stay below −50 dB after the final word; spectral-flatness spikes (>0.15) in the final mix's tail = noise.
-- Partial re-renders: Remotion `--frames=a-b --sequence` pads names to the digits of b (e.g. `element-075.jpeg`). Never rename with bash `printf %04d $n` — leading zeros are read as OCTAL (075→61, 008 errors) and silently shuffle frames. Render the range into its own folder and copy with Python `int(x, 10)`.
-- Founder-voice explainers: when the user wants face only in the hook "but show something while I talk", cut them out (RVM) and place them off-centre with the story's central visual (here a glowing mystery silhouette) clearly visible beside/above them + UI notifications — not hidden behind the head.
+- (Spotify reel — TRASHED by the user, 2026-10-13) Captions didn't match the audio: whisper forced to language="en" on Hinglish TRANSLATES instead of
+  transcribing. Rule: transcribe in the spoken language (hi) and transliterate, verify each caption chunk against a re-transcription of its own audio slice,
+  and show a 10 s draft WITH AUDIO before any full render. Generic card/list panels and Wrapped-lookalike slides read as "not good visuals" — every beat
+  needs a crafted, specific moment. Auto finger-tracking FX with no purpose = "glitches".
