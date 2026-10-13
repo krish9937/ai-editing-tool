@@ -20,6 +20,12 @@ try:
 except urllib.error.HTTPError as e:
     sys.exit(f"{e.code} {e.read()[:300]}")
 pcm = out + ".pcm"
-open(pcm, "wb").write(base64.b64decode(d["candidates"][0]["content"]["parts"][0]["inlineData"]["data"]))
+raw = base64.b64decode(d["candidates"][0]["content"]["parts"][0]["inlineData"]["data"])
+# Gemini appends a C2PA provenance box ("C2PA"+size, then JUMBF "jumb" boxes) after the PCM — decoded as audio it is
+# ~126 ms of loud static at the very end. Cut it off before converting.
+lo = max(0, len(raw) - 200000); j = raw.find(b"C2PA", lo); i = raw.find(b"jumb", lo)
+if j >= 0 or i >= 0:
+    raw = raw[:(j if j >= 0 else i - 4) // 2 * 2]
+open(pcm, "wb").write(raw)
 subprocess.run([os.environ.get("FFMPEG", "ffmpeg"), "-v", "error", "-y", "-f", "s16le", "-ar", "24000", "-ac", "1", "-i", pcm, out], check=True)
 print("ok", out)
