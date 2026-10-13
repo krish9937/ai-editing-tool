@@ -282,3 +282,6 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
 - Re-rendering a frame range with `--frames=a-b --sequence` writes un-padded names (`element-126.jpeg`); rename to the padded pattern before encoding.
 - Comparative ads: research the competitor claim from the competitor's OWN docs (support pages) before scripting; never name or imitate their brand ("some free link tools", made-up grey UI, fictional sponsor). Only claim what the client confirms for their product; no unverified numbers (speed, %).
 - Gemini TTS brand names: add a pronunciation line to the director's notes ('"linkutm" is said link-U-T-M') and merge the split words back in the subtitles.
+- If the user rejects a question round and repeats the brief, stop asking: pick sensible defaults, say which in one line, and build.
+- Market-wide competitive ad: map each rival's real pain point to one visual "gate" (ad wall, quota turnstile, click-cap meter, edit padlock, blank dashboard) — one beat each, on its key word, unnamed. Check the client's own limits before claiming the opposite (e.g. its free plan has a click cap).
+- ffmpeg filtergraphs: don't reuse one input pad in several atrim chains (silently wrong lengths) — `asplit` first, or cut/concat in numpy.
