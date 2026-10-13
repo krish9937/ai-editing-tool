@@ -285,3 +285,4 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
 - If the user rejects a question round and repeats the brief, stop asking: pick sensible defaults, say which in one line, and build.
 - Market-wide competitive ad: map each rival's real pain point to one visual "gate" (ad wall, quota turnstile, click-cap meter, edit padlock, blank dashboard) — one beat each, on its key word, unnamed. Check the client's own limits before claiming the opposite (e.g. its free plan has a click cap).
 - ffmpeg filtergraphs: don't reuse one input pad in several atrim chains (silently wrong lengths) — `asplit` first, or cut/concat in numpy.
+- Never show a competitor's limit number that the client's own free plan shares (e.g. 1K clicks/mo) — it backfires; keep the gate generic.
