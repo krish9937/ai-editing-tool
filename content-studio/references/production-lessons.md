@@ -278,3 +278,4 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   transcribing. Rule: transcribe in the spoken language (hi) and transliterate, verify each caption chunk against a re-transcription of its own audio slice,
   and show a 10 s draft WITH AUDIO before any full render. Generic card/list panels and Wrapped-lookalike slides read as "not good visuals" — every beat
   needs a crafted, specific moment. Auto finger-tracking FX with no purpose = "glitches".
+- "Use the avatar from the website" (no image-gen available): rebuild the brand's illustrated character as a posable SVG puppet — smooth limbs as one rounded stroke path (outline pass + fill pass, quadratic bend at elbow/knee) instead of rigid segments, hands ~1.4× scale, blink + breathe, named poses; show a pose sheet next to the original art for approval before animating. Template: templates/examples/vector-puppet-avatar.tsx.
