@@ -285,3 +285,4 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
 - Detect new product features: diff the docs index (Mintlify sites expose /llms.txt and /sitemap.xml) against what previous videos covered; report new pages + what's not stated (plans/limits) before pitching a video.
 - Word-pop subs: the pop-in scale must be centred (transformOrigin 50%) and the word gap ≥ 30 px at 78 px type, or the growing word swallows the space ("COULDMAKE").
 - Third-party AI apps in an integration ad: name them as text, build a generic chat window — don't copy their UI or logos.
+- Topic-themed captions: let the subtitle style act out the topic (Link Rot → decay words turn red, then letters crack and fall). Per-letter spans with seeded random drift/rotation after the word's end time; keep the rest of the line static so it stays readable.
