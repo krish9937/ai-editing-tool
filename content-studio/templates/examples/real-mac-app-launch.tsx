@@ -148,6 +148,9 @@ const Desktop: React.FC<{ t: number }> = ({ t }) => {
       <div style={{ position: "absolute", left: 700, top: heicY }}><Ring t={t} a={6.4} close={8.55} pick={t > 7.6 ? 0 : -1} items={[["JPG", C.jpg], ["PNG", C.png], ["PDF", C.pdf], ["Shrink", C.shrink]]} /></div>
       {MONTAGE.map((m, i) => { const ry = rowY(2 + i * 2); return <div key={m.row} style={{ position: "absolute", left: 700, top: ry }}><Ring t={t} a={m.at - 0.15} close={m.at + 0.45} pick={t > m.at + 0.1 ? m.pick : -1} items={m.ring} size={260} thumb={`linear-gradient(160deg, ${ROWS0.find((r) => r.n === m.row)!.col}, #222)`} /></div>; })}
       {t > 4.6 && t < 16 && <Cursor x={cur[0]} y={cur[1]} down={(t > 8.0 && t < 8.12) || MONTAGE.some((m) => t > m.at + 0.15 && t < m.at + 0.27)} />}
+      <Burst t={t} a={8.05} x={700} y={heicY - 100} col={C.jpg} />
+      <FlyIcon t={t} a={8.1} from={[700, heicY - 100]} to={[560, rowY(1)]} ext="JPG" col={C.jpg} />
+      {MONTAGE.map((m, i) => { const ry = rowY(2 + i * 2), px = m.pick === 1 ? 786 : 700, py = m.pick === 1 ? ry : ry - 86; return <React.Fragment key={m.newN}><Burst t={t} a={m.at + 0.17} x={px} y={py} col={m.col} /><FlyIcon t={t} a={m.at + 0.2} from={[px, py]} to={[560, ry + 58]} ext={m.ext} col={m.col} /></React.Fragment>; })}
       <Toast t={t} a={8.7} text="Sunset.jpg saved next to the original" out={10.6} />
     </AbsoluteFill>
   );
@@ -221,12 +224,7 @@ const Tools: React.FC<{ t: number }> = ({ t }) => {
   );
 };
 
-// ---------- type cards ----------
-const Card: React.FC<{ t: number; a: number; dark?: boolean; children: React.ReactNode }> = ({ t, a, dark = true, children }) => (
-  <AbsoluteFill style={{ background: dark ? "#08080a" : "#f4f4f6", display: "flex", alignItems: "center", justifyContent: "center" }}>
-    <div style={{ transform: `scale(${1.08 - 0.08 * ci(t, a, a + 0.6)})`, opacity: ci(t, a, a + 0.18) }}>{children}</div>
-  </AbsoluteFill>
-);
+// ---------- type cards (v4: inline kinetic cards in Film) ----------
 const KeyHUD: React.FC<{ t: number; a: number; out: number }> = ({ t, a, out }) => {
   const k = sp(t, a - 0.2, 14, 260) * (1 - ci(t, out, out + 0.2));
   if (k <= 0) return null;
@@ -242,49 +240,148 @@ const CAM: KF[] = [
   [10.0, 860, 420, 1.55], [15.6, 860, 520, 1.55], [16.0, 960, 540, 1],
   [18.0, 960, 540, 1], [18.5, 860, 470, 1.7], [20.6, 860, 470, 1.75], [21.6, 1100, 420, 1.35], [22.0, 960, 540, 1],
 ];
+// ---------- v4 motion graphics ----------
+const BEAT = 0.5, PH = 0.08;
+const beatBump = (t: number) => {
+  if (t < 8.0 || t > 32) return 0;
+  const n = Math.floor((t - PH) / BEAT), e = t - PH - n * BEAT, bar = n % 4 === 0;
+  const amp = t < 16 ? (bar ? 0.03 : 0.012) : (bar ? 0.045 : 0.02);
+  return amp * Math.exp(-e * 14);
+};
+const Burst: React.FC<{ t: number; a: number; x: number; y: number; col: string; s?: number }> = ({ t, a, x, y, col, s = 1 }) => {
+  const e = t - a; if (e < 0 || e > 0.7) return null;
+  const k = 1 - Math.pow(1 - e / 0.7, 3);
+  return (
+    <div style={{ position: "absolute", left: x, top: y, pointerEvents: "none" }}>
+      {[0, 1].map((r) => <div key={r} style={{ position: "absolute", left: -120 * s, top: -120 * s, width: 240 * s, height: 240 * s, borderRadius: "50%", border: `${6 - r * 3}px solid ${col}`, transform: `scale(${0.2 + k * (1.3 + r * 0.6)})`, opacity: (1 - k) * (r ? 0.6 : 1) }} />)}
+      {Array.from({ length: 14 }).map((_, i) => { const ang = (i / 14) * Math.PI * 2 + i, d = (60 + (i % 3) * 30) * s * k * 2.2; return <div key={i} style={{ position: "absolute", left: Math.cos(ang) * d - 5, top: Math.sin(ang) * d - 5, width: 10 * (1 - k * 0.6), height: 10 * (1 - k * 0.6), borderRadius: i % 2 ? 2 : 5, background: i % 3 ? col : "#fff", transform: `rotate(${k * 300}deg)`, opacity: 1 - k }} />; })}
+    </div>
+  );
+};
+const FlyIcon: React.FC<{ t: number; a: number; from: [number, number]; to: [number, number]; ext: string; col: string }> = ({ t, a, from, to, ext, col }) => {
+  const e = (t - a) / 0.42; if (e < 0 || e > 1) return null;
+  const k = IO(e), x = from[0] + (to[0] - from[0]) * k, y = from[1] + (to[1] - from[1]) * k - Math.sin(k * Math.PI) * 120;
+  return <div style={{ position: "absolute", left: x - 28, top: y - 35, transform: `scale(${1.8 - k * 0.8}) rotate(${(1 - k) * -25}deg)`, filter: `drop-shadow(0 10px 18px ${col}88)` }}><FIcon ext={ext} col={col} s={60} /></div>;
+};
+const WIPES: [number, string[]][] = [[3.5, [C.heic, C.pdf, "#08080a"]], [4.6, [C.png, C.jpg, "#f4f4f6"]], [16.0, [C.jpg, C.heic, "#08080a"]], [18.0, [C.shrink, C.png, "#f4f4f6"]], [22.0, [C.gif, C.jpg, "#f4f4f6"]], [26.0, [C.png, C.shrink, "#f4f4f6"]], [29.5, [C.heic, C.jpg, "#08080a"]]];
+const SlashWipe: React.FC<{ t: number }> = ({ t }) => (
+  <>{WIPES.map(([a, cols], w) => {
+    const e = (t - (a - 0.22)) / 0.44; if (e < 0 || e > 1) return null;
+    return <AbsoluteFill key={w} style={{ pointerEvents: "none" }}>{cols.map((c, i) => { const k = IO(Math.max(0, Math.min(1, e * 1.25 - i * 0.12))); return <div key={i} style={{ position: "absolute", top: -400, bottom: -400, width: 900, left: interpolate(k, [0, 1], [-1400, 2600]) - i * 120, background: c, transform: "skewX(-18deg)" }} />; })}</AbsoluteFill>;
+  })}</>
+);
+const Floaters: React.FC<{ t: number; dark?: boolean }> = ({ t, dark = true }) => (
+  <AbsoluteFill style={{ pointerEvents: "none" }}>
+    {[C.heic, C.jpg, C.png, C.pdf, C.gif, C.shrink].map((c, i) => { const x = 200 + ((i * 331) % 1520) + Math.sin(t * 0.8 + i) * 60, y = 140 + ((i * 197) % 800) + Math.cos(t * 0.7 + i * 2) * 50, s = 60 + (i % 3) * 40;
+      return <div key={i} style={{ position: "absolute", left: x, top: y, width: s, height: s, borderRadius: i % 2 ? "50%" : s * 0.25, border: `5px solid ${c}`, opacity: dark ? 0.55 : 0.45, transform: `rotate(${t * (i % 2 ? 40 : -30)}deg) scale(${1 + beatBump(t) * 4})` }} />; })}
+  </AbsoluteFill>
+);
+const Ripples: React.FC<{ t: number; at: number[]; col: string; x?: number; y?: number }> = ({ t, at, col, x = 960, y = 540 }) => (
+  <>{at.map((a) => { const e = t - a; if (e < 0 || e > 1) return null; return <div key={a} style={{ position: "absolute", left: x - 300, top: y - 300, width: 600, height: 600, borderRadius: "50%", border: `4px solid ${col}`, transform: `scale(${0.3 + e * 2.2})`, opacity: 1 - e }} />; })}</>
+);
+const Words: React.FC<{ t: number; a: number; words: string[]; style: React.CSSProperties; step?: number; italicLast?: boolean }> = ({ t, a, words, style, step = 0.12, italicLast }) => (
+  <div style={{ display: "flex", gap: "0 0.25em", justifyContent: "center", flexWrap: "wrap", ...style }}>
+    {words.map((w, i) => { const k = sp(t, a + i * step, 11, 260); return <span key={i} style={{ display: "inline-block", transform: `translateY(${(1 - k) * -120}px) scale(${0.6 + k * 0.4}) rotate(${(1 - k) * (i % 2 ? 12 : -12)}deg)`, opacity: Math.min(1, k * 2), fontStyle: italicLast && i === words.length - 1 ? "italic" : undefined }}>{w}</span>; })}
+  </div>
+);
+const Label: React.FC<{ t: number; a: number; out: number; from: string; to?: string; col: string }> = ({ t, a, out, from, to, col }) => {
+  const k = sp(t, a, 13, 300), o = ci(t, out - 0.2, out);
+  if (k <= 0 || o >= 1) return null;
+  const arrow = ci(t, a + 0.1, a + 0.35);
+  return (
+    <div style={{ position: "absolute", left: 80, top: 850, display: "flex", alignItems: "center", gap: 18, transform: `translateX(${(1 - k) * -500 + o * -500}px) skewX(${(1 - k) * -12}deg)` }}>
+      <div style={{ width: 14, height: 96, borderRadius: 7, background: col }} />
+      <div style={{ display: "flex", alignItems: "center", gap: 18, padding: "12px 30px", borderRadius: 22, background: "rgba(255,255,255,0.88)", backdropFilter: "blur(14px)", boxShadow: `0 16px 40px ${col}44`, fontFamily: GEIST, fontWeight: 800, fontSize: 66, letterSpacing: -2, color: INK }}>
+        <span>{from}</span>
+        {to && <><svg width={80} height={40} viewBox="0 0 80 40"><path d="M4 20 H 66 M 52 6 L 70 20 L 52 34" stroke={col} strokeWidth="7" fill="none" strokeLinecap="round" strokeLinejoin="round" pathLength={1} style={{ strokeDasharray: 1, strokeDashoffset: 1 - arrow }} /></svg><span style={{ color: col, opacity: arrow }}>{to}</span></>}
+      </div>
+    </div>
+  );
+};
+const Check: React.FC<{ t: number; a: number; s?: number }> = ({ t, a, s = 84 }) => {
+  const k = sp(t, a, 10, 280), d = ci(t, a + 0.08, a + 0.32);
+  return <div style={{ width: s, height: s, borderRadius: s / 2, background: C.shrink, transform: `scale(${k})`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 0 ${8 * (1 - d)}px ${C.shrink}55` }}><svg width={s * 0.6} height={s * 0.6} viewBox="0 0 24 24"><path d="M4 12.5 L 10 18 L 20 6" stroke="#fff" strokeWidth="3.4" fill="none" strokeLinecap="round" strokeLinejoin="round" pathLength={1} style={{ strokeDasharray: 1, strokeDashoffset: 1 - d }} /></svg></div>;
+};
+
+// ---------- master with camera (v4: beat punches, slash wipes, kinetic cards) ----------
 const Film: React.FC = () => {
   const t = useCurrentFrame() / FPS;
   const cam = track(CAM, t), prev = track(CAM, t - 1 / FPS);
   const speed = Math.hypot((cam.x - prev.x) * cam.z, (cam.y - prev.y) * cam.z) + Math.abs(cam.z - prev.z) * 900;
   const blur = Math.min(1.4, speed * 0.03);
+  const bump = beatBump(t);
   const S = (a: number, b: number) => t >= a && t < b;
-  const camStyle: React.CSSProperties = { transform: `translate(${WD / 2}px, ${HT / 2}px) scale(${cam.z}) translate(${-cam.x}px, ${-cam.y}px)`, transformOrigin: "0 0", filter: blur > 0.4 ? `blur(${blur}px)` : undefined };
-  const cut = (a: number) => Math.max(0, 1 - Math.abs(t - a) / 0.08);
+  const camStyle: React.CSSProperties = { transform: `translate(${WD / 2}px, ${HT / 2}px) scale(${cam.z * (1 + bump)}) translate(${-cam.x}px, ${-cam.y}px)`, transformOrigin: "0 0", filter: blur > 0.4 ? `blur(${blur}px)` : undefined };
+  const cardBump: React.CSSProperties = { transform: `scale(${1 + bump * 1.5})` };
+  const glitch = (a: number) => (t > a && t < a + 0.12 ? Math.sin(t * 300) * 14 : 0);
+  const toolSeg = t < 23 ? 0 : t < 24 ? 1 : t < 25 ? 2 : 3;
   return (
     <AbsoluteFill style={{ background: "#08080a", overflow: "hidden" }}>
       {S(0, 3.5) && <AbsoluteFill style={camStyle}><Hook t={t} /></AbsoluteFill>}
-      {S(3.5, 4.6) && <Card t={t} a={3.5}><div style={{ fontFamily: SERIF, fontSize: 200, color: "#f4f4f6", letterSpacing: -4 }}>Stop doing <i>this.</i></div></Card>}
+      {S(0.3, 3.45) && <div style={{ position: "absolute", left: 70, top: 900, fontFamily: GEIST, fontWeight: 800, fontSize: 58, color: "#fff", letterSpacing: -2, textShadow: "0 6px 24px rgba(0,0,0,0.5)" }}><Words t={t} a={0.3} words={["Still", "converting", "files", "like", "this?"]} style={{ justifyContent: "flex-start" }} step={0.1} /></div>}
+      {S(3.5, 4.6) && (
+        <AbsoluteFill style={{ background: "#08080a", ...cardBump }}>
+          <Floaters t={t} />
+          <AbsoluteFill style={{ display: "flex", alignItems: "center", justifyContent: "center", transform: `translateX(${glitch(3.5)}px)` }}>
+            <div style={{ position: "relative" }}>
+              <Words t={t} a={3.52} words={["Stop", "doing", "this."]} italicLast style={{ fontFamily: SERIF, fontSize: 220, color: "#f4f4f6", letterSpacing: -4 }} step={0.09} />
+              <div style={{ position: "absolute", left: "58%", right: "-2%", top: "52%", height: 14, borderRadius: 7, background: C.pdf, transform: `scaleX(${ci(t, 3.95, 4.2)}) rotate(-4deg)`, transformOrigin: "0 50%" }} />
+            </div>
+          </AbsoluteFill>
+        </AbsoluteFill>
+      )}
       {S(4.6, 16.0) && <AbsoluteFill style={camStyle}><Desktop t={t} /></AbsoluteFill>}
       {S(4.6, 16.0) && <KeyHUD t={t} a={6.0} out={6.9} />}
       {MONTAGE.map((m) => S(m.at - 0.35, m.at + 0.6) && <KeyHUD key={m.at} t={t} a={m.at - 0.3} out={m.at + 0.3} />)}
-      {/* montage labels (screen space) */}
-      {MONTAGE.map((m) => S(m.at - 0.3, m.at + 1.4) && <div key={m.label} style={{ position: "absolute", left: 90, top: 860, fontFamily: GEIST, fontWeight: 800, fontSize: 64, color: INK, letterSpacing: -2, background: "rgba(255,255,255,0.8)", backdropFilter: "blur(14px)", padding: "10px 28px", borderRadius: 20, transform: `translateY(${(1 - sp(t, m.at - 0.3, 14, 300)) * 40}px)`, opacity: 1 - ci(t, m.at + 1.15, m.at + 1.4) }}>{m.label}</div>)}
-      {S(4.6, 9.0) && <div style={{ position: "absolute", left: 90, top: 860, fontFamily: GEIST, fontWeight: 800, fontSize: 64, color: INK, letterSpacing: -2, background: "rgba(255,255,255,0.8)", backdropFilter: "blur(14px)", padding: "10px 28px", borderRadius: 20, opacity: ci(t, 5.4, 5.7) * (1 - ci(t, 8.8, 9.0)) }}>{t < 6.0 ? "Select a file." : t < 7.6 ? "Tap ⇧⌘." : "Pick a format."}</div>}
-      {S(16.0, 18.0) && <Card t={t} a={16.0}><div style={{ textAlign: "center" }}><div style={{ fontFamily: GEIST, fontWeight: 800, fontSize: 220, color: "#f4f4f6", letterSpacing: -8, lineHeight: 0.95 }}>Tap ⇧⌘.</div><div style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 110, color: "#c9c9d2", marginTop: 10, opacity: ci(t, 16.6, 16.9) }}>Convert anything.</div></div></Card>}
+      {S(4.6, 9.2) && <Label t={t} a={5.4} out={6.0} from="Select a file." col={SEL} />}
+      {S(5.9, 9.2) && <Label t={t} a={6.0} out={7.6} from="Tap ⇧⌘." col={C.heic} />}
+      {S(7.5, 9.2) && <Label t={t} a={7.6} out={9.1} from="Pick." to="Done." col={C.jpg} />}
+      {MONTAGE.map((m) => { const parts = m.label.split(" → "); return S(m.at - 0.35, m.at + 1.45) && <Label key={m.label} t={t} a={m.at - 0.3} out={m.at + 1.4} from={parts[0]} to={parts[1]} col={m.col} />; })}
+      {S(16.0, 18.0) && (
+        <AbsoluteFill style={{ background: "#08080a", ...cardBump }}>
+          <Floaters t={t} />
+          <Ripples t={t} at={[16.0, 16.5, 17.0, 17.5]} col={C.heic} />
+          <AbsoluteFill style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", transform: `translateX(${glitch(16.0)}px)` }}>
+            <div style={{ display: "flex", fontFamily: GEIST, fontWeight: 800, fontSize: 240, color: "#f4f4f6", letterSpacing: -8, lineHeight: 0.95 }}>
+              {["T", "a", "p", " ", "⇧", "⌘", "."].map((ch, i) => { const at = 16.0 + (i < 4 ? i * 0.06 : 0.25 + (i - 4) * 0.25); const k = sp(t, at, 9, 320); return <span key={i} style={{ display: "inline-block", width: ch === " " ? 60 : undefined, transform: `scale(${2.4 - k * 1.4}) translateY(${(1 - k) * -40}px)`, opacity: Math.min(1, k * 3), color: i === 4 ? C.jpg : i === 5 ? C.heic : undefined }}>{ch}</span>; })}
+            </div>
+            <Words t={t} a={16.9} words={["Convert", "anything."]} italicLast style={{ fontFamily: SERIF, fontSize: 120, color: "#c9c9d2", marginTop: 14 }} step={0.15} />
+          </AbsoluteFill>
+        </AbsoluteFill>
+      )}
       {S(18.0, 22.0) && <AbsoluteFill style={camStyle}><Shrink t={t} /></AbsoluteFill>}
-      {S(18.0, 22.0) && <div style={{ position: "absolute", left: 90, top: 860, fontFamily: GEIST, fontWeight: 800, fontSize: 64, color: INK, letterSpacing: -2, background: "rgba(255,255,255,0.8)", backdropFilter: "blur(14px)", padding: "10px 28px", borderRadius: 20, opacity: ci(t, 18.3, 18.6) * (1 - ci(t, 21.7, 22.0)) }}>Shrink anything.</div>}
-      {S(22.0, 26.0) && <Tools t={t} />}
+      {S(18.0, 22.0) && <Label t={t} a={18.2} out={21.9} from="Shrink" to="anything" col={C.shrink} />}
+      {S(19.6, 22.0) && <div style={{ position: "absolute", right: 90, top: 300, fontFamily: GEIST, fontWeight: 800, fontSize: 170, letterSpacing: -6, color: INK, textShadow: "0 10px 40px rgba(255,255,255,0.8)", transform: `scale(${1 + Math.max(0, 1 - Math.abs(t - 21.2) * 6) * 0.15})` }}>{Math.round(interpolate(ci(t, 19.6, 21.2, 0, 1, Easing.out(Easing.cubic)), [0, 1], [248, 62]))}<span style={{ fontSize: 80, color: C.shrink }}> MB</span></div>}
+      {S(22.0, 26.0) && <AbsoluteFill style={{ transform: `translateX(${(1 - sp(t, [22.0, 23.0, 24.0, 25.0][toolSeg], 12, 260)) * (toolSeg % 2 ? 300 : -300)}px) scale(${1 + bump})` }}><Tools t={t} /></AbsoluteFill>}
+      {S(22.0, 26.0) && <Ripples t={t} at={[22.15, 23.15, 24.15, 25.15]} col={C.jpg} x={960} y={490} />}
       {S(26.0, 29.5) && (
-        <AbsoluteFill>
+        <AbsoluteFill style={{ ...cardBump }}>
           <Wallpaper /><MenuBar t={t} wifiOff={ci(t, 26.4, 26.8)} />
-          <div style={{ position: "absolute", right: 30, top: 44, width: 120, height: 120, borderRadius: "50%", border: "4px solid #e5484d", opacity: ci(t, 26.3, 26.5) * (1 - ci(t, 27.2, 27.5)), transform: `scale(${sp(t, 26.3, 12, 200)})` }} />
-          <AbsoluteFill style={{ display: "flex", flexDirection: "column", justifyContent: "center", paddingLeft: 160, gap: 24 }}>
-            {[["Works offline.", 26.6], ["Nothing uploaded.", 27.4], ["Originals untouched.", 28.2]].map(([s, a]) => <div key={s as string} style={{ fontFamily: GEIST, fontWeight: 800, fontSize: 104, color: INK, letterSpacing: -4, transform: `translateY(${(1 - sp(t, a as number, 14, 220)) * 60}px)`, opacity: ci(t, a as number, (a as number) + 0.2) }}>{s as string}</div>)}
+          <div style={{ position: "absolute", right: 200, top: 300, transform: `scale(${sp(t, 26.1, 11, 200)}) rotate(${(1 - sp(t, 26.1, 11, 200)) * -20}deg)` }}>
+            <svg width={360} height={300} viewBox="0 0 22 16"><path d="M1 5 Q 11 -3 21 5 M4 8.5 Q 11 3 18 8.5 M7.5 12 Q 11 9 14.5 12" stroke={INK} strokeWidth="1.6" fill="none" strokeLinecap="round" /><circle cx="11" cy="14.5" r="1.2" fill={INK} /><line x1="2" y1="15" x2="20" y2="1" stroke="#e5484d" strokeWidth="1.8" strokeLinecap="round" pathLength={1} style={{ strokeDasharray: 1, strokeDashoffset: 1 - ci(t, 26.4, 26.8) }} /></svg>
+          </div>
+          <AbsoluteFill style={{ display: "flex", flexDirection: "column", justifyContent: "center", paddingLeft: 140, gap: 26 }}>
+            {([["Works offline.", 26.5], ["Nothing uploaded.", 27.3], ["Originals untouched.", 28.1]] as [string, number][]).map(([s2, a]) => { const k = sp(t, a, 10, 260); return <div key={s2} style={{ display: "flex", alignItems: "center", gap: 26, transform: `translateX(${(1 - k) * -700}px) skewX(${(1 - k) * -14}deg)` }}><Check t={t} a={a + 0.05} /><div style={{ fontFamily: GEIST, fontWeight: 800, fontSize: 100, color: INK, letterSpacing: -4 }}>{s2}</div></div>; })}
           </AbsoluteFill>
         </AbsoluteFill>
       )}
       {S(29.5, DUR) && (
-        <Card t={t} a={29.5}>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <Img src={staticFile("tapformat/icon.png")} style={{ width: 220, height: 220, transform: `scale(${sp(t, 29.5, 12, 160)})` }} />
-            <div style={{ fontFamily: GEIST, fontWeight: 800, fontSize: 140, color: "#f4f4f6", letterSpacing: -5, marginTop: 20, opacity: ci(t, 29.8, 30.1) }}>Tapformat</div>
-            <div style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 60, color: "#a9a9b4", opacity: ci(t, 30.2, 30.5) }}>Tap ⇧⌘. Convert anything.</div>
-            <div style={{ marginTop: 36, padding: "16px 44px", borderRadius: 999, background: "#f4f4f6", color: "#08080a", fontFamily: GEIST, fontWeight: 700, fontSize: 36, transform: `scale(${sp(t, 30.8, 12, 260)})` }}>Download free for Mac</div>
-            <div style={{ marginTop: 14, fontFamily: MONO, fontSize: 22, color: MUT, opacity: ci(t, 31.2, 31.5) }}>macOS 15+ · works offline · never uploaded</div>
+        <AbsoluteFill style={{ background: "#08080a", ...cardBump }}>
+          <Floaters t={t} />
+          <Ripples t={t} at={[30.1, 31.1]} col={C.jpg} x={960} y={330} />
+          <div style={{ position: "absolute", left: 960 - 110, top: 330 - 110, width: 220, height: 220 }}>
+            {[C.jpg, C.heic, C.png, C.mov, C.gif, C.pdf].map((c, i) => { const ang = -Math.PI / 2 + (i / 6) * Math.PI * 2, k = ci(t, 29.55 + i * 0.05, 30.05 + i * 0.05, 0, 1, Easing.out(Easing.back(1.4))); const fx2 = Math.cos(ang + 1.2) * 900, fy = Math.sin(ang + 1.2) * 600; return <div key={i} style={{ position: "absolute", left: 110 + interpolate(k, [0, 1], [fx2, Math.cos(ang) * 64]) - 20, top: 110 + interpolate(k, [0, 1], [fy, Math.sin(ang) * 64]) - 20, width: 40, height: 40, borderRadius: 20, background: c, boxShadow: `0 0 20px ${c}`, opacity: 1 - ci(t, 30.15, 30.3) }} />; })}
+            <Img src={staticFile("tapformat/icon.png")} style={{ position: "absolute", inset: 0, width: 220, height: 220, opacity: ci(t, 30.1, 30.3), transform: `scale(${0.8 + sp(t, 30.1, 9, 220) * 0.2})` }} />
           </div>
-        </Card>
+          <AbsoluteFill style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 480 }}>
+            <Words t={t} a={30.3} words={["Tapformat"]} style={{ fontFamily: GEIST, fontWeight: 800, fontSize: 150, color: "#f4f4f6", letterSpacing: -6 }} />
+            <Words t={t} a={30.6} words={["Tap", "⇧⌘.", "Convert", "anything."]} italicLast style={{ fontFamily: SERIF, fontSize: 64, color: "#a9a9b4" }} step={0.08} />
+            <div style={{ marginTop: 30, padding: "18px 48px", borderRadius: 999, background: "#f4f4f6", color: "#08080a", fontFamily: GEIST, fontWeight: 700, fontSize: 38, transform: `scale(${sp(t, 31.1, 9, 300) * (1 + Math.max(0, Math.sin((t - 31.1) * 6)) * 0.03)})` }}>Download free for Mac</div>
+            <div style={{ marginTop: 14, fontFamily: MONO, fontSize: 22, color: MUT, opacity: ci(t, 31.4, 31.7) }}>macOS 15+ · works offline · never uploaded</div>
+          </AbsoluteFill>
+        </AbsoluteFill>
       )}
-      {[3.5, 16.0, 29.5].map((a) => cut(a) > 0 && <AbsoluteFill key={a} style={{ background: "#fff", opacity: cut(a) * 0.5 }} />)}
+      <SlashWipe t={t} />
       <Audio src={staticFile("tapformat/music3.wav")} />
     </AbsoluteFill>
   );
