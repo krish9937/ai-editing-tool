@@ -286,3 +286,5 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
 - Word-pop subs: the pop-in scale must be centred (transformOrigin 50%) and the word gap ≥ 30 px at 78 px type, or the growing word swallows the space ("COULDMAKE").
 - Third-party AI apps in an integration ad: name them as text, build a generic chat window — don't copy their UI or logos.
 - Topic-themed captions: let the subtitle style act out the topic (Link Rot → decay words turn red, then letters crack and fall). Per-letter spans with seeded random drift/rotation after the word's end time; keep the rest of the line static so it stays readable.
+- Voice-only founder recordings: offer an avatar narrator — a flat cartoon of the founder on the vector-puppet rig, lip-synced from a per-frame RMS envelope of the cleaned VO ((dB+50)/28 clamped, 3-tap smooth → mouth ellipse height). Show 2 options (founder cartoon vs topic mascot) with a 3 s talking test before building.
+- Phone voice memos often arrive at −35…−40 LUFS: run cut.py --clean (FFT denoise + speechnorm) before boosting, check noise floor vs speech (aim ≥ 30 dB gap).
