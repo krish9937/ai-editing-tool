@@ -218,11 +218,12 @@ into one pass. Vague feedback ("not good") → ask WHAT (opening/middle/text/aud
 
 ## 7. Keep learning
 After every delivery or feedback round, append the lesson to `references/production-lessons.md`
-(and the user's memory), and re-copy this skill to the user's skills repo if they keep one
-(e.g. `C:/Users/Zenbook/OneDrive/Desktop/ai-editing-tool\content-studio`).
+(and the user's memory). The repo is the MASTER copy: `E:\video studio and claude work\ai-editing-tool\`
+(since 2026-10-22). Edit lessons there, then run `E:\video studio and claude work\sync-skills.ps1` to copy
+them into `~/.claude/skills/`. Don't wait to be asked.
 
 ### Delivery hygiene + default polish (user rule, 2026)
-- Put ONLY the finished video on the user's Desktop (one clear filename, replaced in place on revisions). Work files go to `D:\codes\work\<project>\` — never Desktop folders, never extra docs unless asked.
+- Put ONLY the finished video on the user's Desktop (one clear filename, replaced in place on revisions). Work files go to `E:\video studio and claude work\work\<project>\` (was `D:\codes\work` on the old laptop) — never Desktop folders, never extra docs unless asked.
 - On any user footage, by default: enhance + boost the voice (EQ presence, compression, de-ess, normalise; master −13 LUFS / −1.2 dBTP), denoise/sharpen the picture, render high quality (`--jpeg-quality=100 --crf=12`).
 - Motion defaults: fast entrances (0.12–0.3 s), punch-ins on key words; check every number/label stays inside its card (no edge clipping).
 
@@ -240,7 +241,7 @@ After every delivery or feedback round, append the lesson to `references/product
   100 % crop QA), no colour grade unless asked, very low music under the voice.
 - Covers / thumbnails: never show the face (no-face version only).
 - Voice: ElevenLabs (user's cloned voice "Smit") or Gemini TTS (Leda / Kore) — whatever the project picked; check every take with whisper.
-- Delivery: Desktop = final mp4 only; all work files in `D:\codes\work\<project>`; QA (decode, −14 LUFS, true peak ≤ −1 dBTP) before delivering.
+- Delivery: Desktop = final mp4 only; all work files in `E:\video studio and claude work\work\<project>`; QA (decode, −14 LUFS, true peak ≤ −1 dBTP) before delivering.
 - Combine all skills (old + new) on every video; log every lesson in `references/production-lessons.md` and sync the repo; push only when asked.
 - Hardware: run the §3a GPU gate first — GPU tools only with a GPU, otherwise ask.
 
@@ -250,7 +251,8 @@ After every delivery or feedback round, append the lesson to `references/product
 2. Memory: Claude Code keeps memory in `~/.claude/projects/<launch-folder-encoded>/memory/` (e.g. launched from
    `C:\Windows\System32` → `C--Windows-System32`). Launch Claude once from the folder you will work in, then copy the old
    `memory/*.md` into the NEW folder's `memory/` (names must match the new launch folder, or memory won't load).
-3. Project code + assets (Remotion studio, `D:\codes\work`) copy separately; API keys (`.env`) by a private channel — never git.
-4. Tools: ffmpeg, Node 20+, Python 3.12 (+ faster-whisper venv); on a GPU machine also the Craft suite
+3. Project code + assets (Remotion studio, work folder — now `E:\video studio and claude work\`) copy separately; API keys (`.env`) by a private channel — never git.
+4. Tools: ffmpeg, Node 20+, Python 3.12 (+ faster-whisper venv) — exact Windows/NVIDIA recipe, versions and the
+   pins that avoid broken installs: `references/setup-windows-gpu.md`; on a GPU machine also the Craft suite
    (`references/tools-craft-suite.md`, source zips in the repo's `tools-sources/`).
 
