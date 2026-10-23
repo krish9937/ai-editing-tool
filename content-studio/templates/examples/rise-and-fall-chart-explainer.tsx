@@ -10,12 +10,14 @@ import { loadFont as loadOld } from "@remotion/google-fonts/OldStandardTT";
 import { loadFont as loadFrak } from "@remotion/google-fonts/UnifrakturMaguntia";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
 import { W } from "./words";
+import { HOOK_END, WARP } from "./warp";
 
 const { fontFamily: PLAY } = loadPlay("normal", { weights: ["700", "900"], subsets: ["latin"] });
 const { fontFamily: OLD } = loadOld("normal", { weights: ["400", "700"], subsets: ["latin"] });
 const { fontFamily: FRAK } = loadFrak("normal", { weights: ["400"], subsets: ["latin"] });
 const { fontFamily: INTER } = loadInter("normal", { weights: ["400", "500", "600", "700", "800"], subsets: ["latin"] });
-const FPS = 30, DUR = 133.6, WD = 1920, HT = 1080;
+const FPS = 30, DUR = 151.6, WD = 1920, HT = 1080;
+const SHIFT = 1.42; // everything after the re-voiced plug moved later by this much
 const INK = "#1E1B16", PAPER = "#F3EEE3", PAPER2 = "#FBF8F1", GRID = "rgba(60,50,30,0.09)", GREEN = "#1F8A4C", RED = "#C8322B", MUTE = "#7A7263", OR = "#F2541B";
 const EZ = Easing.bezier(0.22, 1, 0.36, 1);
 const ci = (t: number, a: number, b: number, x = 0, y = 1, e = EZ) => interpolate(t, [a, b], [x, y], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: e });
@@ -238,7 +240,7 @@ const Rule: React.FC<{ t: number }> = ({ t }) => {
 };
 const QS: [string, number][] = [["What's my profit on each sale?", 96.7], ["What's my ACoS for each ad?", 99.5], ["Is it lower than my profit margin?", 102.6]];
 const Questions: React.FC<{ t: number }> = ({ t }) => {
-  const stuck = t > 105.9;
+  const stuck = t > 105.6;
   return (
     <AbsoluteFill>
       <Panel style={{ left: 300, top: 70, width: 1320, height: 760, padding: "40px 56px", boxSizing: "border-box" }}>
@@ -248,39 +250,38 @@ const Questions: React.FC<{ t: number }> = ({ t }) => {
             <div style={{ width: 92, height: 92, borderRadius: 46, border: `5px solid ${INK}`, display: "flex", alignItems: "center", justifyContent: "center", ...H, fontSize: 54, background: hl ? OR : "transparent", color: hl ? "#fff" : INK, flexShrink: 0 }}>{i + 1}</div>
             <div style={{ ...H, fontSize: 62 }}>{q}</div>
           </div>); })}
-        {t > 107.7 && <div style={{ marginTop: 50, display: "flex", alignItems: "center", gap: 26, opacity: ci(t, 107.7, 108.1) }}>
-          {["Search ad", "Social ad", "Video ad"].map((a, i) => <div key={a} style={{ padding: "12px 20px", border: `3px solid ${INK}`, borderRadius: 10, fontFamily: OLD, fontWeight: 700, fontSize: 30, background: "#fff", transform: `rotate(${(i - 1) * 3}deg)` }}>{a}</div>)}
-          <div style={{ ...H, fontSize: 56 }}>→ ? ? ? →</div>
-          <div style={{ padding: "12px 20px", border: `3px solid ${GREEN}`, borderRadius: 10, ...H, fontSize: 36, color: GREEN, background: "#D7EEDD" }}>a sale</div>
-        </div>}
       </Panel>
     </AbsoluteFill>
   );
 };
-const ADS: [string, string, string, number, number][] = [["Search ad", "google", "spring-search", 500, 2500], ["Social ad", "facebook", "spring-retarget", 400, 650], ["Video ad", "youtube", "spring-video", 300, 1500]];
+const ADS: [string, string, number, number][] = [["Search ad", "go.yourstore.com/spring-search", 820, 64], ["Social ad", "go.yourstore.com/spring-social", 1240, 0], ["Video ad", "go.yourstore.com/spring-video", 410, 38]];
+// honest plug: linkutm = real-time CLICKS per link; sales come from the user's own store (separate panel)
 const Linkutm: React.FC<{ t: number }> = ({ t }) => {
-  const table = t > 115.7;
+  const store = t > 115.9, spot = t > 121.3, none = t > 122.1;
+  const live = Math.sin(t * 6) > 0;
   return (
     <AbsoluteFill style={{ fontFamily: INTER }}>
-      <div style={{ position: "absolute", left: 0, right: 0, top: 70, display: "flex", justifyContent: "center", alignItems: "center", gap: 18, transform: `scale(${sp(t, 111.4, 13, 200)})` }}><Img src={staticFile("lmv/logo.svg")} style={{ height: 62 }} /></div>
-      {!table && <div style={{ position: "absolute", left: 260, right: 260, top: 200 }}>
-        {ADS.map(([n, src, camp], i) => { const a = 113.7 + i * 0.5, k = sp(t, a, 14, 220); return (
-          <div key={n} style={{ display: "flex", alignItems: "center", gap: 20, padding: "20px 26px", marginBottom: 20, background: "#fff", borderRadius: 14, boxShadow: "0 18px 40px -22px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,0,0,0.06)", transform: `translateX(${(1 - k) * 200}px)`, opacity: Math.min(1, k * 2) }}>
-            <div style={{ width: 160, fontWeight: 700, fontSize: 26 }}>{n}</div>
-            <div style={{ fontFamily: "monospace", fontSize: 26, color: "#333" }}>yourstore.com/dog-food<span style={{ color: OR, opacity: ci(t, a + 0.3, a + 0.6) }}>?utm_source={src}&utm_campaign={camp}</span></div>
-            <div style={{ marginLeft: "auto", width: 40, height: 40, borderRadius: 20, background: "#DCFCE7", color: GREEN, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, fontWeight: 800, transform: `scale(${sp(t, a + 0.6, 10, 300)})` }}>✓</div>
+      <div style={{ position: "absolute", left: 0, right: 0, top: 60, textAlign: "center", ...H, fontSize: 62, opacity: ci(t, 108.8, 109.2) }}>Start with what you can see</div>
+      <div style={{ position: "absolute", left: store ? 110 : 360, top: 190, width: 1060, background: "#fff", borderRadius: 16, boxShadow: "0 24px 60px -26px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,0,0,0.06)", overflow: "hidden", opacity: ci(t, 109.5, 109.9), transform: `translateY(${(1 - sp(t, 109.5, 14, 200)) * 160}px)` }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 24px", borderBottom: "1px solid #EEE" }}><Img src={staticFile("lmv/logo.svg")} style={{ height: 34 }} /><span style={{ fontSize: 22, fontWeight: 700, color: "#6B6B6B" }}>Clicks per ad link</span><span style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8, fontSize: 18, fontWeight: 700, color: RED }}><span style={{ width: 12, height: 12, borderRadius: 6, background: RED, opacity: live ? 1 : 0.3 }} />LIVE</span></div>
+        {ADS.map(([n, url, c], i) => { const v = Math.round(c * ci(t, 111.6 + i * 0.2, 115.6 + i * 0.2, 0, 1, Easing.out(Easing.quad))), hl = spot && i === 1; return (
+          <div key={n} style={{ display: "flex", alignItems: "center", gap: 18, padding: "22px 24px", borderBottom: "1px solid #F1F1F1", background: hl ? "#FEF2F2" : "#fff" }}>
+            <div style={{ width: 150, fontWeight: 700, fontSize: 24 }}>{n}</div>
+            <div style={{ fontFamily: "monospace", fontSize: 21, color: OR }}>{url}</div>
+            <div style={{ marginLeft: "auto", fontSize: 34, fontWeight: 800, color: hl ? RED : INK }}>{v.toLocaleString("en-US")}<span style={{ fontSize: 18, fontWeight: 600, color: "#6B6B6B" }}> clicks</span></div>
+          </div>); })}
+      </div>
+      {store && <div style={{ position: "absolute", left: 1210, top: 190, width: 600, background: PAPER2, borderRadius: 16, boxShadow: "0 24px 60px -26px rgba(0,0,0,0.35), 0 0 0 1px rgba(40,30,10,0.12)", overflow: "hidden", transform: `translateX(${(1 - sp(t, 115.95, 14, 200)) * 700}px)` }}>
+        <div style={{ padding: "18px 24px", borderBottom: `3px double ${INK}`, fontFamily: OLD, fontWeight: 700, fontSize: 24, letterSpacing: 2, textTransform: "uppercase" }}>Your store · sales</div>
+        {ADS.map(([n, , , o], i) => { const hl = spot && i === 1; return (
+          <div key={n} style={{ display: "flex", alignItems: "center", padding: "24px 24px", borderBottom: "1px solid rgba(40,30,10,0.1)", background: hl ? "#F6D9D5" : undefined, opacity: ci(t, 116.3 + i * 0.2, 116.6 + i * 0.2) }}>
+            <div style={{ fontFamily: OLD, fontWeight: 700, fontSize: 26 }}>from {n.toLowerCase()}</div>
+            <div style={{ marginLeft: "auto", ...H, fontSize: 40, color: o === 0 ? (none ? RED : INK) : GREEN, transform: `scale(${o === 0 && none ? 1 + 0.25 * (1 - ci(t, 122.1, 122.5)) : 1})` }}>{o} orders</div>
           </div>); })}
       </div>}
-      {table && <div style={{ position: "absolute", left: 260, right: 260, top: 200, background: "#fff", borderRadius: 16, boxShadow: "0 24px 60px -26px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,0,0,0.06)", overflow: "hidden", transform: `translateY(${(1 - sp(t, 115.75, 14, 200)) * 200}px)` }}>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", padding: "18px 28px", fontSize: 22, color: "#6B6B6B", background: "#FAFAFA", borderBottom: "1px solid #E5E5E5", fontWeight: 600 }}><span>Campaign (tracked with linkutm)</span><span>Ad spend</span><span>Sales</span><span>ACoS</span></div>
-        {ADS.map(([n, , camp, s, r], i) => { const acos = Math.round((s / r) * 100), bad = acos > 30, show = t > 120.3 + i * 0.25, paused = bad && t > 122.3; return (
-          <div key={n} style={{ position: "relative", display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", padding: "24px 28px", fontSize: 28, alignItems: "center", borderBottom: "1px solid #EEE", background: paused ? "#FEF2F2" : "#fff", opacity: ci(t, 116.0 + i * 0.25, 116.4 + i * 0.25) }}>
-            <span style={{ fontFamily: "monospace", fontWeight: 600 }}>{camp}</span><span>${s}</span><span>${r.toLocaleString("en-US")}</span>
-            <span style={{ fontWeight: 800, color: bad ? RED : GREEN, opacity: show ? 1 : 0, transform: `scale(${show ? 1 : 0.6})`, display: "inline-block" }}>{acos}% {bad ? "✗" : "✓"}</span>
-            {paused && <Stamp text="PAUSED" t={t} a={122.3} size={46} style={{ left: 520, top: 14 }} />}
-          </div>); })}
-        <div style={{ padding: "14px 28px", fontSize: 20, color: "#6B6B6B" }}>Profit margin 30% → keep ads under 30% ACoS</div>
-      </div>}
+      {spot && <div style={{ position: "absolute", left: 300, top: 640, ...H, fontSize: 52, color: RED, opacity: ci(t, 121.3, 121.7) }}>Lots of clicks… <span style={{ opacity: none ? 1 : 0 }}>but no sales.</span></div>}
+      <Stamp text="FIX OR SWITCH OFF" t={t} a={124.25} size={56} style={{ left: 640, top: 300 }} />
+      <div style={{ position: "absolute", left: 0, right: 0, top: 770, textAlign: "center", fontFamily: OLD, fontSize: 24, color: MUTE, opacity: ci(t, 116.4, 116.8) }}>Clicks: linkutm · Sales: your own store or analytics · example numbers</div>
     </AbsoluteFill>
   );
 };
@@ -341,24 +342,62 @@ const SC: { a: number; b: number; node: (t: number) => React.ReactNode }[] = [
   { a: 57.2, b: 67.4, node: (t) => <Calc t={t} /> },
   { a: 67.3, b: 76.3, node: (t) => <Worse t={t} /> },
   { a: 76.2, b: 93.4, node: (t) => <Rule t={t} /> },
-  { a: 93.3, b: 111.35, node: (t) => <Questions t={t} /> },
-  { a: 111.25, b: 125.9, node: (t) => <Linkutm t={t} /> },
-  { a: 125.8, b: DUR, node: (t) => <Close t={t} /> },
+  { a: 93.3, b: 108.85, node: (t) => <Questions t={t} /> },
+  { a: 108.75, b: 127.3, node: (t) => <Linkutm t={t} /> },
+  { a: 127.2, b: DUR, node: (t) => <Close t={t - SHIFT} /> },
 ];
-const Film: React.FC = () => {
-  const t = useCurrentFrame() / FPS;
+const warp = (t: number) => { if (t <= WARP[0][0]) return WARP[0][1] - (WARP[0][0] - t); for (let i = 1; i < WARP.length; i++) if (t <= WARP[i][0]) { const [a0, b0] = WARP[i - 1], [a1, b1] = WARP[i]; return b0 + ((t - a0) / (a1 - a0)) * (b1 - b0); } const [a, b] = WARP[WARP.length - 1]; return b + (t - a); };
+const wt = (w: string) => { const x = W.find((q) => q[2].toLowerCase().startsWith(w.toLowerCase())); return x ? x[0] : 0; };
+// v3 hook: the number shock, on a newspaper front page
+const Hook3: React.FC<{ t: number }> = ({ t }) => {
+  const a1 = wt("$7.6"), a2 = wt("$600"), a3 = wt("hottest");
+  const v1 = Math.round(interpolate(ci(t, a1 - 0.1, a1 + 0.9, 0, 1, Easing.out(Easing.cubic)), [0, 1], [0, 7600000]));
+  const v2 = Math.round(interpolate(ci(t, a2 - 0.1, a2 + 0.7, 0, 1, Easing.out(Easing.cubic)), [0, 1], [0, 600000]));
+  const k1 = sp(t, a1 - 0.15, 10, 300), k2 = sp(t, a2 - 0.15, 10, 300), k3 = sp(t, a3 - 0.2, 12, 240);
+  const flip = ci(t, HOOK_END - 0.45, HOOK_END + 0.05, 0, 1, Easing.in(Easing.cubic));
+  const push = ci(t, 0, HOOK_END, 1.0, 1.06, (q) => q);
   return (
-    <AbsoluteFill style={{ overflow: "hidden", background: PAPER }}>
-      <Paper />
-      {SC.map((s, i) => {
-        if (t < s.a || t >= s.b) return null;
-        const k = i === 0 ? 1 : ci(t, s.a, s.a + 0.45, 0, 1, Easing.out(Easing.cubic)), o = ci(t, s.b - 0.12, s.b);
-        return <AbsoluteFill key={i} style={{ opacity: 1 - o, transform: `translateX(${(1 - k) * 1920}px) rotate(${(1 - k) * 4}deg)` }}>{s.node(t)}</AbsoluteFill>;
-      })}
-      <Headline t={t} />
-      <AbsoluteFill style={{ pointerEvents: "none", background: "radial-gradient(ellipse at 50% 45%, transparent 60%, rgba(60,45,20,0.18) 100%)" }} />
-      <Audio src={staticFile("acos/vo.wav")} />
+    <AbsoluteFill style={{ perspective: 2400 }}>
+      <AbsoluteFill style={{ transformOrigin: "50% 0%", transform: `rotateX(${flip * 88}deg) scale(${push})`, opacity: 1 - flip * 0.4 }}>
+        <Paper />
+        <div style={{ position: "absolute", left: 160, right: 160, top: 60, textAlign: "center", opacity: ci(t, 0, 0.4) }}>
+          <div style={{ fontFamily: FRAK, fontSize: 74, color: INK }}>The Daily Chart</div>
+          <div style={{ display: "flex", justifyContent: "space-between", fontFamily: OLD, fontSize: 22, letterSpacing: 3, color: MUTE, borderTop: `3px double ${INK}`, borderBottom: `3px double ${INK}`, padding: "6px 0", marginTop: 6 }}><span>VOL. MCMXCIX</span><span>SPECIAL EDITION</span><span>PRICE: 25¢</span></div>
+        </div>
+        <div style={{ position: "absolute", left: 0, right: 0, top: 250, display: "flex", justifyContent: "center", gap: 90 }}>
+          <div style={{ textAlign: "center", transform: `scale(${interpolate(k1, [0, 1], [2.2, 1])}) rotate(-2deg)`, opacity: Math.min(1, k1 * 3) }}>
+            <div style={{ ...H, fontSize: 132, color: RED, letterSpacing: -3 }}>${v1.toLocaleString("en-US")}</div>
+            <div style={{ fontFamily: OLD, fontWeight: 700, fontSize: 40, letterSpacing: 6, marginTop: 6 }}>SPENT ON ADS</div>
+          </div>
+          <div style={{ textAlign: "center", transform: `scale(${interpolate(k2, [0, 1], [2.2, 1])}) rotate(2deg)`, opacity: Math.min(1, k2 * 3) }}>
+            <div style={{ ...H, fontSize: 132, color: GREEN, letterSpacing: -3 }}>${v2.toLocaleString("en-US")}</div>
+            <div style={{ fontFamily: OLD, fontWeight: 700, fontSize: 40, letterSpacing: 6, marginTop: 6 }}>IN SALES</div>
+          </div>
+        </div>
+        <div style={{ position: "absolute", left: 120, right: 120, top: 600, padding: "26px 0", borderTop: `6px solid ${INK}`, borderBottom: `6px solid ${INK}`, textAlign: "center", transform: `scaleX(${k3})`, opacity: Math.min(1, k3 * 2) }}>
+          <div style={{ ...H, fontSize: 78, letterSpacing: -1 }}>…and it was the hottest startup in America.</div>
+        </div>
+        {t > a3 + 0.3 && <Stamp text="?!" t={t} a={a3 + 0.5} size={110} rot={12} style={{ right: 70, top: 470 }} />}
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };
-export const AcosFilmComp: React.FC = () => <Composition id="AcosFilm" component={Film} durationInFrames={Math.round(DUR * FPS)} fps={FPS} width={WD} height={HT} />;
+const Film: React.FC = () => {
+  const t = useCurrentFrame() / FPS;
+  const tv = warp(t);
+  return (
+    <AbsoluteFill style={{ overflow: "hidden", background: PAPER }}>
+      <Paper />
+      {t >= HOOK_END - 0.45 && SC.map((s, i) => {
+        if (tv < s.a || tv >= s.b) return null;
+        const k = i === 0 ? 1 : ci(tv, s.a, s.a + 0.45, 0, 1, Easing.out(Easing.cubic)), o = ci(tv, s.b - 0.12, s.b);
+        return <AbsoluteFill key={i} style={{ opacity: 1 - o, transform: `translateX(${(1 - k) * 1920}px) rotate(${(1 - k) * 4}deg)` }}>{s.node(Math.max(0, tv))}</AbsoluteFill>;
+      })}
+      {t < HOOK_END + 0.1 && <Hook3 t={t} />}
+      <Headline t={t} />
+      <AbsoluteFill style={{ pointerEvents: "none", background: "radial-gradient(ellipse at 50% 45%, transparent 60%, rgba(60,45,20,0.18) 100%)" }} />
+      <Audio src={staticFile("acos/vo3.wav")} />
+    </AbsoluteFill>
+  );
+};
+export const AcosFilmV3Comp: React.FC = () => <Composition id="AcosFilmV3" component={Film} durationInFrames={Math.round(DUR * FPS)} fps={FPS} width={WD} height={HT} />;
