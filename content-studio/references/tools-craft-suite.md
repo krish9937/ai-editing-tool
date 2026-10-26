@@ -15,6 +15,25 @@ photocraft-cli). Register MCP: `claude mcp add filmcraft-headless -- <abs>/filmc
 Pilot each on one real asset and compare against the ffmpeg path (loudness, colour, sharpness at 100 %) before trusting it.
 No GPU → ask the user before using these (they fall back to CPU and are slow).
 
+### Installed + used in production (2026-10-23, RTX 3060 laptop)
+Portable builds in `E:\video studio and claude work\tools\craft\{filmcraft 0.12.0, lightcraft 0.13.0, photocraft 0.14.0}` — SHA256
+checked against each release's SHA256SUMS.txt. First real job: linkutm keynote promo (HyperFrames render → FilmCraft finish → LightCraft
++ PhotoCraft cover). Working recipes:
+- **FilmCraft**: `--project` needs an EXISTING file — create with `filmcraft-cli --save-as p.fcproj import clip.mov`. Drive everything else
+  with `run steps.jsonl` (one `{"id","params"}` per line) — PowerShell 5 strips quotes from inline JSON, and PS `Set-Content -Encoding utf8`
+  writes a BOM that breaks the parser (write with `[IO.File]::WriteAllText` or Python). Steps: `file.newSequenceFromClip {"items":[1]}` →
+  `sequence.settings {"width":1080,"height":1920,"fps":30}` → `effects.apply {"clips":[<video clip>],"effect":"Lumetri Color"}` →
+  `effects.setParam {"clip":c,"effect":0,"param":"contrast","value":8}` (params: contrast, vibrance, temperature, whites, sharpen, exposure,
+  saturation, vignette_amount, …; `inspect sequence` lists them) → `file.exportMedia {"path","format":"h264","bitrateMode":"crf","crf":14,
+  "hardwareEncoding":"auto","wait":true}` (40 s 1080×1920 in ~100 s). `render --seconds S --out f.png` = quick graded-frame check.
+  Its AAC pushed true peak from −1.3 to −0.8 dBTP → replace the audio with your own limited master (`-c:v copy`).
+- **LightCraft**: `lightcraft-cli render in.png -o out.png --set light.contrast=10 --set color.vibrance=12 --set light.whites=6` (control ids:
+  `controls --json`: wb.temp, light.exposure/contrast/highlights/shadows/whites/blacks, color.vibrance/saturation, mixer.*).
+- **PhotoCraft**: call from Python (subprocess list args) so JSON params survive: `photocraft-cli run base.png --cmd type.create --params
+  '{"x":540,"y":340,"text":"…","align":"center","font":"Inter","weight":900,"size":<pt>,"color":"#0d0d0d","tracking":-40}' --cmd type.setStyle
+  --params '{"range":[5,13],"color":"#ee560c"}' --out cover.png`. Opened PNGs are 300 dpi → size in pt = px × 72 / 300 (124 pt came out 4× too big).
+  `type.fonts` lists available families (Inter is bundled).
+
 ## FilmCraft (Premiere-style editor) — headless finishing stage
 - `filmcraft-cli` (JSON out, exit 0/1/2), 650+ commands: `commands`, `describe <id>`, `--project p.fcproj --save import …`,
   `exec <cmd> k=v`, `run script.jsonl` (one `{"id","params"}` per line, `--keep-going`), `export out.mp4 --preset "YouTube 1080p Full HD"`.

@@ -1,0 +1,726 @@
+<!-- Template: keynote iPhone with LIVE DOM app UI (linkutm promo, 2026-10-23). HyperFrames 0.8.185, 1080x1920, music-only.
+     Needs next to it: vendor/ (gsap.min.js, qrcode.js, three.module.js + three.core.js, RoomEnvironment.js), fonts/ (Inter 400-900, JetBrains Mono 500), logo svgs.
+     Retime: edit the A anchors (bar grid of the bed) - camera keys, captions, typing and SFX all derive from them. -->
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>linkutm promo — keynote iPhone</title>
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/qrcode.js"></script>
+    <script type="importmap">
+      { "imports": { "three": "./vendor/three.module.js", "three/addons/": "./vendor/" } }
+    </script>
+    <style>
+      @font-face { font-family: "Inter"; src: url("fonts/inter-400.woff2") format("woff2"); font-weight: 400; }
+      @font-face { font-family: "Inter"; src: url("fonts/inter-500.woff2") format("woff2"); font-weight: 500; }
+      @font-face { font-family: "Inter"; src: url("fonts/inter-600.woff2") format("woff2"); font-weight: 600; }
+      @font-face { font-family: "Inter"; src: url("fonts/inter-700.woff2") format("woff2"); font-weight: 700; }
+      @font-face { font-family: "Inter"; src: url("fonts/inter-800.woff2") format("woff2"); font-weight: 800; }
+      @font-face { font-family: "Inter"; src: url("fonts/inter-900.woff2") format("woff2"); font-weight: 900; }
+      @font-face { font-family: "JetBrains Mono"; src: url("fonts/jbmono-500.woff2") format("woff2"); font-weight: 500; }
+      :root {
+        --primary: #ee560c; --amber: #ffad05; --orange: #ff6200; --ink: #0a0a0a; --ink2: #0d0d0d;
+        --muted: #737373; --line: #e5e5e5; --soft: #f5f5f5; --studio: #efe9e2;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--studio); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Inter", sans-serif; color: var(--ink); }
+      #stage { position: absolute; inset: 0; }
+      .layer { position: absolute; inset: 0; pointer-events: none; }
+
+      /* studio backdrop: warm seamless sweep + floor */
+      #bg { background:
+          radial-gradient(ellipse 70% 42% at 50% 38%, #fdfbf8 0%, rgba(253,251,248,0) 70%),
+          linear-gradient(180deg, #f4efe9 0%, #eee7df 58%, #e6ddd2 74%, #ebe3da 100%); }
+      #bgGlow { opacity: 0; background: radial-gradient(ellipse 55% 30% at 50% 55%, rgba(255,140,40,.35), rgba(255,140,40,0) 70%); }
+      #sweep { opacity: 0; background: linear-gradient(105deg, rgba(255,173,5,0) 30%, rgba(255,173,5,.55) 45%, rgba(255,98,0,.65) 50%, rgba(255,173,5,0) 66%); }
+      #gl { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+      #grain { opacity: .07; mix-blend-mode: multiply; }
+      #vign { background: radial-gradient(ellipse 90% 75% at 50% 45%, rgba(0,0,0,0) 60%, rgba(60,40,20,.16) 100%); }
+
+      /* ---------- the live phone screen (390 x 844 virtual px) ---------- */
+      #screen { position: absolute; left: 0; top: 0; width: 390px; height: 844px; transform-origin: 0 0;
+        border-radius: 54px; overflow: hidden; background: #fff; }
+      .scr { position: absolute; inset: 0; background: #fff; opacity: 0; overflow: hidden; }
+      .status { position: absolute; left: 0; right: 0; top: 0; height: 54px; display: flex; justify-content: space-between;
+        align-items: center; padding: 6px 34px 0 42px; font-weight: 600; font-size: 16px; z-index: 30; color: var(--ink); }
+      .island { position: absolute; top: 11px; left: 50%; margin-left: -62px; width: 124px; height: 36px; border-radius: 20px; background: #000; z-index: 31; }
+      .glare { position: absolute; inset: 0; z-index: 40; mix-blend-mode: screen; opacity: .0;
+        background: linear-gradient(115deg, rgba(255,255,255,0) 35%, rgba(255,255,255,.55) 48%, rgba(255,255,255,0) 60%); }
+      .apphead { position: absolute; left: 0; right: 0; top: 54px; height: 52px; display: flex; align-items: center; justify-content: space-between;
+        padding: 0 20px; border-bottom: 1px solid var(--line); background: #fff; z-index: 5; }
+      .apphead img { height: 21px; }
+      .ava { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--amber), var(--orange)); color: #fff;
+        font-weight: 700; font-size: 14px; display: grid; place-items: center; }
+      .body { position: absolute; left: 0; right: 0; top: 106px; bottom: 0; padding: 18px 18px; }
+      h2.pt { font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
+      .sub { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.35; }
+      .lbl { font-size: 13px; font-weight: 600; margin: 14px 0 6px; }
+      .inp { height: 42px; border: 1px solid var(--line); border-radius: 8px; padding: 0 12px; display: flex; align-items: center;
+        font-family: "JetBrains Mono", monospace; font-size: 12.5px; color: var(--ink); background: #fff; white-space: nowrap; overflow: hidden; }
+      .inp.ph { color: #a3a3a3; }
+      .inp.focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(238,86,12,.15); }
+      .caret { display: inline-block; width: 1.5px; height: 16px; background: var(--primary); margin-left: 1px; }
+      .btn { height: 44px; border-radius: 8px; background: var(--primary); color: #fff; font-weight: 600; font-size: 15px;
+        display: grid; place-items: center; }
+      .btn.ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+      .tabs { display: flex; gap: 6px; }
+      .tab { flex: 1; height: 36px; border: 1px solid var(--line); border-radius: 8px; font-size: 12.5px; font-weight: 600;
+        display: grid; place-items: center; color: #404040; background: #fff; }
+      .card { border: 1px solid var(--line); border-radius: 12px; padding: 14px; background: #fff; }
+      .row { display: flex; align-items: center; gap: 12px; }
+      .ico { width: 36px; height: 36px; border-radius: 9px; background: #fff4ee; color: var(--primary); display: grid; place-items: center; flex: none; }
+      .ico svg { width: 18px; height: 18px; }
+      .sw { width: 42px; height: 24px; border-radius: 12px; background: #e5e5e5; position: relative; flex: none; margin-left: auto; }
+      .sw i { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+      .sw .on { position: absolute; inset: 0; border-radius: 12px; background: var(--primary); opacity: 0; }
+      .rt { font-size: 14.5px; font-weight: 600; }
+      .rd { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.3; }
+      .toast { position: absolute; left: 18px; right: 18px; top: 62px; height: 50px; border-radius: 12px; background: #fff; z-index: 20;
+        border: 1px solid #bbf7d0; box-shadow: 0 10px 30px rgba(0,0,0,.12); display: flex; align-items: center; gap: 10px; padding: 0 14px;
+        font-size: 14px; font-weight: 600; color: #166534; opacity: 0; }
+      .toast b { width: 20px; height: 20px; border-radius: 50%; background: #16a34a; color: #fff; display: grid; place-items: center; font-size: 12px; }
+      .chip { display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 12px; font-size: 11.5px; font-weight: 600;
+        background: #fff4ee; color: var(--primary); }
+      .exdata { position: absolute; right: 18px; top: 122px; font-size: 10.5px; font-weight: 600; color: #a3a3a3; letter-spacing: .02em; z-index: 6; }
+
+      /* feed (hook) */
+      .post { margin: 0 0 14px; }
+      .ph-top { display: flex; align-items: center; gap: 10px; padding: 10px 16px; }
+      .ph-av { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #f9a8d4, #fb7185); }
+      .ph-n { font-size: 14px; font-weight: 700; } .ph-s { font-size: 11.5px; color: var(--muted); }
+      .creative { height: 300px; position: relative; display: grid; place-items: center; text-align: center; overflow: hidden; }
+      .creative .big { font-size: 46px; font-weight: 900; letter-spacing: -.03em; line-height: .95; }
+      .creative .sm { font-size: 14px; font-weight: 700; margin-top: 8px; letter-spacing: .08em; }
+      .cta-bar { margin: 0 16px; height: 40px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: space-between;
+        padding: 0 12px; font-size: 13px; font-weight: 600; }
+      .q { position: absolute; width: 120px; height: 120px; border-radius: 50%; border: 6px solid var(--primary); color: var(--primary);
+        font-size: 82px; font-weight: 900; display: grid; place-items: center; background: rgba(255,255,255,.88); opacity: 0; }
+
+      /* QR */
+      #qrWrap { position: relative; width: 250px; height: 250px; margin: 6px auto 0; }
+      #qrWrap svg { position: absolute; inset: 0; width: 250px; height: 250px; }
+      .qtabs { display: flex; gap: 6px; margin-top: 16px; }
+      .qtab { height: 32px; padding: 0 11px; border-radius: 16px; border: 1px solid var(--line); font-size: 12.5px; font-weight: 600; display: grid; place-items: center; color: #404040; }
+      .qtab.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+      .swatches { display: flex; gap: 10px; margin-top: 16px; }
+      .swatches span { width: 34px; height: 34px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 1px var(--line); }
+
+      /* analytics */
+      #anaScroll { position: absolute; left: 0; right: 0; top: 0; }
+      .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+      .st .t { font-size: 12px; font-weight: 600; color: #525252; } .st .v { font-size: 26px; font-weight: 800; letter-spacing: -.02em; margin-top: 4px; }
+      .st .c { font-size: 11px; color: var(--muted); margin-top: 2px; }
+      .bars { height: 120px; display: flex; align-items: flex-end; gap: 9px; margin-top: 12px; }
+      .bars i { flex: 1; border-radius: 5px 5px 2px 2px; background: linear-gradient(180deg, var(--amber), var(--orange)); transform-origin: 50% 100%; }
+      .ctry { display: flex; align-items: center; gap: 10px; margin-top: 11px; font-size: 13px; font-weight: 600; }
+      .flag { width: 30px; height: 22px; border-radius: 5px; background: var(--soft); font-size: 10.5px; font-weight: 800; display: grid; place-items: center; color: #404040; flex: none; }
+      .meter { flex: 1; height: 8px; border-radius: 4px; background: var(--soft); overflow: hidden; } .meter i { display: block; height: 100%; background: var(--primary); border-radius: 4px; transform-origin: 0 50%; }
+      .num { font-variant-numeric: tabular-nums; min-width: 52px; text-align: right; }
+      .tl-row { display: flex; align-items: center; gap: 10px; padding: 11px 10px; border-radius: 10px; margin-top: 6px; position: relative; }
+      .tl-row .u { font-family: "JetBrains Mono", monospace; font-size: 12.5px; font-weight: 500; }
+      .ring { position: absolute; inset: -2px; border-radius: 12px; border: 2.5px solid var(--primary); opacity: 0; box-shadow: 0 0 0 5px rgba(238,86,12,.12); }
+
+      /* ---------- overlay type + fx ---------- */
+      .kin { position: absolute; left: 60px; right: 60px; text-align: center; font-weight: 900; letter-spacing: -.035em; color: var(--ink2); }
+      .kin .o { color: var(--primary); }
+      #hook1 { top: 262px; font-size: 76px; line-height: 1.02; font-weight: 800; }
+      #hook2 { top: 340px; font-size: 76px; line-height: 1.02; }
+      .word { position: absolute; left: 0; right: 0; top: 262px; text-align: center; font-size: 130px; font-weight: 900; letter-spacing: -.05em; opacity: 0; }
+      #ctaWords { position: absolute; left: 60px; right: 60px; top: 1235px; text-align: center; }
+      #cw1, #cw2 { font-size: 70px; font-weight: 900; letter-spacing: -.035em; line-height: 1.05; opacity: 0; }
+      #cw2 { font-size: 54px; font-weight: 800; margin-top: 8px; }
+      #url { position: absolute; left: 0; right: 0; top: 1255px; text-align: center; font-size: 84px; font-weight: 900; letter-spacing: -.04em; opacity: 0; }
+      #url .o { color: var(--primary); }
+      #ctaBtn { position: absolute; left: 50%; top: 1375px; width: 420px; margin-left: -210px; height: 96px; border-radius: 18px; background: var(--primary);
+        color: #fff; font-size: 38px; font-weight: 800; display: grid; place-items: center; opacity: 0; box-shadow: 0 18px 40px rgba(238,86,12,.35); }
+      #flash { background: #fff; opacity: 0; }
+      .shard { position: absolute; left: 540px; top: 900px; border-radius: 3px; opacity: 0; }
+      .shock { position: absolute; left: 540px; top: 960px; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%;
+        border: 4px solid var(--orange); opacity: 0; }
+      .flyer { position: absolute; width: 230px; height: 320px; border-radius: 14px; background: #fff; box-shadow: 0 20px 40px rgba(80,50,20,.18);
+        opacity: 0; overflow: hidden; text-align: center; }
+      .flyer .fh { height: 120px; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 30px; letter-spacing: -.02em; line-height: .95; }
+      .flyer svg { width: 130px; height: 130px; margin-top: 16px; }
+      .flyer .fs { font-size: 13px; font-weight: 800; letter-spacing: .1em; color: var(--ink); margin-top: 6px; }
+      #lockBig { position: absolute; left: 50%; top: 600px; width: 760px; height: 760px; margin-left: -380px; opacity: 0; }
+      .route { position: absolute; opacity: 0; }
+      .cap { position: absolute; left: 0; right: 0; margin: 0 auto; top: 252px; width: max-content; max-width: 960px; text-align: center;
+        background: rgba(13,13,13,.93); color: #fff; font-size: 54px; font-weight: 800; letter-spacing: -.025em; line-height: 1.14;
+        padding: 20px 38px 22px; border-radius: 34px; box-shadow: 0 18px 40px rgba(40,25,10,.22); opacity: 0; }
+      .cap .o { color: #ff8a3d; }
+      #whichList .ln { display: block; opacity: 0; }
+      .dchip { position: absolute; height: 76px; padding: 0 28px 0 22px; border-radius: 38px; background: #fff; box-shadow: 0 14px 30px rgba(80,50,20,.16);
+        display: flex; align-items: center; gap: 12px; font-size: 34px; font-weight: 800; opacity: 0; }
+      .dchip svg { width: 34px; height: 34px; }
+      .pulse { position: absolute; width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 50%; background: var(--primary); opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="40" data-width="1080" data-height="1920">
+      <div id="stage">
+        <div id="bg" class="layer"></div>
+        <div id="bgGlow" class="layer"></div>
+        <div id="sweep" class="layer"></div>
+
+        <!-- behind-the-phone graphics -->
+        <div id="behind" class="layer">
+          <div id="flyers"></div>
+          <svg id="lockBig" viewBox="0 0 200 200">
+            <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFAD05" /><stop offset="1" stop-color="#FF6200" /></linearGradient></defs>
+            <path d="M62 88 V64 a38 38 0 0 1 76 0 V88" fill="none" stroke="url(#lg)" stroke-width="16" stroke-linecap="round" />
+            <rect x="40" y="86" width="120" height="96" rx="20" fill="url(#lg)" />
+            <circle cx="100" cy="128" r="11" fill="#fff" /><rect x="95" y="132" width="10" height="24" rx="5" fill="#fff" />
+          </svg>
+          <svg id="routeL" class="route" style="left:0;top:700px" width="540" height="700" viewBox="0 0 540 700">
+            <path id="routeLp" d="M540 380 C 380 380, 300 200, 120 170" fill="none" stroke="#ee560c" stroke-width="10" stroke-linecap="round" stroke-dasharray="1 22" />
+          </svg>
+          <svg id="routeR" class="route" style="left:540px;top:700px" width="540" height="700" viewBox="0 0 540 700">
+            <path id="routeRp" d="M0 380 C 160 380, 240 560, 420 590" fill="none" stroke="#ee560c" stroke-width="10" stroke-linecap="round" stroke-dasharray="1 22" />
+          </svg>
+          <div id="pulses"></div>
+        </div>
+
+        <canvas id="gl" width="1080" height="1920"></canvas>
+
+        <!-- live phone screen (mapped onto the 3D display every frame) -->
+        <div id="screen">
+          <div class="island"></div>
+          <div class="status"><span>9:41</span>
+            <svg width="70" height="14" viewBox="0 0 70 14"><rect x="0" y="9" width="3.5" height="5" rx="1" /><rect x="5.5" y="6" width="3.5" height="8" rx="1" /><rect x="11" y="3" width="3.5" height="11" rx="1" /><rect x="16.5" y="0" width="3.5" height="14" rx="1" />
+              <path d="M30 4.5a10 10 0 0 1 13 0l-1.6 1.7a7.6 7.6 0 0 0-9.8 0zM32.6 7.4a6.2 6.2 0 0 1 7.8 0l-1.7 1.8a3.8 3.8 0 0 0-4.4 0zM36.5 13l-2-2.1a2.8 2.8 0 0 1 4 0z" />
+              <rect x="47" y="1" width="20" height="12" rx="3.5" fill="none" stroke="#0a0a0a" stroke-opacity=".4" /><rect x="49" y="3" width="15" height="8" rx="2" /><rect x="68" y="5" width="1.6" height="4" rx=".8" opacity=".4" /></svg>
+          </div>
+
+          <!-- S1 feed -->
+          <div id="sFeed" class="scr">
+            <div id="feedScroll" style="position:absolute;left:0;right:0;top:60px">
+              <div class="post">
+                <div class="ph-top"><div class="ph-av"></div><div><div class="ph-n">Bloom &amp; Co.</div><div class="ph-s">Sponsored</div></div></div>
+                <div class="creative" style="background:linear-gradient(160deg,#fde68a,#fb923c)"><div><div class="big">SPRING<br />SALE</div><div class="sm">30% OFF EVERYTHING</div></div><div id="q1" class="q">?</div></div>
+                <div class="cta-bar" style="margin-top:10px"><span>Shop now</span><span>›</span></div>
+              </div>
+              <div class="post">
+                <div class="ph-top"><div class="ph-av" style="background:linear-gradient(135deg,#93c5fd,#6366f1)"></div><div><div class="ph-n">Bloom &amp; Co.</div><div class="ph-s">Sponsored</div></div></div>
+                <div class="creative" style="background:linear-gradient(160deg,#bbf7d0,#2dd4bf)"><div><div class="big">NEW<br />ARRIVALS</div><div class="sm">FREE DELIVERY TODAY</div></div><div id="q2" class="q">?</div></div>
+                <div class="cta-bar" style="margin-top:10px"><span>Learn more</span><span>›</span></div>
+              </div>
+              <div class="post">
+                <div class="ph-top"><div class="ph-av" style="background:linear-gradient(135deg,#f0abfc,#a855f7)"></div><div><div class="ph-n">Bloom &amp; Co.</div><div class="ph-s">Sponsored</div></div></div>
+                <div class="creative" style="background:linear-gradient(160deg,#fecdd3,#f43f5e)"><div><div class="big">LAST<br />CHANCE</div><div class="sm">ENDS SUNDAY</div></div><div id="q3" class="q">?</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- S2 splash -->
+          <div id="sSplash" class="scr" style="display:grid;place-items:center">
+            <img id="splashLogo" src="logo.svg" style="width:250px" alt="" />
+          </div>
+
+          <!-- S3 create link -->
+          <div id="sCreate" class="scr">
+            <div class="apphead"><img src="logo.svg" alt="" /><div class="ava">B</div></div>
+            <div class="body">
+              <div class="row" style="justify-content:space-between"><h2 class="pt">Create link</h2><span style="font-size:22px;color:#a3a3a3">✕</span></div>
+              <div class="lbl">Destination URL</div>
+              <div id="inUrl" class="inp ph"><span id="tUrl">https://example.com/my-page</span></div>
+              <div class="lbl">Short Link</div>
+              <div class="row" style="gap:8px">
+                <div class="inp" style="width:122px;flex:none;font-weight:500">bloom.link/</div>
+                <div id="inSlug" class="inp ph" style="flex:1"><span id="tSlug">my-link</span></div>
+              </div>
+              <div class="lbl">Tags</div>
+              <div class="inp ph" id="inTags" style="font-family:Inter;font-size:13px"><span id="tTags">Add tags</span></div>
+              <div class="card" style="margin-top:16px;background:#fafafa;font-size:12px;line-height:1.45;color:#525252;padding:12px">
+                <b style="color:var(--ink)">QUICK TIP:</b> Track campaigns with UTM, protect or schedule your link under Advanced, or connect Pixels for retargeting
+              </div>
+              <div class="tabs" style="margin-top:14px"><div class="tab">UTM</div><div class="tab">Targeting</div><div class="tab">Advanced</div><div class="tab">Pixels</div></div>
+              <div id="btnCreate" class="btn" style="margin-top:18px">Create link</div>
+            </div>
+            <!-- success state -->
+            <div id="created" style="position:absolute;inset:106px 0 0 0;background:#fff;opacity:0;padding:36px 22px;text-align:center">
+              <div id="okBadge" style="width:86px;height:86px;border-radius:50%;margin:30px auto 0;background:#dcfce7;display:grid;place-items:center">
+                <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+              </div>
+              <h2 class="pt" style="margin-top:22px;font-size:28px">Link Created!</h2>
+              <div class="sub" style="font-size:14px">Your short link is ready</div>
+              <div class="card" style="margin-top:26px;display:flex;align-items:center;justify-content:space-between;border-color:var(--primary);background:#fff8f4">
+                <span style="font-family:'JetBrains Mono';font-size:19px;font-weight:500;color:var(--primary)">bloom.link/spring</span>
+                <span class="chip">Copy</span>
+              </div>
+              <div id="cQr" style="width:130px;height:130px;margin:22px auto 0"></div>
+              <div class="sub" style="margin-top:6px">Scan to open</div>
+              <div class="row" style="gap:10px;margin-top:22px"><div class="btn ghost" style="flex:1">Close</div><div class="btn" style="flex:1">Create Another</div></div>
+            </div>
+            <div id="toastCopied" class="toast"><b>✓</b>Link copied!</div>
+          </div>
+
+          <!-- S4 QR design -->
+          <div id="sQr" class="scr">
+            <div class="apphead"><img src="logo.svg" alt="" /><div class="ava">B</div></div>
+            <div class="body">
+              <h2 class="pt">QR Code</h2>
+              <div class="sub">bloom.link/spring</div>
+              <div class="card" style="margin-top:14px;padding:18px 0;background:#fafafa"><div id="qrWrap"></div></div>
+              <div class="qtabs"><div class="qtab" id="qtLogo">Logo</div><div class="qtab" id="qtFrame">Frame</div><div class="qtab" id="qtDots">Dots</div><div class="qtab" id="qtCorners">Corners</div><div class="qtab" id="qtColors">Colors</div></div>
+              <div class="swatches"><span style="background:#0a0a0a"></span><span id="swO" style="background:linear-gradient(135deg,#FFAD05,#FF6200)"></span><span style="background:#2563eb"></span><span style="background:#16a34a"></span><span style="background:#9333ea"></span></div>
+              <div class="row" style="gap:10px;margin-top:18px"><div class="btn ghost" style="flex:1;font-size:13px">PNG (Recommended)</div><div id="btnDl" class="btn" style="flex:1">Download</div></div>
+            </div>
+            <div id="toastQr" class="toast"><b>✓</b>QR code downloaded!</div>
+          </div>
+
+          <!-- S5 advanced settings -->
+          <div id="sAdv" class="scr">
+            <div class="apphead"><img src="logo.svg" alt="" /><div class="ava">B</div></div>
+            <div class="body">
+              <h2 class="pt">Advanced Settings</h2>
+              <div class="card" style="margin-top:14px">
+                <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg></div>
+                  <div><div class="rt">Password Protection</div><div class="rd">Require a password to access this link</div></div><div class="sw" id="sw1"><div class="on"></div><i></i></div></div>
+                <div id="pwBox" style="opacity:0"><div class="inp" style="margin-top:12px"><svg id="tPw" width="0" height="12" viewBox="0 0 176 12" preserveAspectRatio="xMinYMid slice" style="overflow:hidden"><g fill="#0a0a0a"><circle cx="6" cy="6" r="5" /><circle cx="28" cy="6" r="5" /><circle cx="50" cy="6" r="5" /><circle cx="72" cy="6" r="5" /><circle cx="94" cy="6" r="5" /><circle cx="116" cy="6" r="5" /><circle cx="138" cy="6" r="5" /><circle cx="160" cy="6" r="5" /></g></svg></div></div>
+              </div>
+              <div class="card" style="margin-top:10px">
+                <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v4M5 12H3M21 12h-2M7 7 5.5 5.5M17 7l1.5-1.5" /><circle cx="12" cy="14" r="6" /><path d="M12 14l2.5-2.5" /></svg></div>
+                  <div><div class="rt">Click Limit</div><div class="rd">Set maximum number of allowed clicks</div></div></div>
+                <div id="inLimit" class="inp ph" style="margin-top:12px;font-family:Inter;font-size:13.5px"><span id="tLimit">e.g., 100 (unlimited if empty)</span></div>
+              </div>
+              <div class="card" style="margin-top:10px">
+                <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="5" width="16" height="16" rx="2" /><path d="M4 10h16M9 3v4M15 3v4" /></svg></div>
+                  <div><div class="rt">Scheduling</div><div class="rd">Set activation and expiration time</div></div><div class="sw" id="sw3"><div class="on"></div><i></i></div></div>
+                <div id="schBox" style="opacity:0">
+                  <div class="lbl" style="margin-top:12px">Expiration Date &amp; Time</div>
+                  <div class="inp" style="font-family:Inter;font-size:13.5px;font-weight:600">Sun, Oct 26 · 11:59 PM</div>
+                </div>
+              </div>
+              <div class="card" style="margin-top:10px">
+                <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12h12M12 6l6 6-6 6" /></svg></div>
+                  <div><div class="rt">Fallback URL</div><div class="rd">Redirect visitors when link is inactive or limit reached</div></div></div>
+              </div>
+              <div class="btn" style="margin-top:14px">Done</div>
+            </div>
+          </div>
+
+          <!-- S6 targeting -->
+          <div id="sTgt" class="scr">
+            <div class="apphead"><img src="logo.svg" alt="" /><div class="ava">B</div></div>
+            <div class="body">
+              <h2 class="pt">Targeting</h2>
+              <div class="card" style="margin-top:14px">
+                <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="7" y="2.5" width="10" height="19" rx="2.5" /><path d="M11 18.5h2" /></svg></div>
+                  <div><div class="rt">iOS</div><div class="rd">Redirect iPhone, iPad, and iPod users</div></div></div>
+                <div id="inIos" class="inp ph" style="margin-top:12px"><span id="tIos">https://</span></div>
+              </div>
+              <div class="card" style="margin-top:10px">
+                <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="6" y="2.5" width="12" height="19" rx="2" /><circle cx="12" cy="18" r=".8" fill="currentColor" /></svg></div>
+                  <div><div class="rt">Android Redirect</div><div class="rd">Send Android users to their own page</div></div></div>
+                <div id="inAnd" class="inp ph" style="margin-top:12px"><span id="tAnd">https://</span></div>
+              </div>
+              <div class="card" style="margin-top:10px">
+                <div class="row"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18" /></svg></div>
+                  <div><div class="rt">Geo targeting</div><div class="rd">Add location</div></div></div>
+              </div>
+              <div id="btnTgt" class="btn" style="margin-top:14px">Apply Targeting</div>
+            </div>
+          </div>
+
+          <!-- S7 analytics -->
+          <div id="sAna" class="scr">
+            <div class="apphead"><img src="logo.svg" alt="" /><div class="ava">B</div></div>
+            <div style="position:absolute;left:0;right:0;top:106px;bottom:0;overflow:hidden">
+              <div id="anaScroll" style="padding:18px">
+                <div class="exdata" style="position:static;margin-bottom:4px">EXAMPLE DATA</div>
+                <div class="row" style="justify-content:space-between"><h2 class="pt">Analytics</h2><span class="chip" style="background:var(--soft);color:#404040">Last 7 days</span></div>
+                <div class="stats">
+                  <div class="card st"><div class="t">Total Clicks</div><div class="v" id="vClicks">0</div><div class="c">Link clicks this period</div></div>
+                  <div class="card st"><div class="t">Unique Visitors</div><div class="v" id="vUniq">0</div><div class="c">Distinct users</div></div>
+                  <div class="card st"><div class="t">Countries</div><div class="v" id="vCtry">0</div><div class="c">Geographic reach</div></div>
+                  <div class="card st"><div class="t">Referrers</div><div class="v" id="vRef">0</div><div class="c">Distinct referring sites</div></div>
+                </div>
+                <div class="card" style="margin-top:12px"><div class="rt">Clicks Over Time</div>
+                  <div class="bars" id="bars"><i style="height:38%"></i><i style="height:52%"></i><i style="height:45%"></i><i style="height:70%"></i><i style="height:64%"></i><i style="height:88%"></i><i style="height:100%"></i></div></div>
+                <div class="card" id="cardCtry" style="margin-top:12px"><div class="rt">Countries</div>
+                  <div class="ctry"><div class="flag">IN</div>India<div class="meter"><i style="width:100%"></i></div><div class="num">5,204</div></div>
+                  <div class="ctry"><div class="flag">US</div>United States<div class="meter"><i style="width:56%"></i></div><div class="num">2,911</div></div>
+                  <div class="ctry"><div class="flag">GB</div>United Kingdom<div class="meter"><i style="width:27%"></i></div><div class="num">1,388</div></div>
+                  <div class="ctry"><div class="flag">AE</div>UAE<div class="meter"><i style="width:16%"></i></div><div class="num">846</div></div>
+                </div>
+                <div class="card" id="cardTech" style="margin-top:12px"><div class="rt">Technology</div>
+                  <div class="ctry"><div class="flag">iOS</div>iPhone<div class="meter"><i style="width:100%"></i></div><div class="num">58%</div></div>
+                  <div class="ctry"><div class="flag">AND</div>Android<div class="meter"><i style="width:64%"></i></div><div class="num">37%</div></div>
+                  <div class="ctry"><div class="flag">PC</div>Desktop<div class="meter"><i style="width:9%"></i></div><div class="num">5%</div></div>
+                </div>
+                <div class="card" id="cardTop" style="margin-top:12px"><div class="row" style="justify-content:space-between"><div class="rt">Top Performing Links</div><span style="font-size:12px;color:var(--primary);font-weight:600">View all</span></div>
+                  <div class="tl-row"><div id="topRing" class="ring"></div><div style="flex:1"><div class="u">bloom.link/spring</div><span class="chip" style="margin-top:5px">instagram</span></div><div class="num" style="font-weight:800;font-size:15px">4,212</div></div>
+                  <div class="tl-row"><div style="flex:1"><div class="u">bloom.link/reel</div><span class="chip" style="margin-top:5px;background:var(--soft);color:#404040">youtube</span></div><div class="num" style="font-weight:700">2,980</div></div>
+                  <div class="tl-row"><div style="flex:1"><div class="u">bloom.link/flyer</div><span class="chip" style="margin-top:5px;background:var(--soft);color:#404040">qr-code</span></div><div class="num" style="font-weight:700">1,544</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- S8 end -->
+          <div id="sEnd" class="scr" style="display:grid;place-items:center;text-align:center">
+            <div><img src="logo.svg" style="width:260px" alt="" /><div class="btn" style="margin:34px auto 0;width:220px">Start for free</div></div>
+          </div>
+          <div id="glare" class="glare"></div>
+        </div>
+
+        <!-- overlay type + fx -->
+        <div id="fx" class="layer">
+          <div id="hook1" class="kin">You're paying for ads…</div>
+          <div id="hook2" class="kin" style="top:352px">and <span class="o">guessing</span><br />which one works.</div>
+          <div id="wShort" class="word">short.</div>
+          <div id="wBrand" class="word">branded.</div>
+          <div id="wTrack" class="word"><span style="color:var(--primary)">trackable.</span></div>
+          <div id="chipI" class="dchip" style="left:20px;top:800px"><svg viewBox="0 0 24 24" fill="none" stroke="#ee560c" stroke-width="2.2"><rect x="7" y="2.5" width="10" height="19" rx="2.5" /><path d="M11 18.5h2" /></svg>iPhone</div>
+          <div id="chipA" class="dchip" style="left:812px;top:1252px"><svg viewBox="0 0 24 24" fill="none" stroke="#ee560c" stroke-width="2.2"><rect x="6" y="2.5" width="12" height="19" rx="2" /><circle cx="12" cy="18" r=".8" fill="#ee560c" /></svg>Android</div>
+          <div id="caps"></div>
+          <div id="whichList" class="cap" style="text-align:left"><span class="ln">Which <span class="o">country</span>.</span><span class="ln">Which <span class="o">device</span>.</span><span class="ln">Which <span class="o">post</span> brought the sale.</span></div>
+          <div id="shocks"></div>
+          <div id="shards"></div>
+          <div id="ctaWords"><div id="cw1">Stop guessing.</div><div id="cw2">Put your money where it works.</div></div>
+          <div id="url">linkutm<span class="o">.com</span></div>
+          <div id="ctaBtn">Start for free</div>
+        </div>
+        <svg id="grain" class="layer" width="1080" height="1920"><filter id="nz"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" /><feColorMatrix type="saturate" values="0" /></filter><rect width="1080" height="1920" filter="url(#nz)" /></svg>
+        <div id="vign" class="layer"></div>
+        <div id="flash" class="layer"></div>
+      </div>
+    </div>
+
+    <script type="module">
+      import * as THREE from "three";
+      import { RoomEnvironment } from "three/addons/RoomEnvironment.js";
+
+      // ---------------- word anchors (seconds) — re-timed from the Leda VO once it exists ----------------
+      // music-only cut: every section sits on the 120 BPM bar grid of Mixkit #836 (drop at 3.0 s, energy lift at 19.0 s)
+      const A = window.__A = {
+        guess: 1.5, drop: 3.0, paste: 4.0, short: 7.0, branded: 8.0, trackable: 9.0,
+        flyer: 11.0, onetap: 13.0, colours: 14.5, vip: 19.0, password: 19.8, clicks: 21.5, expire: 23.3,
+        iphone: 25.0, rightplace: 27.0, watch: 29.0, country: 31.4, device: 32.4, post: 33.4,
+        stop: 35.0, money: 36.0, tryit: 37.0, url: 37.5, end: 40.0,
+      };
+      // on-screen script lines (no voice, no subtitles): [in, out, html]
+      const CAPS = [
+        [A.paste, A.short - 0.35, "Paste any link."],
+        [A.flyer + 0.2, A.onetap - 0.1, "Going on a flyer?"],
+        [A.onetap, A.colours + 1.9, "One tap. A QR code<br>in <span class='o'>your colours</span>."],
+        [A.vip + 0.1, A.clicks - 0.1, "VIP offer?<br>Lock it with a <span class='o'>password</span>."],
+        [A.clicks, A.expire - 0.1, "Cap it at <span class='o'>100 clicks</span>."],
+        [A.expire, A.iphone - 0.15, "Or let it <span class='o'>expire on Sunday</span>."],
+        [A.iphone + 0.05, A.rightplace - 0.1, "iPhone or Android?"],
+        [A.rightplace, A.watch - 0.15, "We send each one<br>to the <span class='o'>right place</span>."],
+        [A.watch + 0.1, A.country - 0.1, "Watch every <span class='o'>click</span> land."],
+      ];
+      const W = 1080, H = 1920;
+
+      // ---------------- QR (real code for bloom.link/spring) ----------------
+      const qr = qrcode(0, "M"); qr.addData("https://bloom.link/spring"); qr.make();
+      const N = qr.getModuleCount();
+      const isFinder = (r, c) => (r < 7 && c < 7) || (r < 7 && c >= N - 7) || (r >= N - 7 && c < 7);
+      const qrSvg = ({ dots = "sq", corners = "sq", color = "#0a0a0a", logo = false }) => {
+        const pad = 2, S = N + pad * 2; let s = `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg">`;
+        s += `<defs><linearGradient id="qg${dots}${corners}${logo}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFAD05"/><stop offset="1" stop-color="#FF6200"/></linearGradient></defs>`;
+        const fill = color === "grad" ? `url(#qg${dots}${corners}${logo})` : color;
+        const hole = (r, c) => logo && Math.abs(r - (N - 1) / 2) < 4.2 && Math.abs(c - (N - 1) / 2) < 4.2;
+        for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+          if (!qr.isDark(r, c) || isFinder(r, c) || hole(r, c)) continue;
+          const x = c + pad, y = r + pad;
+          s += dots === "dot" ? `<circle cx="${x + .5}" cy="${y + .5}" r=".44" fill="${fill}"/>` : `<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${fill}"/>`;
+        }
+        for (const [r, c] of [[0, 0], [0, N - 7], [N - 7, 0]]) {
+          const x = c + pad, y = r + pad, rr = corners === "round" ? 2.2 : 0, ri = corners === "round" ? 1.1 : 0;
+          s += `<rect x="${x + .5}" y="${y + .5}" width="6" height="6" rx="${rr}" fill="none" stroke="${fill}" stroke-width="1"/>`;
+          s += `<rect x="${x + 2}" y="${y + 2}" width="3" height="3" rx="${ri}" fill="${fill}"/>`;
+        }
+        if (logo) { const m = S / 2; s += `<rect x="${m - 3.6}" y="${m - 3.6}" width="7.2" height="7.2" rx="1.6" fill="#fff"/><image href="logo-icon.svg" x="${m - 3}" y="${m - 1.9}" width="6" height="3.8"/>`; }
+        return s + "</svg>";
+      };
+      const QV = [qrSvg({}), qrSvg({ dots: "dot" }), qrSvg({ dots: "dot", corners: "round" }), qrSvg({ dots: "dot", corners: "round", color: "grad" }), qrSvg({ dots: "dot", corners: "round", color: "grad", logo: true })];
+      const qw = document.getElementById("qrWrap");
+      QV.forEach((v, i) => { const d = document.createElement("div"); d.id = "qv" + i; d.innerHTML = v; d.style.cssText = "position:absolute;inset:0;opacity:" + (i ? 0 : 1); qw.appendChild(d); });
+      document.getElementById("cQr").innerHTML = QV[0];
+
+      // flyer wall (abundance)
+      const FLY = [[-10, 560, -14], [850, 520, 12], [40, 1110, 9], [820, 1080, -10], [-60, 830, 4], [880, 820, -5], [190, 380, -6], [660, 370, 7], [250, 1350, -8], [600, 1340, 10]];
+      const fcols = [["#fde68a", "#fb923c"], ["#bbf7d0", "#2dd4bf"], ["#fecdd3", "#f43f5e"], ["#bfdbfe", "#6366f1"], ["#fde68a", "#f97316"]];
+      const fl = document.getElementById("flyers");
+      FLY.forEach(([x, y, r], i) => { const d = document.createElement("div"); d.className = "flyer"; d.id = "fly" + i; d.style.left = x + "px"; d.style.top = y + "px";
+        const [a, b] = fcols[i % fcols.length]; d.innerHTML = `<div class="fh" style="background:linear-gradient(160deg,${a},${b})">SPRING<br>SALE</div>${QV[4]}<div class="fs">SCAN ME</div>`; fl.appendChild(d); });
+
+      // seeded rng
+      let seed = 1234567; const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+      // debris (the ONE explosion, on the drop)
+      const shards = document.getElementById("shards"), SH = [];
+      for (let i = 0; i < 46; i++) { const d = document.createElement("div"); d.className = "shard"; const w = 10 + rnd() * 34, h = 6 + rnd() * 16;
+        d.style.width = w + "px"; d.style.height = h + "px"; d.style.background = ["#FFAD05", "#FF6200", "#ee560c", "#0d0d0d", "#ffd28a"][i % 5];
+        shards.appendChild(d); const ang = rnd() * Math.PI * 2, dist = 380 + rnd() * 620; SH.push({ d, x: Math.cos(ang) * dist, y: Math.sin(ang) * dist * 0.9 - 120, r: (rnd() - .5) * 900 }); }
+      const shocks = document.getElementById("shocks"); for (let i = 0; i < 2; i++) { const d = document.createElement("div"); d.className = "shock"; d.id = "shock" + i; shocks.appendChild(d); }
+      // click pulses (analytics)
+      const pulses = document.getElementById("pulses"), PU = [];
+      for (let i = 0; i < 18; i++) { const d = document.createElement("div"); d.className = "pulse"; const side = i % 2 ? 1 : -1;
+        const L = 540 + side * (330 + rnd() * 170), T = 420 + rnd() * 1050;
+        d.style.left = L + "px"; d.style.top = T + "px"; pulses.appendChild(d); PU.push({ d, dx: 540 - L, dy: 960 - T }); }
+
+      // ---------------- three.js phone ----------------
+      const canvas = document.getElementById("gl");
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, preserveDrawingBuffer: true });
+      renderer.setPixelRatio(1); renderer.setSize(W, H, false);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      const scene = new THREE.Scene();
+      const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
+      const camera = new THREE.PerspectiveCamera(30, W / H, 0.1, 100);
+
+      const PW = 0.716, PH = 1.476, PR = 0.112, PD = 0.078, BV = 0.012;
+      const rr = (w, h, r) => { const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+        s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r); s.lineTo(x + w, y + h - r); s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r); s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y); return s; };
+      const phone = new THREE.Group(); scene.add(phone);
+      const titanium = new THREE.MeshPhysicalMaterial({ color: 0xc8c1b7, metalness: 1, roughness: 0.26, clearcoat: 0.6, clearcoatRoughness: 0.2 });
+      const backGlass = new THREE.MeshPhysicalMaterial({ color: 0xd9d2c8, metalness: 0.1, roughness: 0.55, clearcoat: 1, clearcoatRoughness: 0.35 });
+      const bodyGeo = new THREE.ExtrudeGeometry(rr(PW - 2 * BV, PH - 2 * BV, PR), { depth: PD, bevelEnabled: true, bevelThickness: BV, bevelSize: BV, bevelSegments: 5, curveSegments: 28 });
+      bodyGeo.translate(0, 0, -PD / 2);
+      phone.add(new THREE.Mesh(bodyGeo, [backGlass, titanium]));
+      const ZF = PD / 2 + BV; // front face z
+      const glass = new THREE.Mesh(new THREE.ShapeGeometry(rr(PW - 0.018, PH - 0.018, PR - 0.008), 28),
+        new THREE.MeshPhysicalMaterial({ color: 0x050505, metalness: 0, roughness: 0.08, clearcoat: 1, clearcoatRoughness: 0.05, polygonOffset: true, polygonOffsetFactor: -2 }));
+      glass.position.z = ZF + 0.0015; phone.add(glass);
+      // side buttons
+      const btn = (x, y, h) => { const m = new THREE.Mesh(new THREE.CapsuleGeometry(0.009, h, 4, 10), titanium); m.position.set(x, y, 0); phone.add(m); };
+      btn(-PW / 2 - 0.004, 0.36, 0.05); btn(-PW / 2 - 0.004, 0.24, 0.1); btn(-PW / 2 - 0.004, 0.1, 0.1); btn(PW / 2 + 0.004, 0.26, 0.16);
+      // camera plateau on the back
+      const plate = new THREE.Mesh(new THREE.ExtrudeGeometry(rr(0.3, 0.3, 0.07), { depth: 0.012, bevelEnabled: true, bevelThickness: 0.006, bevelSize: 0.006, bevelSegments: 3 }), backGlass);
+      plate.rotation.y = Math.PI; plate.position.set(PW / 2 - 0.2, PH / 2 - 0.2, -PD / 2 - BV); phone.add(plate);
+      const lensM = new THREE.MeshPhysicalMaterial({ color: 0x111111, metalness: 0.6, roughness: 0.1, clearcoat: 1 });
+      for (const [lx, ly] of [[-0.065, 0.065], [-0.065, -0.065], [0.07, 0]]) { const l = new THREE.Mesh(new THREE.CylinderGeometry(0.048, 0.052, 0.03, 32), lensM); l.rotation.x = Math.PI / 2;
+        l.position.set(PW / 2 - 0.2 - lx, PH / 2 - 0.2 + ly, -PD / 2 - BV - 0.03); phone.add(l); }
+      // screen area (DOM overlay target)
+      const SW = PW - 0.058, SHh = PH - 0.058, ZS = ZF + 0.002;
+
+      // floor contact shadow
+      const sc = document.createElement("canvas"); sc.width = sc.height = 256; const g2 = sc.getContext("2d");
+      const grd = g2.createRadialGradient(128, 128, 0, 128, 128, 128); grd.addColorStop(0, "rgba(70,45,20,.55)"); grd.addColorStop(.55, "rgba(70,45,20,.18)"); grd.addColorStop(1, "rgba(70,45,20,0)");
+      g2.fillStyle = grd; g2.fillRect(0, 0, 256, 256);
+      const shadow = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 0.62), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sc), transparent: true, depthWrite: false }));
+      shadow.rotation.x = -Math.PI / 2; const FLOOR = -PH / 2 - 0.16; shadow.position.y = FLOOR; scene.add(shadow);
+
+      scene.add(new THREE.HemisphereLight(0xfff6ec, 0xb8a894, 0.9));
+      const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(-2.5, 3.5, 4); scene.add(key);
+      const rim = new THREE.PointLight(0xff7a1a, 0, 8); rim.position.set(1.8, 0.6, 1.2); scene.add(rim);
+
+      // ---------------- camera / phone keyframes ----------------
+      // shot: ry rx rz (phone rotation), py (phone lift), cz (camera distance), cy (camera height), ly (look-at y), lx
+      const D0 = { ry: 0, rx: 0, rz: 0, py: 0, cz: 5.0, cy: 0.3, ly: 0.0, lx: 0 };
+      const FILL = 3.0, TAU = Math.PI * 2;
+      const K = [
+        [0, { ry: -0.62, rx: 0.14, rz: 0.05, cz: 4.9, cy: 0.45, ly: 0.36 }],
+        [A.drop - 0.05, { ry: -0.16, rx: 0.06, rz: 0.01, cz: 4.4, cy: 0.3, ly: 0.3 }],
+        [A.drop + 0.35, { ry: 0, rx: 0, rz: 0, cz: 5.2, cy: 0.3, ly: 0.02 }],
+        [A.paste, { cz: FILL, cy: 0, ly: 0.02 }],
+        [A.paste + 0.5, { cz: 2.25, ly: 0.33 }],
+        [A.short - 0.45, { cz: 2.4, ly: -0.2 }],
+        [A.short - 0.05, { cz: 5.3, cy: 0.25, ly: 0.08, ry: 0.12 }],
+        [A.trackable + 0.9, { cz: 5.0, ly: 0.08, ry: -0.08 }],
+        [A.flyer, { ry: 0, cz: 4.6 }],
+        [A.flyer + 0.75, { ry: TAU, cz: 4.2, ly: 0.0 }],
+        [A.onetap, { ry: TAU + 0.1, cz: 3.25, cy: 0.05, ly: 0.12 }],
+        [A.colours + 0.9, { ry: TAU - 0.06, cz: 3.1, ly: 0.12 }],
+        [A.colours + 1.5, { ry: TAU - 0.2, cz: 6.6, cy: 0.3, ly: 0.0 }],
+        [A.vip - 0.05, { ry: TAU - 0.1, cz: 6.4 }],
+        [A.vip + 0.4, { ry: TAU, cz: FILL, cy: 0, ly: 0.02 }],
+        [A.password, { cz: 2.4, ly: 0.33 }],
+        [A.clicks, { cz: 2.4, ly: 0.1 }],
+        [A.expire, { cz: 2.4, ly: -0.16 }],
+        [A.iphone - 0.1, { cz: 2.7, ly: -0.1 }],
+        [A.iphone + 0.45, { ry: TAU + 0.32, cz: 4.6, cy: 0.25, ly: 0.05 }],
+        [A.rightplace, { ry: TAU - 0.3, cz: 4.6 }],
+        [A.watch - 0.05, { ry: TAU - 0.12, cz: 4.2 }],
+        [A.watch + 0.6, { ry: TAU, cz: FILL, cy: 0, ly: 0.02 }],
+        [A.watch + 1.4, { cz: 2.25, ly: 0.3 }],
+        [A.country - 0.2, { cz: 2.35, ly: 0.05 }],
+        [A.post + 1.4, { cz: 2.35, ly: -0.05 }],
+        [A.stop - 0.05, { cz: 3.4, ly: 0.0 }],
+        [A.stop + 0.6, { ry: TAU, cz: 5.7, cy: 0.3, ly: -0.36 }],
+        [A.end, { ry: TAU + 0.06, cz: 5.9, ly: -0.38 }],
+      ];
+      { let prev = { ...D0 }; for (const k of K) { k[1] = { ...prev, ...k[1] }; prev = k[1]; } }
+      const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+      const shotAt = (t) => {
+        if (t <= K[0][0]) return K[0][1];
+        for (let i = 0; i < K.length - 1; i++) { const [t0, a] = K[i], [t1, b] = K[i + 1];
+          if (t <= t1) { const k = ease((t - t0) / (t1 - t0)), o = {}; for (const p in a) o[p] = a[p] + (b[p] - a[p]) * k; return o; } }
+        return K[K.length - 1][1];
+      };
+
+      // ---------------- homography: map the 390x844 div onto 4 projected points ----------------
+      const solve = (Am, b) => { const n = b.length, M = Am.map((r, i) => [...r, b[i]]);
+        for (let i = 0; i < n; i++) { let p = i; for (let k = i + 1; k < n; k++) if (Math.abs(M[k][i]) > Math.abs(M[p][i])) p = k; [M[i], M[p]] = [M[p], M[i]];
+          for (let k = i + 1; k < n; k++) { const f = M[k][i] / M[i][i]; for (let j = i; j <= n; j++) M[k][j] -= f * M[i][j]; } }
+        const x = new Array(n).fill(0); for (let i = n - 1; i >= 0; i--) { let s = M[i][n]; for (let j = i + 1; j < n; j++) s -= M[i][j] * x[j]; x[i] = s / M[i][i]; } return x; };
+      const homography = (w, h, q) => { const src = [[0, 0], [w, 0], [w, h], [0, h]], Am = [], b = [];
+        for (let i = 0; i < 4; i++) { const [x, y] = src[i], [X, Y] = q[i]; Am.push([x, y, 1, 0, 0, 0, -x * X, -y * X]); b.push(X); Am.push([0, 0, 0, x, y, 1, -x * Y, -y * Y]); b.push(Y); }
+        const [a, bb, c, d, e, f, g, hh] = solve(Am, b); return `matrix3d(${a},${d},0,${g},${bb},${e},0,${hh},0,0,1,0,${c},${f},0,1)`; };
+      const screenEl = document.getElementById("screen");
+      const corners = [new THREE.Vector3(-SW / 2, SHh / 2, ZS), new THREE.Vector3(SW / 2, SHh / 2, ZS), new THREE.Vector3(SW / 2, -SHh / 2, ZS), new THREE.Vector3(-SW / 2, -SHh / 2, ZS)];
+      const tmp = new THREE.Vector3(), nrm = new THREE.Vector3(), toCam = new THREE.Vector3();
+
+      // ---------------- procedural per-frame text (typing / counters) ----------------
+      const $ = (id) => document.getElementById(id);
+      const clamp = (x) => Math.max(0, Math.min(1, x));
+      const TYPE = [
+        { id: "tUrl", box: "inUrl", text: "https://bloomandco.com/spring-sale", t0: A.paste + 0.1, t1: A.paste + 0.35, ph: "https://example.com/my-page" },
+        { id: "tSlug", box: "inSlug", text: "spring", t0: A.paste + 0.55, t1: A.paste + 0.95, ph: "my-link" },
+        { id: "tTags", box: "inTags", text: "instagram", t0: A.paste + 1.0, t1: A.paste + 1.3, ph: "Add tags" },
+        { id: "tLimit", box: "inLimit", text: "100", t0: A.clicks + 0.55, t1: A.clicks + 0.9, ph: "e.g., 100 (unlimited if empty)" },
+        { id: "tIos", box: "inIos", text: "https://bloomandco.com/iphone", t0: A.iphone + 0.5, t1: A.iphone + 1.0, ph: "https://" },
+        { id: "tAnd", box: "inAnd", text: "https://bloomandco.com/android", t0: A.iphone + 1.15, t1: A.iphone + 1.65, ph: "https://" },
+      ];
+      const COUNT = [
+        { id: "vClicks", to: 12486, t0: A.watch + 0.6, t1: A.watch + 1.9 },
+        { id: "vUniq", to: 9812, t0: A.watch + 0.7, t1: A.watch + 2.0 },
+        { id: "vCtry", to: 23, t0: A.watch + 0.8, t1: A.watch + 1.9 },
+        { id: "vRef", to: 14, t0: A.watch + 0.9, t1: A.watch + 1.9 },
+      ];
+      const drawProcedural = (t) => {
+        for (const s of TYPE) { const k = clamp((t - s.t0) / (s.t1 - s.t0)), n = Math.round(s.text.length * k), el = $(s.id);
+          const active = t >= s.t0 - 0.25 && t < s.t1 + 0.6;
+          if (k <= 0) { el.innerHTML = s.ph; if (s.box) $(s.box).classList.add("ph"); }
+          else { el.innerHTML = s.text.slice(0, n) + (active ? '<i class="caret"></i>' : ""); if (s.box) $(s.box).classList.remove("ph"); }
+          if (s.box) $(s.box).classList.toggle("focus", active); }
+        $("tPw").setAttribute("width", String(Math.round(176 * clamp((t - A.password - 0.5) / 0.5) / 22) * 22));
+        for (const c of COUNT) { const k = 1 - Math.pow(1 - clamp((t - c.t0) / (c.t1 - c.t0)), 3); $(c.id).textContent = Math.round(c.to * k).toLocaleString("en-US"); }
+      };
+
+      // ---------------- render one frame ----------------
+      const R = { v: 0 };
+      const renderAt = (t) => {
+        const s = shotAt(t);
+        const bob = Math.sin(t * 1.3) * 0.012;
+        phone.rotation.set(s.rx + Math.sin(t * 0.7) * 0.012, s.ry + Math.sin(t * 0.5) * 0.02, s.rz);
+        phone.position.set(0, s.py + bob, 0);
+        camera.position.set(s.lx + Math.sin(t * 0.37) * 0.04, s.cy, s.cz); camera.lookAt(s.lx, s.ly, 0);
+        shadow.scale.setScalar(1 - bob * 2); shadow.material.opacity = 0.9 - (s.py + bob) * 2;
+        rim.intensity = R.v;
+        phone.updateMatrixWorld(true); camera.updateMatrixWorld(true);
+        renderer.render(scene, camera);
+        const q = corners.map((c) => { tmp.copy(c).applyMatrix4(phone.matrixWorld).project(camera); return [(tmp.x + 1) / 2 * W, (1 - tmp.y) / 2 * H]; });
+        screenEl.style.transform = homography(390, 844, q);
+        nrm.set(0, 0, 1).transformDirection(phone.matrixWorld); tmp.set(0, 0, ZS).applyMatrix4(phone.matrixWorld); toCam.copy(camera.position).sub(tmp).normalize();
+        screenEl.style.visibility = nrm.dot(toCam) > 0.05 ? "visible" : "hidden";
+        drawProcedural(t);
+      };
+
+      // ---------------- GSAP timeline (DOM motion) ----------------
+      const tl = gsap.timeline({ paused: true, onUpdate: () => renderAt(tl.time()) });
+      const show = (id, t, d = 0.18) => tl.fromTo("#" + id, { opacity: 0 }, { opacity: 1, duration: d, ease: "power2.out", immediateRender: false }, t);
+      tl.set("#sFeed", { opacity: 1 }, 0);
+
+      // hook — text already on frame 0; feed scrolls; "?" stamps
+      tl.fromTo("#feedScroll", { y: 0 }, { y: -560, duration: A.drop, ease: "none" }, 0);
+      [["#q1", 0.45], ["#q2", A.guess], ["#q3", A.guess + 0.55]].forEach(([q, t]) =>
+        tl.fromTo(q, { opacity: 0, scale: 1.8, rotation: -14 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.16, ease: "power3.out", immediateRender: false }, t));
+      tl.to(["#hook1", "#hook2"], { y: -60, opacity: 0, filter: "blur(10px)", duration: 0.2, ease: "power2.in" }, A.drop - 0.12);
+
+      // DROP — the one explosion
+      tl.fromTo("#flash", { opacity: 0 }, { opacity: 0.9, duration: 0.04, immediateRender: false }, A.drop).to("#flash", { opacity: 0, duration: 0.35 }, A.drop + 0.05);
+      SH.forEach((s, i) => { tl.fromTo(s.d, { opacity: 1, x: 0, y: 0, rotation: 0, scale: 1 }, { x: s.x, y: s.y, rotation: s.r, scale: 0.5, duration: 0.9 + (i % 5) * 0.08, ease: "expo.out", immediateRender: false }, A.drop);
+        tl.to(s.d, { opacity: 0, duration: 0.3 }, A.drop + 0.6 + (i % 4) * 0.06); });
+      [0, 1].forEach((i) => tl.fromTo("#shock" + i, { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 34 + i * 12, duration: 0.7 + i * 0.2, ease: "expo.out", immediateRender: false }, A.drop + i * 0.08));
+      [[14, -10], [-12, 8], [8, 6], [-5, -4], [0, 0]].forEach(([x, y], i) => tl.to("#stage", { x, y, duration: 0.045, ease: "none" }, A.drop + i * 0.045));
+      tl.set("#sFeed", { opacity: 0 }, A.drop); tl.set("#sSplash", { opacity: 1 }, A.drop);
+      tl.fromTo("#splashLogo", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "expo.out", immediateRender: false }, A.drop);
+      tl.fromTo("#bgGlow", { opacity: 0 }, { opacity: 1, duration: 0.2, immediateRender: false }, A.drop).to("#bgGlow", { opacity: 0, duration: 0.9 }, A.drop + 0.4);
+
+      // CREATE LINK
+      tl.set("#sSplash", { opacity: 0 }, A.paste - 0.1); tl.set("#sCreate", { opacity: 1 }, A.paste - 0.1);
+      tl.fromTo("#btnCreate", { scale: 1 }, { scale: 0.94, duration: 0.07, yoyo: true, repeat: 1, immediateRender: false }, A.short - 0.55);
+      show("created", A.short - 0.4, 0.2);
+      tl.fromTo("#okBadge", { scale: 0.3 }, { scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: false }, A.short - 0.4);
+      tl.fromTo("#toastCopied", { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.2, immediateRender: false }, A.trackable + 0.35).to("#toastCopied", { opacity: 0, y: -30, duration: 0.2 }, A.flyer - 0.2);
+      const kinIn = (id, t) => tl.fromTo("#" + id, { opacity: 0, y: 40, filter: "blur(14px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out", immediateRender: false }, t);
+      const kinOut = (id, t) => tl.to("#" + id, { opacity: 0, y: -30, filter: "blur(10px)", duration: 0.14, ease: "power2.in" }, t);
+      kinIn("wShort", A.short); kinOut("wShort", A.branded - 0.1);
+      kinIn("wBrand", A.branded); kinOut("wBrand", A.trackable - 0.1);
+      kinIn("wTrack", A.trackable); kinOut("wTrack", A.flyer - 0.15);
+      tl.fromTo("#sweep", { opacity: 1, xPercent: -100 }, { xPercent: 100, duration: 0.6, ease: "power2.inOut", immediateRender: false }, A.trackable).set("#sweep", { opacity: 0 }, A.trackable + 0.6);
+
+      // QR — whip spin, design steps, abundance
+      tl.set("#sCreate", { opacity: 0 }, A.flyer + 0.38); tl.set("#sQr", { opacity: 1 }, A.flyer + 0.38);
+      const qsteps = [["qtDots", 1, A.onetap + 0.25], ["qtCorners", 2, A.onetap + 0.75], ["qtColors", 3, A.colours], ["qtLogo", 4, A.colours + 0.5]];
+      qsteps.forEach(([tab, v, t], i) => { tl.set("#" + tab, { className: "qtab on" }, t); if (i) tl.set("#" + qsteps[i - 1][0], { className: "qtab" }, t);
+        tl.fromTo("#qv" + v, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, t); tl.to("#qv" + (v - 1), { opacity: 0, duration: 0.18 }, t); });
+      tl.fromTo("#swO", { scale: 1 }, { scale: 1.25, duration: 0.12, yoyo: true, repeat: 1, immediateRender: false }, A.colours - 0.1);
+      tl.fromTo("#btnDl", { scale: 1 }, { scale: 0.94, duration: 0.07, yoyo: true, repeat: 1, immediateRender: false }, A.colours + 1.0);
+      tl.fromTo("#toastQr", { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.2, immediateRender: false }, A.colours + 1.1).to("#toastQr", { opacity: 0, duration: 0.2 }, A.vip);
+      FLY.forEach((f, i) => { const tin = A.colours + 0.6 + i * 0.04, tout = Math.max(A.vip - 0.15, tin + 0.6) + (i % 3) * 0.03;
+        tl.fromTo("#fly" + i, { opacity: 0, scale: 0.4, rotation: 0, y: 120 }, { opacity: 1, scale: 1, rotation: f[2], y: 0, duration: 0.3, ease: "expo.out", immediateRender: false }, tin);
+        tl.to("#fly" + i, { opacity: 0, scale: 0.8, y: -80, duration: 0.2, ease: "power2.in" }, tout); });
+
+      // LOCK — punch + lock slam behind
+      tl.set("#sQr", { opacity: 0 }, A.vip + 0.1); tl.set("#sAdv", { opacity: 1 }, A.vip + 0.1);
+      tl.fromTo("#lockBig", { opacity: 0, scale: 1.6 }, { opacity: 0.9, scale: 1, duration: 0.18, ease: "power4.in", immediateRender: false }, A.vip - 0.05);
+      tl.fromTo("#flash", { opacity: 0 }, { opacity: 0.45, duration: 0.03, immediateRender: false }, A.vip + 0.13).to("#flash", { opacity: 0, duration: 0.25 }, A.vip + 0.16);
+      tl.to("#lockBig", { opacity: 0, scale: 0.85, duration: 0.3 }, A.vip + 0.5);
+      [[10, -8], [-9, 6], [5, 4], [0, 0]].forEach(([x, y], i) => tl.to("#stage", { x, y, duration: 0.045, ease: "none" }, A.vip + 0.13 + i * 0.045));
+      const swOn = (id, t) => { tl.to(`#${id} .on`, { opacity: 1, duration: 0.15 }, t); tl.to(`#${id} i`, { x: 18, duration: 0.15, ease: "power2.out" }, t); };
+      swOn("sw1", A.password + 0.15); tl.to("#pwBox", { opacity: 1, duration: 0.2, ease: "power2.out" }, A.password + 0.2);
+      swOn("sw3", A.expire + 0.25); tl.to("#schBox", { opacity: 1, duration: 0.2, ease: "power2.out" }, A.expire + 0.3);
+
+      // TARGETING — device routes split behind the phone
+      tl.set("#sAdv", { opacity: 0 }, A.iphone + 0.12); tl.set("#sTgt", { opacity: 1 }, A.iphone + 0.12);
+      tl.fromTo(["#routeL", "#routeR"], { opacity: 0 }, { opacity: 1, duration: 0.2, immediateRender: false }, A.rightplace - 0.3);
+      tl.fromTo(["#routeLp", "#routeRp"], { strokeDashoffset: 0 }, { strokeDashoffset: -230, duration: 1.6, ease: "none", immediateRender: false }, A.rightplace - 0.3);
+      tl.fromTo("#btnTgt", { scale: 1 }, { scale: 0.94, duration: 0.07, yoyo: true, repeat: 1, immediateRender: false }, A.rightplace + 0.6);
+      tl.to(["#routeL", "#routeR"], { opacity: 0, duration: 0.2 }, A.watch - 0.1);
+
+      // ANALYTICS — clicks land, then scroll through the cards
+      tl.set("#sTgt", { opacity: 0 }, A.watch + 0.2); tl.set("#sAna", { opacity: 1 }, A.watch + 0.2);
+      tl.fromTo("#sweep", { opacity: 1, xPercent: -100 }, { xPercent: 100, duration: 0.6, ease: "power2.inOut", immediateRender: false }, A.watch).set("#sweep", { opacity: 0 }, A.watch + 0.6);
+      PU.forEach((p, i) => { const t = A.watch + 0.3 + i * 0.16;
+        tl.fromTo(p.d, { opacity: 0, scale: 0.2, x: 0, y: 0 }, { opacity: 1, scale: 1, duration: 0.12, ease: "power3.out", immediateRender: false }, t);
+        tl.to(p.d, { x: p.dx, y: p.dy, scale: 0.3, opacity: 0, duration: 0.42, ease: "power3.in" }, t + 0.14); });
+      tl.set("#bars i", { scaleY: 0 }, A.watch); tl.set(["#cardCtry .meter i", "#cardTech .meter i"], { scaleX: 0 }, A.watch);
+      tl.fromTo("#bars i", { scaleY: 0 }, { scaleY: 1, duration: 0.5, stagger: 0.05, ease: "power3.out", immediateRender: false }, A.watch + 1.0);
+      tl.to("#anaScroll", { y: -330, duration: 0.55, ease: "power3.inOut" }, A.country - 0.4);
+      tl.fromTo("#cardCtry .meter i", { scaleX: 0 }, { scaleX: 1, duration: 0.5, stagger: 0.06, ease: "power3.out", immediateRender: false }, A.country - 0.05);
+      tl.to("#anaScroll", { y: -500, duration: 0.45, ease: "power3.inOut" }, A.device - 0.3);
+      tl.fromTo("#cardTech .meter i", { scaleX: 0 }, { scaleX: 1, duration: 0.45, stagger: 0.06, ease: "power3.out", immediateRender: false }, A.device);
+      tl.to("#anaScroll", { y: -640, duration: 0.45, ease: "power3.inOut" }, A.post - 0.3);
+      // captions (script lines) — fade-up + blur-clear in, quick out
+      const capsEl = $("caps");
+      CAPS.forEach(([t0, t1, html], i) => { const d = document.createElement("div"); d.className = "cap"; d.id = "cap" + i; d.innerHTML = html; capsEl.appendChild(d);
+        tl.fromTo(d, { opacity: 0, y: 30, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out", immediateRender: false }, t0);
+        tl.to(d, { opacity: 0, y: -20, filter: "blur(8px)", duration: 0.14, ease: "power2.in" }, t1 - 0.14); });
+      tl.fromTo("#whichList", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out", immediateRender: false }, A.country);
+      ["country", "device", "post"].forEach((k, i) => tl.fromTo(`#whichList .ln:nth-child(${i + 1})`, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.2, ease: "power3.out", immediateRender: false }, A[k]));
+      tl.to("#whichList", { opacity: 0, y: -20, duration: 0.15 }, A.stop - 0.15);
+      tl.fromTo(["#chipI", "#chipA"], { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, stagger: 0.12, ease: "back.out(2)", immediateRender: false }, A.rightplace + 0.3);
+      tl.to(["#chipI", "#chipA"], { opacity: 0, scale: 0.8, duration: 0.2 }, A.watch - 0.1);
+      tl.fromTo("#topRing", { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power3.out", immediateRender: false }, A.post + 0.35);
+
+      // CTA
+      tl.set("#sAna", { opacity: 0 }, A.stop + 0.2); tl.set("#sEnd", { opacity: 1 }, A.stop + 0.2);
+      tl.fromTo("#cw1", { opacity: 0, y: 40, filter: "blur(14px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.25, ease: "power3.out", immediateRender: false }, A.stop + 0.1);
+      tl.fromTo("#cw2", { opacity: 0, y: 30, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.25, ease: "power3.out", immediateRender: false }, A.money);
+      tl.to(["#cw1", "#cw2"], { opacity: 0, y: -30, filter: "blur(10px)", duration: 0.18 }, A.tryit - 0.1);
+      tl.fromTo("#url", { opacity: 0, y: 40, filter: "blur(14px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.25, ease: "power3.out", immediateRender: false }, A.tryit + 0.1);
+      tl.fromTo("#ctaBtn", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out", immediateRender: false }, A.url);
+      tl.fromTo("#bgGlow", { opacity: 0 }, { opacity: 0.8, duration: 0.6, immediateRender: false }, A.tryit);
+      // glossy glass sweep across the display on section changes
+      [A.drop + 0.2, A.flyer + 0.8, A.vip + 0.3, A.watch + 0.4, A.stop + 0.4].forEach((t) =>
+        tl.fromTo("#glare", { opacity: 0.9, xPercent: -110 }, { xPercent: 110, duration: 0.7, ease: "power2.inOut", immediateRender: false }, t).set("#glare", { opacity: 0 }, t + 0.7));
+      // warm orange rim light on the brand beats
+      tl.to(R, { v: 6, duration: 0.1 }, A.drop); tl.to(R, { v: 1.5, duration: 0.8 }, A.drop + 0.4); tl.to(R, { v: 4, duration: 0.6 }, A.tryit);
+      tl.set({}, {}, A.end);
+
+      window.__timelines["main"] = tl;
+      window.addEventListener("hf-seek", (e) => renderAt(e.detail.time));
+      window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady["phone"] = document.fonts.ready.then(() => { renderer.compile(scene, camera); renderAt(0); });
+      tl.seek(0); renderAt(0);
+    </script>
+  </body>
+</html>
