@@ -167,17 +167,19 @@ const camAt = (t: number) => { let i = 1; while (i < CAM.length - 1 && t > CAM[i
 // ---------- story-sticker captions ----------
 type Chunk = { a: number; b: number; words: [number, string][] };
 const CH: Chunk[] = (() => { const out: Chunk[] = []; let cur: Chunk | null = null; W.forEach(([a, b, w], i) => { const p = W[i - 1]; const brk = !cur || /[.?!:]$/.test(p[2]) || (/,$/.test(p[2]) && cur.words.length >= 3) || cur.words.length >= 6 || a - p[1] > 0.65; if (brk) { cur = { a, b, words: [] }; out.push(cur); } cur!.words.push([a, w]); cur!.b = b; }); return out; })();
-const KEY = new Set(["eight", "amazing!", "same", "which", "likes.", "views.", "clicks", "do.", "same.", "own", "linkutm.", "900", "nobody.", "next", "campaign?", "free"]);
+const KEY = new Set(["eight", "8", "amazing!", "same", "which", "likes.", "views.", "clicks", "do.", "same.", "own", "linkutm.", "900", "nobody.", "next", "campaign?", "free"]);
 const Captions: React.FC<{ t: number }> = ({ t }) => {
   const i = CH.findIndex((c, k) => (k === 0 || t >= c.a - 0.08) && t < (CH[k + 1]?.a ?? DUR + 1) - 0.08);
   if (i < 0) return null; const c = CH[i]; const k = i === 0 ? 1 : sp(t, c.a - 0.08, 12, 300), rot = (rnd(i) - 0.5) * 4;
-  return <div style={{ position: "absolute", left: 80, right: 80, top: 1360, textAlign: "center", transform: `rotate(${rot}deg) scale(${interpolate(k, [0, 1], [0.8, 1])})`, opacity: Math.min(1, k * 2.5) }}>
-    <span style={{ fontFamily: INTER, fontWeight: 800, fontSize: 62, lineHeight: 1.55, color: INK, background: "#fff", padding: "6px 22px", borderRadius: 16, boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone", boxShadow: "0 10px 24px -12px rgba(0,0,0,0.35)" }}>
+  return <div style={{ position: "absolute", left: 70, right: 70, top: 1470, textAlign: "center", transform: `rotate(${rot}deg) scale(${interpolate(k, [0, 1], [0.8, 1])})`, opacity: Math.min(1, k * 2.5) }}>
+    <span style={{ fontFamily: INTER, fontWeight: 800, fontSize: 54, lineHeight: 1.55, color: INK, background: "#fff", padding: "6px 22px", borderRadius: 16, boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone", boxShadow: "0 10px 24px -12px rgba(0,0,0,0.35)" }}>
       {c.words.map(([a, w], j) => { const on = t >= a - 0.06, key = KEY.has(w.toLowerCase()); return <span key={j} style={{ color: !on ? "#C9C1B6" : key ? OR : INK }}>{w}{j < c.words.length - 1 ? " " : ""}</span>; })}
     </span>
   </div>;
 };
 
+// stage band: scenes live in the top ~3/4 (centre y=VY), captions get their own clear band below
+const VY = 700, VZ = 0.9;
 const Film: React.FC = () => {
   const t = useCurrentFrame() / FPS;
   const c = camAt(t), c2 = camAt(t + 1 / FPS);
@@ -186,7 +188,7 @@ const Film: React.FC = () => {
   return (
     <AbsoluteFill style={{ background: BG, overflow: "hidden" }}>
       <AbsoluteFill style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(255,255,255,0.7) 0%, rgba(244,239,232,0) 60%)" }} />
-      <div style={{ position: "absolute", left: 0, top: 0, width: 2400, height: 4800, transformOrigin: "0 0", transform: `translate(${540 - c.x * c.z}px, ${960 - c.y * c.z}px) scale(${c.z})`, filter: blur > 0.3 ? `blur(${blur}px)` : undefined }}>
+      <div style={{ position: "absolute", left: 0, top: 0, width: 2400, height: 4800, transformOrigin: "0 0", transform: `translate(${540 - c.x * c.z * VZ}px, ${VY - c.y * c.z * VZ}px) scale(${c.z * VZ})`, filter: blur > 0.3 ? `blur(${blur}px)` : undefined }}>
         <Hook t={t} />
         <Diyas t={t} x={260} y={1600} />
         <Setup t={t} />
@@ -196,6 +198,7 @@ const Film: React.FC = () => {
         <Cta t={t} />
         <Diyas t={t} x={1340} y={4620} />
       </div>
+      <div style={{ position: "absolute", left: 0, right: 0, top: 1400, bottom: 0, background: `linear-gradient(180deg, rgba(244,239,232,0) 0%, ${BG} 22%)` }} />
       <Captions t={t} />
       <Audio src={staticFile("creators/vo.wav")} />
     </AbsoluteFill>
