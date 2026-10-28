@@ -356,3 +356,50 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
 - Lily (ElevenLabs v3) reads ~1.9 words/s with tags: a 50 s reel needs ≤ ~100 words; check credits before multi-take runs.
 - (Eight Creators v2) "Voice not expressive": direct EVERY beat in the Gemini profile (gossip, mocking brag, gasp, whisper, laugh on the comic pause, CAPS for emphasis — template gemini-expressive-profile.txt), audition 3 voices, pick by measured pitch range (Laomedeia 15.8 st > Leda 12.4 > Zephyr 10.6; flat Lily take 12.5). Gemini free tier: 3.8-flash-tts = 10 requests/day; 2.5-flash-preview-tts still works as fallback.
 - "Subtitles blocking the visuals": frame every scene in the top ~3/4 (stage centre y≈700) and give captions their own band (y≈1450–1650) with a paper fade behind — check stills for caption/content overlap before the full render.
+
+## 2026-10-07 — JewelleryOS v4: client's website source + POS
+- **Client gives website source → use THEIR elements, not approximations.** Copy `public/` assets (logo svg, product renders,
+  icon sets) into `public/<brand>/site/` and rebuild their UI components 1:1 in Remotion (same tokens, copy, formulas —
+  e.g. their PricingConfigurator maths). Shared cards live in `src/jos/SiteCards.tsx`. Brand accent = their headline trick
+  (Instrument Serif italic accent word) applied to kinetic subtitles.
+- **Feature honesty:** check the site copy before naming a feature. JOS "POS" is custom-scoped work → said as
+  "Her billing counter, connected to all of it" + scan → weigh → GST invoice → ripple (stock, CRM, website, report).
+- **Show the real website:** `scripts/site_scroll_capture.mjs` (raw CDP, no puppeteer) scrolls the live site in 600px
+  steps; stitch shot0 + rows 300–900 of each next shot into one long image → scroll it inside a browser frame at the CTA.
+  Tall-window `--screenshot` does NOT work (scroll-reveal/sticky sections stay blank).
+- **Windows App Control started blocking `remotion.exe` (compositor) → "spawn UNKNOWN".** Don't touch security settings;
+  local patch in `node_modules/@remotion/renderer/dist/offthread-video-server.js` wraps startCompositor in try/catch with a
+  stub (backup `.orig`). Works for comps without <OffthreadVideo>. Re-apply after `npm install`. Never run two renders at
+  once (browser connect timeout).
+- **Changing one line of an ElevenLabs take cheaply:** generate only the changed lines (v3), trim silence, loudnorm to
+  the take, splice at word boundaries from the whisper words → re-transcribe → word file → comps re-time themselves.
+- **Hinglish VO supplied by the user (Gemini):** whisper `--lang en` TRANSLATES Hinglish → use it only for sentence
+  boundaries; place the approved Roman-Hinglish script words along voiced RMS time by syllable weight
+  (`D:\codes\work\jewelleryos\hinglish\align.py`). Re-pick anchors on unique words — "aur"/"ek"/"aaj" repeat
+  (bug: `F("aur")` hit "store aur appointment" and skipped a whole scene). Print the anchor list and sanity-check it.
+- **Client widget → video:** copy their real stylesheet (`:host`→`.vai-host`), render the same class markup with fake
+  data, and pin CSS keyframes to the frame: `el.getAnimations({subtree:true}).forEach(a=>{a.pause();a.currentTime=frame/fps*1000})`.
+- **Device-frame outro (MacBook → iPhone → iPad → line-up):** `src/jos/Devices.tsx` (CSS space-grey frames +
+  `Crop` helper that re-flows real crops of a desktop full-page capture into phone/tablet layouts) and
+  `src/jos/DeviceShowcase.tsx` (spring "track" of [time, {x,y,scale,rotY}] states per device, VO-anchored).
+  Full-page captures repeat fixed widgets (chat bubble) once per viewport — don't inpaint over content
+  (smears); keep them or ask for a capture with the widget closed. Measure crops on a gridded copy and
+  double-check the grid's y labels (I mis-read one section by 100 px).
+- User asked about render time: offer a 0.5-scale preview first, and final encode with preset medium (not slow).
+- **Arabic subtitles (RTL) over an English VO:** one Arabic line per spoken English sentence (`[firstWord, lastWord, text]`),
+  revealed word-by-word across the sentence, `dir="rtl"`, Almarai 800 + Amiri gold for *accent* groups. Keep the
+  conjunction و attached to its word (never "و *word*"), and glue punctuation tokens onto the previous word.
+- **Gemini TTS:** never quote transcript phrases inside DIRECTOR'S NOTES — it reads them aloud. Describe style generally,
+  then check every take with whisper for extra lines before using it.
+- (reel-02) HyperFrames/GSAP gotchas: tweening x/y/rotation on an SVG <g> that has a `transform="translate()"` attribute
+  REPLACES it — wrap: outer <g transform> + inner animated <g>. For procedural drawing (waves) redraw in the timeline's
+  `onUpdate` (runs after all child tweens), not in a clock tween, or seeks render stale state.
+  Word-pop captions: auto-fit font-size to the frame width after setting text.
+  Never wait on "no chrome.exe" — the user's own browser keeps running; wait on the output file / the render log line instead.
+- (reel-02 v3) User asked for: brand colours (Škoda emerald #0E3A2F + electric #78FAAE), REAL symbols (Fluent Emoji 3D, MIT, +
+  real logos from Commons) not drawn figures, face NOT zoomed → cut the speaker out (`hyperframes remove-background`) and place
+  them ~70% size, low, with visuals behind; "crazy" motion = shakes, punch-ins, shockwave rings, shatter, icon rain, confetti.
+  Perf: remove-background uses ~6% CPU single process (~2 s/frame @1080p) → split into 5 chunks and run in parallel (~2× faster,
+  watch RAM), concat VP9-alpha webms with `-c copy` (alpha survives). 4K render with a transparent webm hit Node heap OOM →
+  `NODE_OPTIONS=--max-old-space-size=7168` + `--low-memory-mode --workers=3`.
+(Recovered 2026-10-28 from branch skills-update-2026-10-08.)
