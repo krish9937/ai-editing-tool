@@ -10,6 +10,10 @@ answer one round of questions and approve a contact sheet. Everything else is yo
 
 Skill folder = `$CS` (this directory). Scripts: `$CS/scripts/` (Python 3, need ffmpeg; run
 `python $CS/scripts/cs_env.py` once to see what's installed). Deep references: `$CS/references/`.
+Studied playbooks to apply on every build: `references/prompt-motion-playbook.md` (brief skeleton + ban list),
+`references/snapcn-lessons.md` (camera-as-world, motion blur, measured text motion, HyperFrames recipes §6) and
+`references/openmontage-lessons.md` (word budget, captions vs headlines, voice cues, sound polish, render QA).
+Exception: **glossary reels use ONLY the glossary page's own featured-art theme + its character** (production-lessons 2026-10-28).
 
 ## 0. Non-negotiables (read every time)
 1. **Read `references/production-lessons.md` first** — real client feedback that overrides generic advice.
@@ -144,7 +148,10 @@ Defaults (details + commands: `references/tools-opensource.md`; paid APIs: `refe
 - **Silence/filler cuts**: `scripts/autocut.py` (from word timings) or auto-editor binary.
 - **Reframe 9:16**: `scripts/reframe.py` (face-centred crop; static or smoothed).
 - **Captions**: code-rendered in the composition, or `scripts/captions_ass.py` → ffmpeg burn (fastest).
-- **Voice**: user recording > ElevenLabs clone (if key; `sk_…`, use the user's own voice by name,
+- **Voice (default since 2026-10-27)**: user recording > **Gemini TTS "Leda"** (`scripts/gemini_tts.py`, expressive
+  American female; whole script in ONE request with per-paragraph director's notes — see
+  `templates/examples/gemini-expressive-profile.txt`; free tier ≈ 10 req/day on 3.8-flash-tts, 2.5-flash-preview-tts as
+  fallback; word times from faster-whisper) > ElevenLabs clone (if key; `sk_…`, use the user's own voice by name,
   spell acronyms "G A 4", speed 1.05–1.2, v3 tags like `[shouting]` for screams) > OpenAI TTS >
   Kokoro (Apache, local).
 - **Music**: user-licensed > ElevenLabs Music (exact length) > YouTube Audio Library/Pixabay/Mixkit
