@@ -106,6 +106,7 @@ Full beat sheets per type: `references/editing-types.md` (§ numbers below).
 
 | Request | Playbook | Engine |
 |---|---|---|
+| **Brand case-study reel from the user's footage** (marketing breakdowns for their personal channel: real posts, verified stats, brand-UI captions). **APPROVED benchmark 2026-10-27 (Duolingo)** | `references/playbook-brand-case-study.md` | HyperFrames + X syndication data + RVM |
 | Talking-head / founder reel (§1) | `references/playbook-talking-head.md` | ffmpeg cut + HyperFrames/Remotion overlays; motion-broll for cutaways |
 | Podcast / webinar / livestream → clips (§2, §17) | `references/playbook-clipping.md` | transcribe → pack → LLM picks → snap → reframe → captions → batch |
 | SaaS / screen-recording demo (§3, §9) | `references/playbook-demo.md` | rebuilt full-screen UI (legible) or zoomed real capture if ≥2K |

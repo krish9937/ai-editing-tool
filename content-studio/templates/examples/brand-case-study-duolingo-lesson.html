@@ -1,0 +1,271 @@
+<!-- Example (APPROVED 2026-10-27, personal-brand Duolingo reel): brand case-study reel dressed as the brand's own UI. Card mode (white lesson page + footage shifted down) / full mode, real X posts rebuilt from syndication data, word-tile captions, hearts and progress bar, green sheet, CONTINUE moral. All times are SOURCE times mapped through the edit list by S(). Assets (bg.mp4, me.webm, post media) NOT included. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<title>Duolingo Duo Reel</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=block" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  :root { --green:#58CC02; --green2:#58A700; --blue:#1CB0F6; --red:#FF4B4B; --gold:#FFC800; --line:#E5E5E5; --ink:#4B4B4B; --mint:#D7FFB8; }
+  body { margin:0; background:#000; font-family:Nunito, sans-serif; }
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#fff; }
+  .vid { position:absolute; left:0; top:0; width:1080px; height:1920px; }
+  #stage { position:absolute; inset:0; }
+
+  /* white lesson page (card mode) */
+  #page { position:absolute; left:0; top:0; width:1080px; height:1090px; background:#fff; box-shadow:0 18px 40px rgba(0,0,0,.18); border-radius:0 0 44px 44px; overflow:hidden; }
+  #label { position:absolute; left:70px; top:322px; font:900 34px Nunito; color:var(--ink); white-space:nowrap; }
+  #label small { font:800 26px Nunito; color:#AFAFAF; margin-left:10px; }
+  .card { position:absolute; left:70px; top:378px; width:940px; height:530px; opacity:0; }
+  .card img.fit, .card video.fit { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; border-radius:24px; }
+  .frame { position:absolute; inset:0; border:3px solid var(--line); border-bottom-width:7px; border-radius:26px; background:#fff; overflow:hidden; }
+
+  /* rebuilt X post (real text, image, counts) */
+  .post { position:absolute; inset:0; border:3px solid var(--line); border-bottom-width:7px; border-radius:26px; background:#fff; padding:26px 30px; box-sizing:border-box; overflow:hidden; }
+  .post .hd { display:flex; align-items:center; gap:16px; }
+  .post .av { width:70px; height:70px; border-radius:50%; object-fit:cover; }
+  .post .nm { font:900 32px Nunito; color:#0F1419; } .post .nm b { color:var(--blue); font-size:26px; margin-left:6px; }
+  .post .hn { font:700 24px Nunito; color:#536471; }
+  .post .tx { margin-top:14px; font:800 31px/1.28 Nunito; color:#0F1419; }
+  .post .im { margin-top:16px; width:100%; border-radius:18px; object-fit:cover; display:block; }
+  .post .ft { position:absolute; left:30px; bottom:20px; font:800 26px Nunito; color:#536471; }
+  .post .ft i { font-style:normal; color:#F91880; }
+
+  /* brand grid */
+  .mini { position:absolute; width:458px; height:166px; border:3px solid var(--line); border-bottom-width:6px; border-radius:20px; background:#fff; box-sizing:border-box; padding:14px 16px; overflow:hidden; opacity:0; }
+  .mini .av { width:46px; height:46px; border-radius:50%; object-fit:cover; vertical-align:middle; }
+  .mini .nm { font:900 24px Nunito; color:#0F1419; vertical-align:middle; margin-left:8px; }
+  .mini .tx { margin-top:8px; width:290px; font:800 21px/1.22 Nunito; color:#0F1419; }
+  .mini .th { position:absolute; right:12px; top:12px; width:128px; height:136px; border-radius:12px; object-fit:cover; }
+  .mini .lk { position:absolute; left:16px; bottom:8px; font:800 18px Nunito; color:#536471; }
+
+  /* top lesson bar */
+  #bar { position:absolute; left:50px; right:50px; top:254px; height:44px; display:flex; align-items:center; gap:24px; z-index:30; }
+  #bar .x { font:900 46px/1 Nunito; color:#AFAFAF; width:34px; }
+  #bar .tr { flex:1; height:30px; border-radius:15px; background:var(--line); position:relative; overflow:hidden; }
+  #bar .tr i { position:absolute; left:0; top:0; bottom:0; width:0; border-radius:15px; background:var(--green); }
+  #bar .tr i::after { content:''; position:absolute; left:16px; right:16px; top:7px; height:7px; border-radius:4px; background:rgba(255,255,255,.35); }
+  #bar .ht { font:900 38px Nunito; color:var(--red); white-space:nowrap; }
+  #bar.on-video .x { color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.5); } #bar.on-video .tr { background:rgba(255,255,255,.55); }
+  #bar.on-video .ht { text-shadow:0 2px 8px rgba(0,0,0,.35); }
+
+  /* word tiles */
+  #tiles { position:absolute; left:50px; right:50px; top:930px; display:flex; flex-wrap:wrap; justify-content:center; gap:12px 12px; z-index:40; }
+  .tile { display:inline-block; padding:8px 20px 9px; background:#fff; border:3px solid var(--line); border-bottom-width:7px; border-radius:18px; font:800 40px Nunito; color:var(--ink); white-space:nowrap; }
+  .tile.g { background:var(--green); border-color:var(--green2); color:#fff; }
+  #tiles.full .tile { box-shadow:0 8px 22px rgba(0,0,0,.25); }
+
+  /* notifications */
+  .nt { position:absolute; left:60px; width:960px; height:112px; border-radius:30px; background:rgba(245,245,245,.92); box-shadow:0 10px 30px rgba(0,0,0,.25); opacity:0; }
+  .nt .ic { position:absolute; left:20px; top:22px; width:68px; height:68px; border-radius:16px; background:var(--green) url(assets/av_duolingo.jpg) center/cover; }
+  .nt .t1 { position:absolute; left:106px; top:18px; font:900 28px Nunito; color:#111; }
+  .nt .t2 { position:absolute; left:106px; top:56px; font:700 27px Nunito; color:#333; }
+  .nt .tm { position:absolute; right:26px; top:20px; font:700 22px Nunito; color:#888; }
+
+  /* green "correct" sheet */
+  #sheet { position:absolute; left:0; right:0; top:1250px; height:360px; background:var(--mint); border-radius:36px 36px 0 0; opacity:0; z-index:45; padding:34px 50px; box-sizing:border-box; }
+  #sheet .h { font:900 42px Nunito; color:var(--green2); } #sheet .h b { display:inline-block; width:56px; height:56px; border-radius:50%; background:#fff; color:var(--green); text-align:center; line-height:56px; margin-right:16px; }
+  #sheet .t { margin-top:14px; font:900 50px/1.18 Nunito; color:var(--green2); }
+
+  .xpbig { position:absolute; left:0; right:0; top:60px; text-align:center; font:900 150px/1 Nunito; color:var(--gold); -webkit-text-stroke:0; letter-spacing:-3px; }
+  .xpsub { position:absolute; left:0; right:0; top:230px; text-align:center; font:900 38px Nunito; color:var(--ink); }
+  .xpbar { position:absolute; left:60px; right:60px; top:300px; height:34px; border-radius:17px; background:var(--line); overflow:hidden; }
+  .xpbar i { position:absolute; left:0; top:0; bottom:0; width:0; background:var(--gold); border-radius:17px; }
+  .cty { position:absolute; left:0; right:0; top:370px; display:flex; justify-content:center; gap:16px; }
+  .cty span { padding:10px 20px; border:3px solid var(--line); border-bottom-width:6px; border-radius:16px; font:900 30px Nunito; color:var(--ink); }
+  .src { position:absolute; left:0; right:0; bottom:16px; text-align:center; font:700 22px Nunito; color:#AFAFAF; }
+
+  .moral { position:absolute; left:20px; right:20px; top:40px; font:900 78px/1.1 Nunito; color:var(--ink); letter-spacing:-1px; }
+  .moral em { font-style:normal; color:var(--green); }
+  .btn { position:absolute; left:20px; right:20px; bottom:20px; height:100px; border-radius:22px; background:var(--green); border-bottom:8px solid var(--green2); font:900 40px/100px Nunito; color:#fff; text-align:center; letter-spacing:2px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="78.27">
+  <div id="stage">
+    <video class="vid" id="bg" src="assets/bg.mp4" data-start="0" data-duration="78.27" muted playsinline></video>
+    <div id="behind"></div>
+    <video class="vid" id="me" src="assets/me.webm" data-start="0" data-duration="78.27" muted playsinline></video>
+  </div>
+
+  <div id="page">
+    <div id="label"></div>
+    <!-- cards -->
+    <div class="card" id="cHook"><img class="fit" src="assets/duolingo_1889785298382459380_0.jpg"></div>
+    <div class="card" id="cDeath"></div>
+    <div class="card" id="cAlive"><div class="frame"><img src="assets/duo_alive.jpg" style="position:absolute;left:27px;top:-845px;width:1150px"></div></div>
+    <div class="card" id="cCyber"><div class="frame" style="background:#000"><img src="assets/duo_alive.jpg" style="position:absolute;left:0;top:-570px;width:940px;height:1671px">
+      <video id="vCyber" src="assets/vid_1889728980732764455.mp4" data-start="19.62" data-duration="2.24" data-media-start="1.4" muted playsinline style="position:absolute;left:0;top:-570px;width:940px;height:1671px"></video></div></div>
+    <div class="card" id="cReward"></div>
+    <div class="card" id="cBrands"></div>
+    <div class="card" id="cApp"><div class="frame" style="background:#2b2b2b"><img src="assets/duolingo_1889785298382459380_1.jpg" style="position:absolute;left:50%;top:0;height:100%;transform:translateX(-50%)"></div></div>
+    <div class="card" id="cDie"><div class="frame" style="background:#f4f4f4"><img src="assets/duolingo_1891619152940368007_0.jpg" style="position:absolute;left:50%;top:-10px;height:112%;transform:translateX(-50%)"></div></div>
+    <div class="card" id="cXp"><div class="frame">
+      <div class="xpbig"><span id="xpN">0</span></div>
+      <div class="xpsub">XP earned to bring Duo back · goal 50B</div>
+      <div class="xpbar"><i id="xpBar"></i></div>
+      <div class="cty"><span>1 · US</span><span>2 · Germany</span><span>3 · Brazil</span><span>4 · China</span></div>
+      <div class="src">Final count ≈ 50.9 billion XP · source: NPR, 26 Feb 2025</div></div></div>
+    <div class="card" id="cBack"><div class="frame" style="background:#000">
+      <video id="vBack" src="assets/vid_1894013160132083742.mp4" data-start="58.46" data-duration="8.24" muted playsinline style="position:absolute;left:0;top:-570px;width:940px;height:1671px"></video></div></div>
+    <div class="card" id="cMoral"><div class="moral" id="mor1">Don't just tell people your story.</div>
+      <div class="moral" id="mor2" style="top:230px"><em>Give them a way to move it forward.</em></div>
+      <div class="btn" id="cont">CONTINUE</div></div>
+  </div>
+
+  <div id="bar"><div class="x">×</div><div class="tr"><i id="prog"></i></div><div class="ht">♥ <span id="hearts">5</span></div></div>
+  <div id="tiles"></div>
+  <div id="sheet"><div class="h"><b>✓</b>Nicely done!</div><div class="t" id="sheetT"></div></div>
+</div>
+
+<script>
+window.__timelines = window.__timelines || {};
+const DUR = 78.27, TL = gsap.timeline({ paused:true });
+const $ = (s) => document.querySelector(s);
+// edit list [src_a, src_b, out_dst]; every time below is SOURCE time, S() maps it into the cut
+const SEG = [[1.1,5.16,0],[6.14,10.54,4.24],[12.46,19.42,8.82],[23.56,29.28,15.96],[29.62,39.4,21.86],[39.82,40.26,31.82],[40.58,53.92,32.44],[54.66,66.98,45.96],[67.32,70.2,58.46],[71.08,73.0,61.52],[73.26,76.16,63.62],[77.36,82.7,66.7],[83.0,89.05,72.22]];
+function S(src) {
+  for (const s of SEG) { if (src < s[0]) return s[2]; if (src <= s[1]) return s[2] + (src - s[0]); }
+  return DUR;
+}
+
+// ---------- real posts (text / counts exactly as published on X)
+const K = (n) => n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e3 ? (n / 1e3).toFixed(1).replace('.0', '') + 'K' : n;
+function post(el, p) {
+  $(el).innerHTML = `<div class="post"><div class="hd"><img class="av" src="assets/av_${p.u}.jpg"><div><div class="nm">${p.name}<b>✔</b></div><div class="hn">@${p.u} · ${p.date}</div></div></div>
+    <div class="tx">${p.text}</div>${p.img ? `<img class="im" src="assets/${p.img}" style="height:${p.h}px">` : ''}<div class="ft"><i>♥</i> ${K(p.likes)} likes</div></div>`;
+}
+post('#cDeath', { u:'duolingo', name:'Duolingo', date:'11 Feb 2025', text:'an important message from Duolingo', img:'duolingo_1889328809054224698_0.jpg', h:300, likes:712517 });
+post('#cReward', { u:'duolingo', name:'Duolingo', date:'12 Feb 2025', text:'UPDATE: Reward for whoever can identify the driver. Please post any leads on Twitter. Thank you for your patience with us during these trying times. #Ripduo', img:'duolingo_1889728980732764455_0.jpg', h:190, likes:90377 });
+const BR = [
+  ['netflix','Netflix','duo the owl has been eliminated','netflix_1889390241498497189_0.jpg',164445],
+  ['assassinscreed',"Assassin's Creed",'Requiescat in pace, @duolingo ...','assassinscreed_1889381919978115127_0.jpg',114525],
+  ['WHO','WHO','#RIPDuo. May your cause of death be identified ASAP.','WHO_1889738287759097961_0.jpg',90236],
+  ['XBOX','XBOX','(image post)','XBOX_1889743880972644777_0.jpg',53657],
+  ['esa','European Space Agency','Someone forgot their space suit... Fly high bestie','esa_1889657884616573291_0.jpg',27808],
+  ['ChipotleTweets','Chipotle',"i’ll always remember u this way @duolingo",'ChipotleTweets_1889445598077612262_0.jpg',22156],
+];
+BR.forEach((b, i) => { const d = document.createElement('div'); d.className = 'mini'; d.id = 'br' + i;
+  d.style.left = (i % 2) * 482 + 'px'; d.style.top = Math.floor(i / 2) * 182 + 'px';
+  d.innerHTML = `<img class="av" src="assets/av_${b[0]}.jpg"><span class="nm">${b[1]}</span><div class="tx">${b[2]}</div><img class="th" src="assets/${b[3]}"><div class="lk">♥ ${K(b[4])}</div>`;
+  $('#cBrands').appendChild(d); });
+
+// ---------- mode: card (white lesson page on top, you below) / full (you full-frame)
+const CARDS = [ // [id, src_from, src_to, label, sublabel]
+  ['#cHook', 0, 5.16, '', ''],
+  ['#cDeath', 5.16, 11.0, 'Real post', '@duolingo'],
+  ['#cAlive', 11.0, 23.0, 'Meet Duo', "Duolingo's mascot"],
+  ['#cCyber', 23.0, 29.45, 'Real video', '@duolingo · 12 Feb 2025'],
+  ['#cReward', 29.45, 33.88, 'Real post', '@duolingo'],
+  ['#cBrands', 40.3, 48.80, 'Brands that posted', '11–12 Feb 2025'],
+  ['#cApp', 48.80, 54.30, 'In the app', 'Feb 2025'],
+  ['#cDie', 54.30, 58.70, 'Real page', 'bringback.duolingo.com'],
+  ['#cXp', 58.70, 67.10, 'Bring Duo back', ''],
+  ['#cBack', 67.10, 77.0, 'Real video', '@duolingo · 24 Feb 2025'],
+  ['#cMoral', 83.0, 99, '', ''],
+];
+const FULL = [[33.88, 40.3], [77.0, 83.0]];   // full-frame stretches
+const PAGE_UP = -1120, STAGE_DOWN = 660;
+gsap.set('#stage', { y:STAGE_DOWN });
+FULL.forEach(([a, b]) => {
+  TL.to('#page', { y:PAGE_UP, duration:0.28, ease:'power3.inOut' }, S(a) - 0.14);
+  TL.to('#stage', { y:0, duration:0.28, ease:'power3.inOut' }, S(a) - 0.14);
+  TL.set('#bar', { attr:{ class:'on-video' } }, S(a));
+  TL.to('#page', { y:0, duration:0.28, ease:'power3.inOut' }, S(b) - 0.14);
+  TL.to('#stage', { y:STAGE_DOWN, duration:0.28, ease:'power3.inOut' }, S(b) - 0.14);
+  TL.set('#bar', { attr:{ class:'' } }, S(b));
+});
+CARDS.forEach(([id, a, b, lab, sub]) => {
+  const t0 = S(a), t1 = S(b);
+  if (id !== '#cHook') TL.fromTo(id, { opacity:0, y:40, scale:0.96 }, { opacity:1, y:0, scale:1, duration:0.22, ease:'power3.out', immediateRender:false }, t0);
+  TL.set('#label', { innerHTML: lab ? `${lab}<small>${sub}</small>` : '' }, t0);
+  TL.to(id, { opacity:0, duration:0.1, ease:'none' }, t1 - 0.1);
+});
+gsap.set('#cHook', { opacity:1 });
+// videos inside cards: play only while their card is up
+// card videos: data-start/duration = S(card in) .. S(card out), set in the markup
+// brand posts pop in one by one
+BR.forEach((b, i) => TL.fromTo('#br' + i, { opacity:0, scale:0.85 }, { opacity:1, scale:1, duration:0.18, ease:'back.out(1.6)', immediateRender:false }, S(40.6) + i * 0.55));
+// moral card + CONTINUE press
+TL.fromTo('#mor1', { opacity:0, y:20 }, { opacity:1, y:0, duration:0.2, immediateRender:false }, S(84.04));
+TL.fromTo('#mor2', { opacity:0, y:20 }, { opacity:1, y:0, duration:0.2, immediateRender:false }, S(86.76));
+TL.to('#cont', { y:6, borderBottomWidth:2, duration:0.08, yoyo:true, repeat:1 }, S(88.70));
+gsap.set(['#mor1','#mor2'], { opacity:0 });
+
+// ---------- notifications (full stretch 1): the reminders Duo is famous for
+for (let i = 0; i < 5; i++) {
+  const d = document.createElement('div'); d.className = 'nt'; d.id = 'nt' + i; d.style.top = (330 + i * 124) + 'px';
+  d.innerHTML = `<div class="ic"></div><div class="t1">Duolingo</div><div class="t2">Time for your daily lesson!</div><div class="tm">${['now','2m ago','5m ago','12m ago','1h ago'][i]}</div>`;
+  $('#behind').appendChild(d);
+  TL.fromTo(d, { opacity:0, y:-30 }, { opacity:1, y:0, duration:0.16, ease:'power3.out', immediateRender:false }, S(36.86) + i * 0.32);
+  TL.to(d, { opacity:0, duration:0.12 }, S(40.2));
+}
+
+// ---------- green "correct" sheet: Duolingo didn't tell you a story...
+TL.fromTo('#sheet', { opacity:1, y:400 }, { opacity:1, y:0, duration:0.26, ease:'power3.out', immediateRender:false }, S(78.94));
+TL.to('#sheet', { y:700, opacity:0, duration:0.22, ease:'power3.in' }, S(82.70) - 0.22);
+gsap.set('#sheet', { opacity:0 });
+
+// ---------- hearts: lose one when Duo dies, refill when he comes back
+TL.set('#hearts', { textContent:'4' }, S(27.30));
+TL.fromTo('#bar .ht', { scale:1 }, { scale:1.35, duration:0.12, yoyo:true, repeat:1, immediateRender:false }, S(27.30));
+TL.set('#hearts', { textContent:'5' }, S(68.34));
+TL.fromTo('#bar .ht', { scale:1 }, { scale:1.35, duration:0.12, yoyo:true, repeat:1, immediateRender:false }, S(68.34));
+
+// ---------- word-tile captions (verbatim; Hindi in Roman script; {x} = green tile)
+const CAP = [
+ [1.10,5.16,'Ek company ne khud ke {ullu} ko maar ke logon se {homework} karwaya.'],
+ [5.16,6.60,'Nahi?'],[6.60,7.14,'Let me tell you.'],
+ [7.16,8.90,'Duolingo {killed} its own mascot'],[8.90,10.54,'and you did the funeral {homework}.'],
+ [12.46,14.60,'Duolingo is the app with the {green owl}'],[14.60,16.40,'that teaches you a language,'],[16.40,17.80,'one tiny lesson a day.'],
+ [17.80,19.42,'Woh bhasha sikhata hai.'],
+ [23.56,25.70,'In February of 2025,'],[25.70,27.30,'what they did is that that owl {died},'],[27.30,29.28,'hit by a {Cybertruck}.'],
+ [29.62,32.30,'Duolingo posted a {reward}'],[32.30,33.88,'for anyone who could name the driver.'],
+ [33.88,35.85,'Honestly, the owl had it coming,'],[35.85,37.60,'because he was sending so many {notifications},'],
+ [40.30,42.00,'But even the other brands'],[42.00,43.00,'posted about it'],[43.00,44.10,'like it was a corporate {funeral}.'],
+ [44.10,46.00,'Bhai, saare brands'],[46.00,47.05,'use {shraddhanjali} de rahe the,'],[47.05,48.80,'Duolingo ko, ullu ko.'],
+ [48.80,50.30,'Then came the {twist}.'],[50.30,51.50,'To bring him back,'],[51.50,53.92,'you had to finish your {daily lessons} in the app.'],
+ [54.66,56.90,"Okay, so the owl wasn't dead actually."],[56.90,58.70,'It was a dramatic {notification}.'],
+ [58.70,60.90,'Theek hai ki bhai, agar aapko usko zinda karna hai,'],[60.90,63.10,'you should complete {one lesson a day},'],[63.10,64.10,"or let's say"],[64.10,65.20,'your progress has to be fulfilled'],[65.20,66.98,'so that the owl could come back.'],
+ [67.32,68.75,'Two weeks later he {came back},'],[68.75,70.20,'and people felt proud of it,'],[71.08,73.00,'like they had saved a person'],[73.26,74.45,'or a living thing,'],[74.45,76.16,'by learning one Spanish line.'],
+ [77.36,78.90,"Duolingo didn't tell you a story,"],
+ [83.00,84.00,'So the moral is,'],
+].map(c => [S(c[0]), S(c[1]), c[2]]);
+const SHEET = [[78.94, 80.40, 'It gave you a job inside it,'], [80.40, 82.70, 'and that job was its product itself.']].map(c => [S(c[0]), S(c[1]), c[2]]);
+const tiles = $('#tiles'); let lastCap = -2, lastSheet = -2;
+function setCap(t) {
+  const i = CAP.findIndex(c => t >= c[0] && t < c[1]);
+  if (i !== lastCap) {
+    lastCap = i;
+    tiles.innerHTML = i < 0 ? '' : CAP[i][2].replace(/\{([^}]+)\}/g, (m, w) => w.split(' ').map(x => '\u0001' + x).join(' '))
+      .split(' ').map(w => `<span class="tile${w[0] === '\u0001' ? ' g' : ''}">${w.replace('\u0001', '')}</span>`).join('');
+    const full = FULL.some(([a, b]) => t >= S(a) && t < S(b));
+    tiles.className = full ? 'full' : '';
+    tiles.style.top = full ? '1390px' : (i === 0 ? '918px' : '930px');
+    tiles.querySelectorAll('.tile').forEach(el => el.style.fontSize = i === 0 ? '36px' : '40px');
+  }
+  // snap-in: tiles drop into the answer line during the first 0.25 s of each chunk
+  if (i >= 0) { const k = Math.min(1, (t - CAP[i][0]) / 0.25); tiles.querySelectorAll('.tile').forEach((el, j) => {
+    const kk = i === 0 ? 1 : Math.max(0, Math.min(1, k * 2.2 - j * 0.12)); el.style.opacity = kk.toFixed(2); el.style.transform = `translateY(${((1 - kk) * 28).toFixed(1)}px)`; }); }
+  const s = SHEET.findIndex(c => t >= c[0] && t < c[1]);
+  if (s !== lastSheet) { lastSheet = s; $('#sheetT').textContent = s < 0 ? '' : SHEET[s][2]; }
+}
+
+// ---------- per frame: progress, XP counter
+function frame(t) {
+  setCap(t);
+  $('#prog').style.width = (Math.min(1, t / (DUR - 0.3)) * 100).toFixed(2) + '%';
+  const k = Math.max(0, Math.min(1, (t - S(60.9)) / (S(66.6) - S(60.9)))), e = 1 - Math.pow(1 - k, 3);
+  const xp = 50.9 * e;
+  $('#xpN').textContent = (xp < 1 ? Math.round(xp * 1000) + 'M' : xp.toFixed(1) + 'B');
+  $('#xpBar').style.width = Math.min(100, xp / 50 * 100).toFixed(1) + '%';
+}
+TL.to({}, { duration:DUR }, 0);
+TL.eventCallback('onUpdate', () => frame(TL.time()));
+frame(0);
+window.__timelines['main'] = TL;
+</script>
+</body>
+</html>
