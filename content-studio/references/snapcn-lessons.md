@@ -59,3 +59,22 @@ The approved linkutm expiry reel (v2) still had two snapcn "slop" tells: ALL-CAP
 40% OFF LINK", "FLASH SALE · TONIGHT ONLY") and opacity fades between some scenes. Next time: sentence-case labels,
 crane/slide scene changes on one camera curve, motion blur on fast moves, baseline-pivot + geometricPrecision on
 scaled type.
+
+## 6. HyperFrames recipes proven on the branded-domain reel (2026-10-27)
+- **Directional motion blur in HTML:** inline `<svg><filter id="mby"><feGaussianBlur id="mbys" stdDeviation="0 0"/></filter></svg>`;
+  during a move `tl.set(world,{filter:"url(#mby)"})`, tween `#mbys` `attr:{stdDeviation:"0 14"}` up and back to 0,
+  then `filter:"none"` so holds stay pixel-sharp. Use "x 0" for horizontal pans.
+- **Crane:** outgoing group `y:-2800` and incoming `fromTo y:1500→0` on the SAME `power3.inOut` + vertical blur.
+  Move outgoing groups far enough (−1500 left tall cards peeking in at the top edge).
+- **Text-rewrite:** create BOTH old and new letter spans up front (absolute, xPercent −50 on one anchor) — GSAP
+  resolves selectors when the tween is created, so spans injected later by `tl.set(innerHTML)` never animate
+  (shipped as an empty pill until the stills caught it). Old letters exit right→left, new type in at ~1 f/char.
+- **Act change on the drop:** a cold grey backdrop layer under a warm brand layer whose opacity goes 0→1 in 0.45 s
+  exactly when the hero morphs — the change of world IS the payoff.
+- **Peak-aligned SFX:** place each file so its measured |max| sample (not its start) lands on the event
+  (`sfx/build_sfx.py` pattern); feed the SFX bus to mix.py as a second `--voice` so the music ducks under it.
+- **Per-segment caption mapping:** when TTS spelling differs from on-screen words ("C-NAME" vs "CNAME",
+  "U-T-M source equals" vs `utm_source=`), pair (tts, caption) per phrase and spread caption words only inside
+  that phrase's span — no drift across the line.
+- Layout that depends on text width (camera pans along a URL): build those tweens inside
+  `document.fonts.ready.then(...)` and register `window.__timelines` only after.
