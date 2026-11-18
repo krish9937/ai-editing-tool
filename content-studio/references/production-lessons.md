@@ -429,3 +429,127 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
 - Higgsfield preset TTS was used only because no Gemini/ElevenLabs key was available — the user prefers their own Gemini/ElevenLabs voice: ask for the key at intake.
 - Windows tooling: faster-whisper + new PyAV breaks (`metadata_errors` TypeError) → decode with ffmpeg to f32le and pass the numpy array. ffmpeg overlays: `-loop 1 -t` + setpts offset + alpha fade STALLED (0-byte output, 10+ min); single-frame PNG inputs vanish after ~2 s; working pattern = `-loop 1 -framerate FPS -t TOTAL -i png` + `overlay=enable='between(t,a,b)'`.
 - USER VERDICT on the Thig video: "very bad script and also very bad hook" (no remake requested). Causes: I skipped §0a-bis (never asked the script angle, never ran value-scripting.md) and wrote a feature list ("I research / write / publish / help you grow") instead of founder outcomes (time saved, customers, growth); the hook "Hi, I'm Thig, your AI marketing team" is a self-introduction with no curiosity, pain or stakes. Rules: never open on "Hi, I'm <brand>"; open on the viewer's pain or a surprising claim; mascot reels still need a value-first story; show the script + 2-3 hook options as their OWN approval step before spending any credits.
+
+## 2026-10-28 — THIG promo v1 (16:9 4K60, music-only, OpenMontage stages + HyperFrames/Three.js)
+- **HyperFrames 0.8.212 retired `general-video`**; its knowledge now lives in `/hyperframes` references (story, spec, film, motion, types/launch, types/3d). `npx hyperframes skills update <x>` writes into ~/.claude/skills — copy the refreshed folders back into the repo (`robocopy <installed> <repo>\hyperframes\<name> /MIR`) BEFORE running sync-skills.ps1, or the sync reverts them.
+- **OpenMontage as the stage spine** (research → proposal → script → scene plan → assets → edit → compose → review → publish) works well layered over our rules; the useful bits were taste dials, slideshow-risk / "different primary subject per scene", and SPEC.md with every adjective as a number. Unzipped copy: tools\openmontage (AGPL — run as a tool, never vendor its code).
+- **4K from a 1080p composition:** author 1920×1080, render `--resolution landscape-4k --fps 60 --quality delivery --gpu --browser-gpu --workers 3` (RTX 3060: 2531 frames in 4 m 43 s). WebGL must use `renderer.setPixelRatio(devicePixelRatio)` or the 3D stays 1080p while DOM goes 4K.
+- **3D devices + live DOM UI (approved engine):** Three.js MacBook/iPhone bodies, the real site UI as a DOM div mapped onto the projected screen corners with a homography (matrix3d) every frame — UI stays razor-sharp at 4K (100 % crop checked). Anchor the laptop camera to the REST pose of the screen, then move the body (`my`), otherwise a "rise into frame" is invisible because the camera follows the screen.
+- **Cursor / thumb on a 3D screen:** project virtual UI coords through the same homography (`pt(x,y)`) so the pointer lands exactly on the button at any camera angle. Remember page offsets (nav height) in the virtual coords.
+- **PowerShell 5.1 mojibake trap:** `Get-Content -Raw` + `[IO.File]::WriteAllText` on a UTF-8 file double-encodes →, ·, ✓, “ ” (they turned into ÃƒÆ'… and made buttons huge). Edit composition sources only via Python (utf-8) or the Edit tool; `src\fix_mojibake.py` repairs repeated rounds.
+- **Template outside the project:** keep `index.src.html` + build.py (inlines icons/mascot SVG with id prefixes) in a sibling `src\` folder — a second root HTML with `data-composition-id` in the project fails lint ("Multiple root-level HTML files").
+- **Pre-tween flashes:** with `immediateRender:false`, elements in a later scene sit at their CSS default until their tween starts — give every later element a CSS start state (opacity 0 / clip-path inset) and keep frame-0 tweens immediate so the hook frame is complete.
+- **Debugging a frozen composition:** if every snapshot shows frame 0, the module threw — load the page with puppeteer-core from the npx cache + hyperframes' chrome-headless-shell and print `pageerror` (`src\console.mjs`). Here: a duplicate `const MD`.
+- **Music for music-only promos:** rank Mixkit candidates by sub-bass share + 1 s energy curve; fit the beat grid by kick-onset peak picking + linear fit (autocorrelation gave 127 vs 138 BPM on one track). A breakdown with a 1.5 s silence before the drop = perfect slow-mo "hold before the payoff"; cut whole bars out of the breakdown so the drop lands on the story's tap.
+- **Loudness after AAC:** a −1.0 dBTP WAV master came out at −0.3 dBFS after AAC 320k. Master to TP −1.8 / limiter 0.8 → −1.7 dBFS after encode, −11.8 LUFS.
+## 2026-10-29 — THIG promo v2 + mascot gesture attempts
+- **THIG has NO mobile app:** v1's iPhone approval feed was rejected — show the product as a desktop web app (browser on a 3D MacBook). Check what platforms a product really ships before choosing a device.
+- **Mascot gestures must come from the brand's own art.** Rejected in order: v1 SVG blob hands ("very bad"), code-redrawn vector arms ("very 3rd class", "very very very off" next to the official 3D render), a Blender metaball model matched to the official render (6 rounds, deleted on sight). Only acceptable: official renders, or poses generated FROM the official art (Gemini Nano Banana needs billing — free tier image quota is 0; or HeyGen). Without them, use the single official pose with a hop/sway/squash rig.
+- **Mascot rig in HyperFrames:** one DOM layer, pose images bottom-anchored, squash on pose change, beat hop, sway; anchor to a projected 3D point (e.g. the laptop palm rest) so it stands on the device; aim the camera lower so it isn't cropped.
+- **SVG gotcha:** `<g>` is not allowed inside `<clipPath>` — put transforms on each shape.
+## 2026-10-29 — Screen-Studio-style site walkthrough recorded by me (THIG, Okara reference)
+- **Deterministic browser recording at 60 fps, 2x DPR:** chrome-headless-shell with `--enable-begin-frame-control --run-all-compositor-stages-before-draw --disable-threaded-animation --disable-threaded-scrolling --disable-smooth-scrolling --force-device-scale-factor=2`, a target created with `enableBeginFrameControl: true`, and one `HeadlessExperimental.beginFrame({screenshot})` per frame (pump frames while the page loads). 2172 frames of 2880x1800 in ~4 min. Script: work\thig-walkthrough\src\record.mjs.
+- Page.startScreencast silently drops to ~4 fps at full res; virtual-time + page.screenshot deadlocks — use BeginFrame.
+- Inside the BeginFrame loop, puppeteer `page.evaluate`/`mouse.wheel` can deadlock; drive page state with raw `cdp.send("Runtime.evaluate")` (fire before the frame, await after). Mouse moves are fine for :hover. Hover menus: park the real pointer on the trigger while the DRAWN cursor glides over the items.
+- Edit: video in a floating rounded window on an off-white radial bg, camera keyframes [t, scale, focus x/y or follow-cursor range] eased 0.7 s and clamped so the window always covers/fits the frame, drawn big cursor + press scale + ripple from the logged path, speed-based blur. Frame each zoom on the section HEADING + its UI, end on a zoom-out.
+- (DSC reel v1→v2, 2026-10-30) The user said "subtitles are blocking the visuals, the visuals are very generic, add real photos". Fix that worked: a THOUGHT-PROJECTION redo. The speaker is cut out (full RVM matte) with a white outline (4 CSS drop-shadows), scaled 0.78 and pushed down 250 px, with a bust fade (mask: bottom 70→84 %, sides 4→12 % / 88→96 %) so frame edges, bean bag and knees melt into a story set (a bathroom subway-tile wall as an SVG pattern). Real photos and headlines are taped above the head (y 250–950). Captions sit in a chest band (y≈1505) and never cover visuals. Real photos without a browser: the news article's og:image (Fortune's still of Dubin in the ad, credited "image via Fortune") plus Commons CC photos (Federer, Unilever House).
+- SHAVING FOAM ON THE SPEAKER'S FACE: MediaPipe FaceLandmarker (tasks API, `face_landmarker.task` in tools\models\mediapipe; `uv pip install mediapipe`) → per-frame beard polygon = jaw [234…152…454] + lower-cheek line [447,345,352,411,425,266,329,2,100,36,205,187,123,116,227], with an outer-lip hole (evenodd). 3-frame smoothing, written to assets/face.js. In the composition the foam is a clipPath of that polygon over the SVG foam filter + a blurred fluffy edge + a soft drop shadow, inside the same scaled container as the cut-out so it stays aligned. Razor strokes are a mask line from the cheek (411/187) to the jaw (397/172), round caps, with a cut-out razor photo riding the stroke head. Limit strokes to their own window, or the cuts carry into a later foam window.
+- (DSC reel v2→v3, 2026-10-30) The user said "don't do the background thing", so they don't want their room replaced by a designed set. Keep the REAL room full-frame and put visuals behind the cut-out (depth sandwich). Keep text cards in the band above the head (y≈250–470) and photos at the sides, because the head rises when the speaker leans and hides text behind it. "Razor should remove the foam in one go": ONE sweep, a black mask rect growing across the beard bounding box (eased) with the razor riding its edge, razor head ≈ half the face height. Two cheek strokes read as fiddly.
+- (DSC reel v3→v4, 2026-10-30) "Visuals are being blocked by my head, so split-screen it." When the speaker's head sits high in frame (low-angle phone shots), visuals behind or above the head get hidden. Default for these takes: a SPLIT layout. A top panel (0–980, paper texture, dark divider) holds the real photos and cards at full size. The real footage (and the cut-out + face-foam container) shifts down ~560 px, so the face sits in the bottom half. Captions go just under the divider (y≈1000), above the head. Keep the hook and the final line full-frame; slide the panel in and out with a 0.3 s ease. Size cards to the panel, counting padding: left + width + 2×padding ≤ 1050.
+## 2026-11-04 — linkutm Bio Pages promo (9:16 4K60, music only)
+- **"Use real themes from the app."** When a product has a theme or design system in its frontend repo (e.g. linkutm `src/lib/bio/themes.ts`), port the preset table and its CSS-variable serialiser 1:1 into a `themes.js` for the composition. Don't invent lookalike palettes. Download every Google font the presets use as local woff2 (css2 API with a Chrome UA; keep only the `/* latin */` block) and inline the @font-face rules. Scale radii, borders and shadows to the page size in the film.
+- **Inline-style gotcha:** font stacks like `"Sora", sans-serif` inside `style="..."` close the attribute early, so every property after them is lost (theme names turned invisible). Swap `"` for `'` before interpolating.
+- **"Carousel effect for showing multiple themes."**
+  - Full-page ring: `#ring` with `z:-R` + `rotationY`, children `rotateY(i*360/N) translateZ(R)`; front page sits at z=0, so it matches the live page pixel-for-pixel for a hard swap in and out. Turn one step per beat with `back.inOut(1.3)` + x motion blur, and scale the ring to 0.7 so the neighbours show.
+  - Tile wall: two stacked 13-tile rings spinning in opposite directions from ±540°, decelerating with `power3.out`. Push the ring forward (container z = −R + 900) so the front tiles read big.
+- **3D gotcha:** `backface-visibility` doesn't hide a preserve-3d element whose children have their own Z, so mirrored back pages bleed through. Toggle opacity per beat so only the front page and its two neighbours are drawn.
+- Cloning DOM for a carousel: rename every id (`x_i`) or GSAP selectors hit all copies. Rewrite the page-scoped CSS to `:is(#x,[id^="x_"])`, strip inline styles GSAP already wrote (immediateRender fromTo), and never use template literals inside querySelector (the HyperFrames lint rejects them).
+- Music-only master: loudnorm I=−10 TP=−2, then `alimiter=limit=0.79`. Plain loudnorm TP=−1 still hit 0.0 dBFS after AAC. Result: −11.2 LUFS / −1.3 dBTP.
+## 2026-11-04 — linkutm Bio Pages v2: real app filmed from the frontend code (v1 trashed as "very generic")
+- **"Show the real application from the code."** A run-locally recipe that works without touching the app code:
+  - Unzip the frontend and run `next dev` unmodified, with `NEXT_PUBLIC_API_URL` pointed at a plain Node mock API.
+  - Shape every response from `src/lib/**/types.ts` and `api.ts`, and log unknown routes to a file until it stays empty.
+  - Get past `proxy.ts` with a fake auth cookie, an onboarding-done cookie and localStorage tokens.
+  - Unlock every plan or feature flag, and point the public host at the real short domain (lnkutm.me).
+  - Hide dev overlays (the Next "N" badge, React Query devtools) with injected CSS.
+  - Fixtures use a fictional creator with no third-party embeds (no YouTube video).
+  - Scripts live in `work\linkutm-bio-v2\capture` (start.ps1, mock-api.js, recorder.js).
+- **Deterministic 60 fps UI recording:**
+  - chrome-headless-shell with BeginFrame control, one screenshot per frame.
+  - Drive the page over raw CDP and log the cursor per frame to JSON.
+  - Pin the page timers to the frame clock, or charts stay blank.
+  - **Pass `--force-device-scale-factor=<dpr>` at launch.** `Emulation.setDeviceMetricsOverride` DPR is ignored by BeginFrame screenshots, which came out 1600x1000 instead of 3200x2000 (soft at 4K). Always ffprobe the clip size.
+- **Filmed-UI layout for 9:16 from a 16:10 recording:**
+  - Show the same clip twice: an editor panel whose camera follows the smoothed cursor (EMA per frame, clamped to the frame), plus a fixed crop of the app's own live preview phone floating on top. The viewer sees each action AND its result.
+  - Hand off between scenes by morphing that preview crop into the next scene's hero phone.
+  - Speed clips with ffmpeg (`setpts=PTS/rate`), and pick the rate so repeated clicks land on beats (themes: 1.25 s apart at 2.5625x = 1 beat at 123 BPM).
+- **HyperFrames gotchas:**
+  - A `<video>` with data-start must not sit inside an element that also has data-start (lint `video_nested_in_timed_element`). Keep scene wrappers untimed and toggle their opacity on the timeline.
+  - Every video needs an id, or it renders frozen.
+  - A clip that ends before a handoff finishes shows a blank card: give clips a lead-in.
+  - Registry component camera-scan-gate paints a dark stage over its target. Set `--bg/--surface/--border: transparent` on the host and hide `.csg-grid/.csg-target/.csg-ambient` so the real QR shows through.
+  - The background render was reaped for low memory while the session was idle. Stop the dev and mock servers and render in the foreground with `--workers 3`.
+- Story that replaced a "generic" feature reel: problem in the user's world (a DM flood of "link??") → the real product solving it, step by step → the real-world share moment (café flyer QR) → proof (Insights) → the same DM thread, now answered.
+## 2026-11-05: linkutm Bio Pages, all 3 versions rejected and deleted
+- The user rejected all three cuts, the last as "the worst video":
+  - v1: HyperFrames motion graphics + theme carousels
+  - v2: real-app recordings as flat panels on paper + CSS phones + headlines
+  - v3: Kling/Veo golden-hour AI plates with the real UI tracked onto green-screen phones
+- The technical recipes above still work (mock-API app capture, BeginFrame DPR flag, two-pass screen tracking with edge-line corners + notch-aware fitting + feature-homography under thumb occlusion). They are NOT an approved style.
+- Lesson: after two misses on one video, stop proposing new directions. Ask what exactly looked bad, get a reference the user wants matched closely, and gate on a 5-second test before any full build.
+- 720p AI plates (Kling free / Veo in the Gemini app) upscaled into a 4K frame read soft next to sharp UI. Don't promise a "better render" from free AI video tiers.
+## 2026-11-05: linkutm Bio Pages v4 "One link." (APPROVED as final after 3 trashed versions)
+- Process that won:
+  1. The user asks for a script + skills + libraries.
+  2. Propose them, take the redlines (no voice, no captions).
+  3. Build ONLY a 6 s hook test at final quality.
+  4. Approval, then the full build.
+- Look: a white Apple studio with a real GLTF iPhone in Three.js inside HyperFrames.
+  - Registry `vfx-iphone-device` ships models/iphone.glb; its mesh `front-glass` is the screen. Apply planar UVs, then a MeshBasicMaterial with a CanvasTexture, toneMapped false.
+  - Repaint the materials: anodised aluminium → titanium 0x7d7a74, metal 1 / rough 0.24. Hide the `apple-logo*` meshes. Make lens bezels/barrels/plateau titanium (the stock model is orange).
+  - Studio env = a gradient equirect with white softboxes AND dark flags, or the metal reads flat white.
+  - Shadows: PCFSoft, a ShadowMaterial floor just under the phone, key light near-vertical.
+- Screen = a 2D canvas you paint every frame (real screenshots via drawImage, a zip-open by drawing the two halves offset). Draw the black bezel + Dynamic Island yourself, and offset the page under the island.
+- Render order bug: render from `tl.eventCallback("onUpdate", render)`, NOT from the first tween's onUpdate, or every frame draws the previous frame's state. Also register `window.__timelines` only after the GLTF and images load.
+- Cards in front of the phone: MeshBasicMaterial with depthTest false and renderOrder 20, or they slice through the phone body. Use toneMapped false for true brand colours.
+- Hook rule reconfirmed: the product must be on screen on frame 1, so start the drop already in frame. A lone shadow on the floor for 0.4 s was called a visual bug.
+
+## 2026-11-18: linkutm glossary #9 CTR (final): cut the page's character out of the real art
+- Glossary page = the world. The character was cut from the featured PNG, not redrawn:
+  - alpha = clip((|pixel − medianBlur(41)+gauss bg| − 10)/38)
+  - un-premultiply against the background to recover the true line colour
+  - colour masks separate the cursor (light-blue hue 90–115) from his coral fingers and drop the title tail
+  - export at 2x for 4K
+- Glossary slugs don't always match the term (CTR = /glossary/ctr). Read the exact featured-image URL from the page.
+- Verify the user's script against the primary source: Bowman 2009 says ONE team between two blues, not two teams.
+- faster-whisper here: set CUDA_VISIBLE_DEVICES=-1 (cublas64_12.dll missing) or transcription crashes.
+- GSAP: a later caption entrance (fromTo y) resets a y-slide on the same element. Schedule the slide after the entrance, and use a transform (y), never `top` (lint gsap_non_transform_motion).
+- Captions in the top band (y≈170) after the hook keep the stage clear for props and the character bottom-right.
+
+## 2026-11-18: linkutm "The crew that took all the credit" (GTA 6 moment, final): cinematic AI plates on a credit budget
+- Approved, and the user praised the credit optimisation: 92.5 Higgsfield credits for a 40 s 4K60 reel.
+- Plan first, then a ~10-credit hook test, then the full build. The user said "don't use this many credit" to the first plan (~965).
+- Credit saving:
+  - Seedream 5.0 Pro stills cost 2.5 each; Kling 3.0 Turbo 1080p 5 s clips cost 10. Seedance 2.5 (80 per clip) is only for when the user asks.
+  - One take per shot.
+  - Half the beats are stills with HUD motion (freeze-frames, "THAT WAS ME" bubbles, phones, results screen), not clips.
+  - A shot with text on screens (burner phones) stays a still, so link labels sit exactly on the screens.
+- Consistent cast: one 4-person line-up still is the character reference (`--image`) for every solo crew still and for the freeze-frame crops.
+- Check every generated still for brand marks: a can read as Red Bull. Fix it with a Seedream edit ("change only the can…", 2.5 credits) before animating.
+- Kling Turbo clips morph faces after ~3.4 s, so use only the clean section. Stretch it to length with RIFE slow-mo (rife-v4.6, `-n` target frames).
+- Higgsfield CLI:
+  - A PNG start image gave HTTP 520 on upload; JPG works.
+  - Run batches with Start-Job and Wait-Job in the SAME call. A job started without waiting dies when the shell exits, and nothing is submitted.
+- ElevenLabs:
+  - `eleven_v3` + inline audio tags ([low, confident], [smirking], [slow, deadpan], [chuckles]) = the realistic expressive narrator the user asked for. Shared-library voice IDs work directly. "Obsidian" = acrqYoDVmcpJemOxjC39.
+  - v3 reads slowly: tighten with silenceremove (stop_duration 0.35, keep 0.22) + atempo 1.1, then re-insert a dramatic pause at the punchline by splicing silence.
+  - ElevenLabs Music can go silent before the requested length. Check the envelope, and ask for "no breakdowns, no silence".
+  - /v1/sound-generation is good for custom SFX (record scratch, stamp, phone buzz, counter ticks).
+- GSAP bug that cost three re-renders: `fromTo` with immediateRender (the default) applies its FROM at build time. A white #flash fromTo {opacity:0.35} placed at 5.9 s washed out every earlier frame. Later-positioned fromTo calls need `immediateRender: false`. If a plate looks milky, suspect an overlay before colour tags.
+- Game-HUD look without IP: Bahnschrift (Windows system font, condensed via font-stretch), a HEAT meter not wanted stars, "JOB COMPLETE · CREW +1" not "mission passed", no game logo or font; "GTA 6" goes only in the post caption.
+- Wait loops: `-notmatch "error"` matches "0 error(s)" and exits instantly. Use `-cnotmatch` on a unique success string.
+- SPEED (the user asked why it took so long):
+  - PyTorch Real-ESRGAN x4 to 8K and back took ~1 h (8–10 s/frame).
+  - Next time: realesrgan-ncnn-vulkan or 2x, upscale each clip as it lands, submit every still and clip in one batch, check with `hyperframes snapshot --at …` before one 4K render.
+  - Use the snapshot command: it caught overlay placement and the end-card vignette without a full render.
+- End card: fade #vig and #grain out when the white CTA card comes in, or its edges go grey.

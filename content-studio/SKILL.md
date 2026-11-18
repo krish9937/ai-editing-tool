@@ -13,6 +13,7 @@ Skill folder = `$CS` (this directory). Scripts: `$CS/scripts/` (Python 3, need f
 Studied playbooks to apply on every build: `references/prompt-motion-playbook.md` (brief skeleton + ban list),
 `references/snapcn-lessons.md` (camera-as-world, motion blur, measured text motion, HyperFrames recipes §6) and
 `references/openmontage-lessons.md` (word budget, captions vs headlines, voice cues, sound polish, render QA).
+**Brand files (skip re-research, verify prices):** THIG / thig.ai → `references/brand-thig.md` (+ `brand-thig/` logo + mascot PNGs).
 Exception: **glossary reels use ONLY the glossary page's own featured-art theme + its character** (production-lessons 2026-10-28).
 
 ## 0. Non-negotiables (read every time)

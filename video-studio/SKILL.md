@@ -7,6 +7,7 @@ argument-hint: "<video type + website URL / what it's for, e.g. 'demo video for 
 > **Start with `content-studio`** (`~/.claude/skills/content-studio/SKILL.md`): it is the newer umbrella skill
 > (open-source-first tool choice, fast preview ladder, tested scripts, QA, platform packaging).
 > Use this skill's Remotion pipeline + LEARNINGS.md when the build is in Remotion.
+> Known brands already researched: THIG (thig.ai) → `~/.claude/skills/content-studio/references/brand-thig.md`.
 
 # /video-studio — one skill for any video
 
