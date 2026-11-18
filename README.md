@@ -76,4 +76,4 @@ Both can live side by side. They use different folder names, so neither overwrit
 
 ## research/
 
-The six raw research reports the skills were built from (short-form craft, editing types, open-source tools, AI tool APIs, platform specs, speed pipelines). The same content is inside `content-studio/references/`.
+Raw research reports the skills were built from that differ from their edited versions: `02-editing-types.md` and `03-opensource-tools.md`. The other four reports were exact copies and now live only in `content-studio/references/` (`craft-shortform.md`, `tools-ai-apis.md`, `platforms.md`, `speed-pipelines.md`).
