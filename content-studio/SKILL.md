@@ -223,6 +223,9 @@ into one pass. Vague feedback ("not good") → ask WHAT (opening/middle/text/aud
 - Disclose realistic AI voice/likeness via platform toggles.
 - Write captions for each platform the user posts to (IG, X, YouTube title/description/tags/
   pinned comment, LinkedIn long-form) and note anything unverified.
+- Copy around the video (5–7 labelled hook variants, caption hook→payoff→CTA, carousel cut-down,
+  Part 1–N series, repurposing plan, post-mortem analytics): `references/social-copy-playbook.md`
+  (from the BlackTwist social-media-skills pack in the repo's `social-media-skills/`).
 
 ## 7. Keep learning
 After every delivery or feedback round, append the lesson to `references/production-lessons.md`

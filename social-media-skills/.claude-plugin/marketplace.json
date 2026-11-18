@@ -1,0 +1,22 @@
+{
+  "name": "social-media-skills",
+  "owner": "blacktwist",
+  "version": "1.0.0",
+  "description": "Social media skills for AI agents — content strategy, creation, and analysis for LinkedIn, Twitter/X, Threads, and Bluesky",
+  "skills": [
+    "social-media-context-sms",
+    "content-strategy-sms",
+    "content-calendar-sms",
+    "platform-strategy-sms",
+    "post-writer-sms",
+    "thread-writer-sms",
+    "carousel-writer-sms",
+    "content-repurposer-sms",
+    "hook-writer-sms",
+    "performance-analyzer-sms",
+    "audience-growth-tracker-sms",
+    "content-pattern-analyzer-sms",
+    "optimization-advisor-sms"
+  ],
+  "strict": false
+}
