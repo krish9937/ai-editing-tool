@@ -553,3 +553,11 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   - Next time: realesrgan-ncnn-vulkan or 2x, upscale each clip as it lands, submit every still and clip in one batch, check with `hyperframes snapshot --at …` before one 4K render.
   - Use the snapshot command: it caught overlay placement and the end-card vignette without a full render.
 - End card: fade #vig and #grain out when the white CTA card comes in, or its edges go grey.
+
+## 2026-11-19 — USER RULE: Higgsfield opt-in + credit usage in every plan
+- Always ASK whether to use Higgsfield for the video (yes/no, per video). Default to Higgsfield-free options in the plan
+  until the user says yes.
+- Every plan includes a credits/cost block: tool → use → number of jobs (incl. retakes) → model → estimated credits
+  (Higgsfield via `higgsfield generate cost …` on one representative job × count), plus ElevenLabs / Gemini usage, and a total.
+  Say "estimate". Tools not used = 0 credits.
+

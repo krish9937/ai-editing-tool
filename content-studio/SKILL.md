@@ -90,6 +90,15 @@ If the client says "just do it / you decide", state the theme you chose in one l
 - **Audience type** (B2B serious buyers vs consumers): B2B → NO cartoon characters/props; premium minimal (type, thin-line art, clean UI cards, 3D objects).
 - **Script angle** (problem-solving / storytelling / technical / demo / proof / educational / hype…) with a
   recommendation for the market (see `references/value-scripting.md`).
+- **Higgsfield: yes or no?** (user rule, 2026-11-19) — EVERY video, ask whether to use Higgsfield (AI image/video
+  generation: character sheets, image-to-video shots, b-roll, covers) or keep it Higgsfield-free (code-built motion,
+  real footage/UI, stock). Never start a Higgsfield job without a yes for THIS video (a yes on one video doesn't carry over).
+- **Credit usage in EVERY plan** (user rule, 2026-11-19) — whenever you give a plan, include a credits/cost block:
+  for each paid tool, what it's used for, how many generations/takes, the model, and the estimated credits/cost.
+  Higgsfield: run `higgsfield generate cost <job-type> …` (or `higgsfield generate cost workflow <name> …`) for one
+  representative job and multiply by the number of jobs + retakes; say "estimate" and show the per-job figure.
+  Also list ElevenLabs (TTS characters / music seconds / SFX) and Gemini TTS (free-tier requests) when used.
+  If a tool isn't used, say "0 credits". This overrides any skill default that says not to pre-estimate cost.
 
 ## 1. Intake — ONE round, defaults pre-filled (ask the user; in Claude Code use AskUserQuestion, ≤4 per call)
 Skip anything already answered or remembered (check memory/brand files first).
@@ -256,6 +265,7 @@ them into `~/.claude/skills/`. Don't wait to be asked.
 - Delivery: Desktop = final mp4 only; all work files in `E:\video studio and claude work\work\<project>`; QA (decode, −14 LUFS, true peak ≤ −1 dBTP) before delivering.
 - Combine all skills (old + new) on every video; log every lesson in `references/production-lessons.md` and sync the repo; push only when asked.
 - Hardware: run the §3a GPU gate first — GPU tools only with a GPU, otherwise ask.
+- Higgsfield: ask yes/no for every video; every plan carries a credits/cost block (per tool, per job, total estimate).
 
 ## 9. Setting up on a new device
 1. `git clone https://github.com/krish9937/ai-editing-tool` → copy each skill folder (content-studio, reel-maker,
