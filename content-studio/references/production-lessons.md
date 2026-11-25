@@ -561,3 +561,13 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   (Higgsfield via `higgsfield generate cost …` on one representative job × count), plus ElevenLabs / Gemini usage, and a total.
   Say "estimate". Tools not used = 0 credits.
 
+
+## 2026-11-25 — "looks like a PPT": every plan/prompt needs a NAMED motion spec
+- Bio Pages promo v1 (built on the GPU machine from my plan) was judged "looks like a ppt" and the user asked why I wasn't
+  using the motion we've learned. Cause: my plan described WHAT is on screen, not HOW it moves → default slide-in/hold/slide-out.
+- Rule: every video plan and every build prompt includes (1) the motion references to read (snapcn-lessons §1/§6,
+  prompt-motion-playbook, openmontage §3c) and the template files to reuse (one-hero-morph, one-camera-feed-world,
+  crazy-motion-kit, keynote-iphone…), (2) a BEAT-BY-BEAT motion spec with named recipes (camera-as-world crane/whip +
+  directional blur, screen-becomes-world, text-rewrite, physical entrances, object-driven transitions, speed ramp only on
+  the drop, secondary motion on every hold), (3) hard rules: one continuous camera, nothing static > 1.2 s, no fades/slides/
+  crossfades, (4) motion QA: animation-map dead zones + slideshow-risk < 2.5, and a short motion test before the full render.
