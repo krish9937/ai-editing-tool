@@ -1,6 +1,10 @@
 # Prompt Motion lessons (prompt-motion.com — gallery of ~230 Claude-made motion videos + their prompts; studied 2026-10-23)
 
 ## Default BAN LIST (pair each with a positive alternative; show it in the plan)
+> **SUPERSEDED 2026-11-25 by content-studio SKILL §0m Motion law**. This list is prompt-motion.com's
+> *restraint* taste for premium UI loops. For THIS user it still holds for glows/neon, gradients, stock UI and template looks.
+> But particle bursts, shockwave rings, RGB split, camera shake and springs with real overshoot are **ALLOWED and expected on
+> launch/hype hits** (user, 2026-10-09: "I want explosions"). Dead holds and crossfades stay banned.
 glows/neon · particle bursts & shockwave rings · RGB split · camera shake · lens flares · grid floors · flashing backgrounds ·
 crossfades & random transitions · bouncy/cartoon springs · gradients & gratuitous 3D · stock UI kits/icons · text in frame corners ·
 holds > 1 s / dead time · Math.random (non-deterministic) · "anything that looks like a template".

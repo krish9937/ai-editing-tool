@@ -1,0 +1,137 @@
+<!doctype html>
+<!-- motion-kit demo: every recipe on one continuous 12 s, 1080x1920 timeline (content-studio §0m Motion law).
+     Render:  npx hyperframes@0.8.185 render  (copy this file as index.html next to motion-kit.js)
+     Map:     node <hyperframes-animation>/scripts/animation-map.mjs . --width 1080 --height 1920
+     Pattern to copy: scenes = absolute full-frame layers; secondary motion goes on .rig wrappers; every scene change
+     is a logged object-driven transition; MK.finish() checks variety + registers the timeline. -->
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="motion-kit.js"></script>
+    <style>
+      :root { --cream: #f1ece4; --ink: #111; --acc: #ff6200; --acc2: #ffad05; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--cream); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: Inter, "Segoe UI", Arial, sans-serif; color: var(--ink); text-rendering: geometricPrecision; }
+      .scene { position: absolute; inset: 0; overflow: hidden; }
+      .rig { position: absolute; }
+      h1 { font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+      .acc { color: var(--acc); }
+      /* S1 studio + phone */
+      #s1 { background: linear-gradient(180deg, #f6f1ea 0%, #ece4d9 70%, #e4dacd 100%); }
+      #shadow1 { position: absolute; left: 290px; top: 1590px; width: 500px; height: 60px; border-radius: 50%; background: radial-gradient(ellipse, rgba(60,40,20,.35), rgba(60,40,20,0) 70%); }
+      #phoneRig { left: 290px; top: 560px; width: 500px; height: 1040px; }
+      #phone { width: 500px; height: 1040px; border-radius: 76px; background: #2b2b2e; padding: 18px; box-shadow: 0 40px 80px rgba(60,40,20,.25); }
+      #scr1 { width: 100%; height: 100%; border-radius: 60px; background: #fff; overflow: hidden; padding: 120px 34px; }
+      .pill { height: 78px; border-radius: 40px; background: #f2f2f2; margin-bottom: 22px; display: flex; align-items: center; padding: 0 30px; font-size: 26px; font-weight: 600; color: #888; }
+      #h1 { position: absolute; left: 80px; top: 180px; width: 920px; font-size: 104px; }
+      .stk { position: absolute; padding: 18px 28px; border-radius: 26px; background: #fff; font-size: 38px; font-weight: 700; box-shadow: 0 10px 24px rgba(0,0,0,.12); }
+      /* S2 world = what the screen showed */
+      #s2 { background: linear-gradient(160deg, var(--acc2), var(--acc)); color: #fff; }
+      #s2 .far { position: absolute; inset: -60px; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), rgba(255,255,255,0) 40%); }
+      #h2 { position: absolute; left: 90px; top: 260px; font-size: 120px; color: var(--ink); white-space: nowrap; }
+      .link { position: absolute; left: 120px; width: 840px; height: 120px; border-radius: 60px; background: #fff; color: var(--ink); font-size: 40px; font-weight: 700; display: flex; align-items: center; padding: 0 50px; }
+      /* S3 gallery + counter */
+      #s3 { background: #fff; }
+      .tile { position: absolute; width: 300px; height: 300px; border-radius: 36px; }
+      #num { position: absolute; left: 0; right: 0; top: 1380px; text-align: center; font-size: 220px; font-weight: 800; color: var(--acc); }
+      #numl { position: absolute; left: 0; right: 0; top: 1620px; text-align: center; font-size: 48px; font-weight: 700; }
+      /* S4 card */
+      #s4 { background: #1d1d20; }
+      #card { position: absolute; left: 140px; top: 360px; width: 800px; height: 1200px; border-radius: 60px; background: linear-gradient(170deg, #fff 0%, #f3ede4 100%); overflow: hidden; }
+      #card .pill { background: #fff; border: 2px solid #eee; color: var(--ink); }
+      #glare4 { position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255,255,255,0) 35%, rgba(255,255,255,.7) 48%, rgba(255,255,255,0) 60%); mix-blend-mode: screen; opacity: 0; }
+      /* S5 QR */
+      #s5 { background: var(--cream); }
+      #qr { position: absolute; left: 290px; top: 560px; width: 500px; height: 500px; border-radius: 40px; background: #fff; padding: 40px; box-shadow: 0 30px 60px rgba(0,0,0,.15);
+        background-image: repeating-linear-gradient(90deg, #111 0 40px, transparent 40px 80px), repeating-linear-gradient(0deg, #111 0 40px, transparent 40px 80px); background-blend-mode: difference; }
+      #url { position: absolute; left: 0; right: 0; top: 1200px; text-align: center; font-size: 64px; font-weight: 700; }
+      /* S6 / S7 */
+      #s6 { background: #111; color: #fff; }
+      #h6 { position: absolute; left: 0; right: 0; top: 820px; text-align: center; font-size: 150px; }
+      #dot { position: absolute; left: 500px; top: 1180px; width: 80px; height: 80px; border-radius: 50%; background: var(--acc); }
+      #s7 { background: var(--acc); color: #fff; }
+      #h7 { position: absolute; left: 0; right: 0; top: 860px; text-align: center; font-size: 130px; }
+      #s8 { background: #fff; }
+      #h8 { position: absolute; left: 0; right: 0; top: 860px; text-align: center; font-size: 130px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="12" data-width="1080" data-height="1920">
+      <div id="s8" class="scene"><h1 id="h8">Claim <span class="acc">yours</span></h1></div>
+      <div id="s7" class="scene"><h1 id="h7">One link.</h1></div>
+      <div id="s6" class="scene"><h1 id="h6">Link in Bio</h1><div id="dot"></div></div>
+      <div id="s5" class="scene"><div id="qr"></div><div id="url"></div></div>
+      <div id="s4" class="scene"><div id="card"><div style="padding:120px 50px"><div class="pill">Book a date</div><div class="pill">Gallery</div><div class="pill">WhatsApp</div><div class="pill">Prices</div></div><div id="glare4"></div></div></div>
+      <div id="s3" class="scene">
+        <div class="tile" style="left:60px;top:200px;background:#f6a65b"></div><div class="tile" style="left:390px;top:200px;background:#e2725b"></div><div class="tile" style="left:720px;top:200px;background:#9fd8cb"></div>
+        <div class="tile" style="left:60px;top:530px;background:#4c1d95"></div><div class="tile" style="left:390px;top:530px;background:#f8c8dc"></div><div class="tile" style="left:720px;top:530px;background:#a8e063"></div>
+        <div class="tile" style="left:60px;top:860px;background:#1e3a8a"></div><div class="tile" style="left:390px;top:860px;background:#fbc2a4"></div><div class="tile" style="left:720px;top:860px;background:#e63946"></div>
+        <div id="num">0</div><div id="numl">taps on one button</div>
+      </div>
+      <div id="s2" class="scene"><div class="far"></div>
+        <h1 id="h2"></h1>
+        <div class="link" style="top:720px">My new vlog</div><div class="link" style="top:880px">Podcast</div>
+        <div class="link" style="top:1040px">Codes I use</div><div class="link" style="top:1200px">Book Zoya ✨</div>
+      </div>
+      <div id="s1" class="scene">
+        <div id="shadow1"></div>
+        <div id="phoneRig" class="rig"><div id="phone"><div id="scr1"><div class="pill">link 1</div><div class="pill">link 2</div><div class="pill">link 3</div><div class="pill">link 4</div></div></div></div>
+        <h1 id="h1">Your bio fits <span class="acc">ONE</span> link</h1>
+        <div class="stk" style="left:70px;top:900px">link?? 😭</div><div class="stk" style="left:700px;top:1050px">which one</div><div class="stk" style="left:110px;top:1300px">not working</div>
+      </div>
+    </div>
+    <script>
+      MK.ready(() => {
+        MK.init({ root: "#root", seed: 11 });
+        const tl = gsap.timeline({ paused: true });
+        MK.hide(tl, ["#s2", "#s3", "#s4", "#s5", "#s6", "#s7", "#s8"]);
+
+        // S1 0-2.4: drop + contact shadow, crunch headline, sticker comments, idle rig, slow push
+        MK.drop(tl, "#phone", 0.0, { shadow: "#shadow1" });
+        MK.crunch(tl, "#h1", 0.15, { shakeTarget: "#s1" });
+        MK.stickers(tl, "#s1 .stk", 0.9);
+        MK.idle(tl, "#phoneRig", 0.5, 1.9, { rot: 1.4, y: 10 });
+        MK.push(tl, "#phoneRig", 0.0, 2.4, { to: 1.04 });
+        // 2.4 screen-becomes-world
+        MK.zoomThrough(tl, "#s1", "#scr1", "#s2", 2.4, { dur: 0.6 });
+        // S2 3.0-4.6: links spring in, word rewrite, parallax
+        MK.typeOn(tl, "#h2", "one link", 3.0, { cps: 28 });
+        MK.springIn(tl, "#s2 .link", 3.1, { stagger: 0.07 });
+        MK.rewrite(tl, "#h2", "one link", "every link", 3.8);
+        MK.parallax(tl, [{ el: "#s2 .far", depth: 0.3 }, { el: "#h2", depth: 0.6 }], 3.0, 1.6, { dx: 90 });
+        // 4.6 whip left
+        MK.whip(tl, "#s2", "#s3", 4.6, { dir: "left" });
+        // S3 4.6-6.6: gallery dealt in, counter + impact on landing
+        MK.dealCards(tl, "#s3 .tile", 4.9, { fromY: 900 });
+        MK.count(tl, "#num", 0, 180, 5.4, 0.9);
+        MK.impact(tl, 6.3, { target: "#num", cam: "#s3", x: 540, y: 1490 });
+        MK.push(tl, "#s3", 4.9, 1.7, { to: 1.05 });
+        // 6.6 card flip
+        MK.cardFlip(tl, "#s3", "#s4", 6.6);
+        // S4 6.6-8.0: glare sweep, idle card
+        MK.glare(tl, "#glare4", 7.2);
+        MK.idle(tl, "#card", 7.0, 1.0, { rot: 0.8, y: 6 });
+        // 8.0 fold into QR
+        MK.foldInto(tl, "#card", "#qr", 8.0);
+        tl.to("#s4", { backgroundColor: "rgba(29,29,32,0)", duration: 0.3 }, 8.0); // reveal the QR scene below
+        MK.show(tl, "#s5", 8.0);
+        MK.typeOn(tl, "#url", "lnkutm.me/you", 8.6, { cps: 24 });
+        MK.idle(tl, "#qr", 8.7, 0.8, { rot: 1.2, y: 8 });
+        // 9.5 shatter S5 -> S6
+        MK.shatter(tl, "#s5", 9.5, { next: "#s6", cols: 5, rows: 8 });
+        MK.crunch(tl, "#h6", 9.7);
+        MK.push(tl, "#h6", 9.9, 1.0, { to: 1.06 });
+        // 10.9 the dot flies into the lens -> S7
+        MK.flyIntoLens(tl, "#dot", "#s7", 10.9, { dur: 0.5, out: "#s6" });
+        // 11.5 match cut -> S8
+        MK.matchCut(tl, "#s7", "#s8", 11.5);
+        MK.springIn(tl, "#h8", 11.5, { dist: 120 });
+        MK.finish(tl);                 // variety check + registers the timeline
+        window.__timelines["main"] = tl; // explicit line so HyperFrames' static contract check sees it
+      });
+    </script>
+  </body>
+</html>

@@ -15,6 +15,7 @@ on the hero pill, the cursor halo and the final dot. One UI font. A real cursor 
 the camera zooms Screen-Studio style so each moment fills the frame, one eased move per scene, never in-then-out.
 Only show what linkutm really does: UTM templates and naming rules, branded short links, dynamic QR codes, real-time clicks
 by country and device. Never show sales, revenue, conversions or ROAS — linkutm counts clicks.
+(**SUPERSEDED 2026-11-25 by content-studio SKILL §0m Motion law**: for launch reels, explosion FX and camera shake on section hits are now expected.)
 Banned: glows (→ crisp 1px borders), particle bursts (→ the pill itself reacts), crossfades (→ morphs), bouncy springs
 (→ tiny overshoot only on landings), camera shake (→ one eased push), gradients on UI (→ flat fills), text in frame corners,
 holds over 1 s, invented numbers or features, anything that looks like a template.

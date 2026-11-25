@@ -292,7 +292,7 @@ Researched 2026-10-01. Sources at the end. **A note on how much to trust the num
 | Music under VO | 18–25 dB below voice; duck 15–25 dB, attack 10–30 ms, release 200–500 ms |
 | SFX | 3–8 per 30 s; 6–12 dB under voice; dip music 3–6 dB under whoosh |
 | Motion easing | ease-out 8–15 f entrances; never linear; overshoot ≤10% |
-| Transitions | hard cuts default; stylised ≤1 in 5 |
+| Transitions | ~~hard cuts default; stylised ≤1 in 5~~ **SUPERSEDED 2026-11-25 by content-studio SKILL §0m Motion law**: every cut is an object-driven move; ≥ 4 designs, none > 35 % |
 | CTA | last 2–4 s, spoken + on-screen, no end card |
 
 ---

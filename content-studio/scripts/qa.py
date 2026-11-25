@@ -1,6 +1,7 @@
 """Cheap delivery gate. Run on EVERY render before showing/handing it over.
 
 python qa.py <video> [--expect-frames N] [--sheet out.jpg] [--times 0,1.5,10,...] [--safe]
+             [--comp <hyperframes-dir>] [--motion-spec motion-spec.json] [--no-motion]
 
 Checks: decodes every frame (catches the "encoded fine but truncated" bug), duration,
 fps, resolution, audio present, integrated loudness (LUFS) + true peak, silent first
@@ -16,6 +17,9 @@ ap = argparse.ArgumentParser()
 ap.add_argument("video"); ap.add_argument("--expect-frames", type=int)
 ap.add_argument("--sheet"); ap.add_argument("--times", default="")
 ap.add_argument("--safe", action="store_true")
+ap.add_argument("--comp", help="HyperFrames project dir -> motion gate also runs animation-map dead-zone check")
+ap.add_argument("--motion-spec", help="beat-by-beat motion spec JSON (SKILL §0m) -> motion gate checks the design")
+ap.add_argument("--no-motion", action="store_true", help="skip the motion gate (ONLY for footage-only cuts with no motion graphics)")
 a = ap.parse_args()
 fail = []
 r = subprocess.run([FFMPEG, "-v", "error", "-i", a.video, "-map", "0:v:0", "-f", "null", "-", "-progress", "-"], capture_output=True, text=True)
@@ -54,6 +58,15 @@ if a.sheet and a.times:
     vf += f",tile={len(ts)}x1"
     subprocess.run([FFMPEG, "-v", "error", "-y", "-i", a.video, "-vf", vf, "-fps_mode", "vfr", "-frames:v", "1", a.sheet], check=True)
     print("sheet:", a.sheet)
+# Motion gate (SKILL §0m, 2026-11-25): blocking. Runs on every export unless --no-motion.
+if not a.no_motion:
+    mcmd = [sys.executable, os.path.join(os.path.dirname(__file__), "motion_qa.py"), a.video]
+    if a.comp: mcmd += ["--comp", a.comp]
+    if a.motion_spec: mcmd += ["--spec", a.motion_spec]
+    mr = subprocess.run(mcmd, capture_output=True, text=True, errors="replace")
+    print(mr.stdout.strip())
+    if mr.returncode != 0:
+        fail.append("motion gate failed (see MOTION FAIL above)")
 if fail:
     print("FAIL:", " | ".join(fail)); sys.exit(1)
 print("PASS")

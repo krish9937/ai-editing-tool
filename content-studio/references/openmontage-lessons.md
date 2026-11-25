@@ -92,7 +92,7 @@ Because the project is AGPLv3, don't vendor its code into our repos. Re-implemen
 10. **L-cuts weld shots together.** Carry the outgoing ambience or audio 0.5–1.5 s under the incoming shot on the 3–4 hardest transitions. A J-cut leads with the next shot's audio by 0.3–0.5 s.
 11. **Jump-cut mask:** a 1.0 → 1.02× micro zoom shift at each cut in screen or talking footage.
 12. **Speed plan for screen/UI footage:** key click or result 0.75–1.0×; routine typing or navigation 1.5–2×; installs/builds 3–6× or cut. Never put a proof moment inside a sped-up stretch. Mute or duck the noise in sped-up sections.
-13. **Restraint in transitions:** fewer than 4 transition types per piece, and not 3 different ones in the first 15 s. If it's boring, fix the shots or the pacing instead of adding flash.
+13. ~~**Restraint in transitions:** fewer than 4 transition types per piece…~~ **SUPERSEDED 2026-11-25 by content-studio SKILL §0m Motion law**: ≥ 4 distinct object-driven transition designs, none > 35 %, never the same twice in a row. Still true: if it's boring, fix the shots/pacing first, not just add flash.
 14. **Ken-Burns check for references:** their analyzer uses optical-flow variance to classify each scene as `static_image`, `animated_still` (uniform pan/zoom on a still) or `motion_clip`. Never guess whether a reference is real motion or a moving still.
 
 ### 3d. Typography and captions

@@ -571,3 +571,28 @@ CURRENT rules; where earlier rounds disagreed, the later decision wins. Read bef
   directional blur, screen-becomes-world, text-rewrite, physical entrances, object-driven transitions, speed ramp only on
   the drop, secondary motion on every hold), (3) hard rules: one continuous camera, nothing static > 1.2 s, no fades/slides/
   crossfades, (4) motion QA: animation-map dead zones + slideshow-risk < 2.5, and a short motion test before the full render.
+
+## 2026-11-25 — AUDIT: why motion graphics "died" (shopfront 4K + Bio Pages 16:9 v1), and the fix
+User: "motion graphics has completely become dead for the past few videos — check why." Root causes found:
+1. **The skill told the builder to hold back.** SKILL §0 #3 (from the 2026-09 "less AI-ish" round) said: hard cuts by default,
+   stylised transitions ≤1 in 5, no bouncy pops, no particle bursts. prompt-motion-lessons' ban list (camera shake, RGB split,
+   shockwaves), craft-shortform ("hard cuts default"), openmontage (< 4 transition types), the launch-film brief and video-studio
+   ("no shockwaves… soft fades") said the same. Later feedback said the opposite ("animate everything", "I want explosions",
+   "looks like a PPT"), but that lived in the laptop's Claude memory, which the GPU machine never sees.
+   → §0 #3 now bans the AI LOOK only; new **§0m Motion law** overrides every calmer line; the conflicting lines are marked SUPERSEDED.
+2. **An unpushed lesson + a diverged repo.** The named-motion-spec lesson was committed on the laptop but never pushed; the copies were
+   ahead 1 / behind 1. → §0 #1: pull + `git status -sb` before every job, push after every lesson.
+3. **The motion kit was Remotion-only.** 18 `.tsx` examples vs 3 HyperFrames `.html`; the default engine is HyperFrames, so every build
+   "ported loosely" and lost the moves. Even the detailed 10:14 motion-first prompt came back as the shopfront.
+   → `templates/motion-kit/` (motion-kit.js + demo + spec example): zoomThrough (screen-becomes-world), whip/crane, cardFlip,
+   foldInto, shatter, flyIntoLens, matchCut, drop, springIn, flipIn, stickers, dealCards, crunch, rewrite, typeOn, count, idle,
+   push, parallax, glare, impact, shake. Rendered + verified on 2026-11-25.
+4. **No blocking motion check.** qa.py only checked decode/loudness/safe zones; animation-map/slideshow-risk were prose.
+   → `scripts/motion_qa.py` (frozen stretches, animation-map dead zones, spec design checks) runs from qa.py on every export.
+5. **Pixel metrics can't judge motion design:** the "dead" shopfront moved MORE per frame than the approved GTA reel. The failure
+   was design: kinetic text over static phones, slide/hold/slide, no story-specific set pieces. That's why the spec check (≥ 2 set
+   pieces, ≥ 4 transition designs) and the motion test before the full render are mandatory.
+HyperFrames gotchas hit while building the kit: never gate the build on requestAnimationFrame (capture never fires it → timeline
+never registers → blank render); write `window.__timelines["main"] = tl` literally (static contract grep); a leading HTML comment
+before `<!doctype>` fails the contract check; cloned DOM for shatter must keep ids or id-based CSS vanishes; render needs
+ffprobe on PATH; animation-map needs HYPERFRAMES_SKILL_PKG_VERSION + HYPERFRAMES_SKILL_BOOTSTRAP_DEPS=1 (motion_qa sets them).

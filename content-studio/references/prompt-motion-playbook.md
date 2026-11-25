@@ -101,7 +101,8 @@ Companion file: `prompt-motion-lessons.md` (ban list + blog findings).
 ## 3. Motion & craft rules that recur across the best prompts
 - Hero element that recurs and morphs (dot, ball, pill, shape) — connects every scene.
 - Motion always attached to something on screen; never teleport (show the path of every handoff).
-- Springs: tiny overshoot max; overshoot only on things that LAND; no bouncy/elastic UI.
+- Springs: overshoot on things that LAND (cards, phones, buttons); no rubbery wobble on body text. (**SUPERSEDED 2026-11-25 by content-studio SKILL §0m Motion law**: physical
+  entrances with visible overshoot are required, not optional.)
 - Outgoing and incoming text on separate timings (no overlapping letters); text in a morphing container gets its own mask.
 - Velocity-matched cuts (cinetic): accelerate out, cut on the fastest frame, next shot enters moving the same way;
   text must be slow enough to read when it needs reading.

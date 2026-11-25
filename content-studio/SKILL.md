@@ -17,13 +17,17 @@ Studied playbooks to apply on every build: `references/prompt-motion-playbook.md
 Exception: **glossary reels use ONLY the glossary page's own featured-art theme + its character** (production-lessons 2026-10-28).
 
 ## 0. Non-negotiables (read every time)
-1. **Read `references/production-lessons.md` first** — real client feedback that overrides generic advice.
+1. **Sync first, then read the lessons.** Before ANY job: `git -C <repo> pull --rebase` and `git status -sb`. The copy must not be
+   ahead or behind (a diverged repo kept the 2026-11-25 motion lessons off the GPU machine). Then run the sync script and
+   read `references/production-lessons.md`: real client feedback that overrides generic advice. After every lesson: commit + **push**.
 2. **Hook at frame 0, spoken.** Voice ≤0.1 s in, motion on screen, and the **first frame already
    shows the hook text** (it's the feed thumbnail). No logo/music/text-only openings.
-3. **Not AI-ish:** real faces/voices/footage where possible; speaker's own words + real UI labels on
-   screen (no model-written slogans); no karaoke pills, per-letter rolls, highlight sweeps,
-   sans+italic-serif accent combos, bouncy pops, particle bursts, blob/dot-grid backgrounds;
-   hard cuts by default, stylised transitions ≤1 in 5.
+3. **Not AI-*looking* (visual bans only):** real faces/voices/footage where possible; speaker's own words + real UI labels on
+   screen (no model-written slogans); no glossy orbs, neon rim light, purple gradient blobs, dot-grid/blob backgrounds,
+   objects floating in empty voids, karaoke pills, highlight sweeps, sans+italic-serif accent combos.
+   **This bans the AI LOOK, not motion.** The 2026-09 "calm motion / hard cuts by default / stylised transitions ≤1 in 5 /
+   no bouncy pops / no particle bursts" rule is **RETIRED (2026-11-25)**. It produced the "PPT", "lame" and "motion is dead"
+   videos. Motion follows **§0m Motion law**, which overrides any calmer line in this skill, its references or video-studio.
 4. **Legible on a phone:** product UI full-screen (the frame *is* the app), captions 60–75 px
    equivalent at 1080×1920, everything important inside the safe box (x 60–880, y 250–1500).
    No dead space — fill the bottom with the speaker if the layout leaves it empty.
@@ -33,11 +37,44 @@ Exception: **glossary reels use ONLY the glossary page's own featured-art theme 
    Cheap test (5 s / 1 image / 1 sentence) before any paid batch generation.
 7. **Silent render, then mux audio.** Audio changes must cost seconds, not a re-render.
 8. **Verify before you claim done:** `scripts/qa.py` (decode frame count, LUFS/true-peak,
-   silent-first-second, safe-zone contact sheet). Report failures honestly.
+   silent-first-second, safe-zone contact sheet) **plus the motion gate `scripts/motion_qa.py`** (§0m). It's blocking:
+   a FAIL means fix and re-render, never deliver. Report failures honestly.
 9. **Licences:** Remotion is free only for individuals/≤3-person companies (else paid license —
    tell the user); HyperFrames is Apache-2.0. Never use unlicensed music. Label realistic AI
    content per platform rules. Clone only the user's own (consented) voice.
 
+10. **Motion law (§0m) is non-negotiable.** Every plan carries a named beat-by-beat motion spec; a 6–10 s motion test of the
+   hardest beats is checked before the full render; `motion_qa.py` must pass.
+
+## 0m. Motion law (user rules 2026-10-09 → 2026-11-25; overrides any calmer default anywhere)
+Failure history: Bio Pages v1 "animations really lame" (10-09) · Halloween v1 "very lameeee" (10-23) · Tapformat v1 "lame" ·
+Bio Pages 16:9 v1 "looks like a PPT" (11-25) · shopfront 4K "motion graphics completely dead" (11-25). The same pattern every time:
+elements slide in, hold, slide out; generic tweens instead of moves designed for this story. Pixel-motion metrics did NOT catch
+it (the shopfront moved more per frame than the approved GTA reel); the failure is motion **design**.
+1. **Plan:** every plan/brief has a beat-by-beat **MOTION SPEC** table (beat → camera move · entrance physics · secondary
+   motion · transition out), each cell a **named recipe** from `templates/motion-kit/` (HyperFrames) or the
+   hyperframes-animation rules. A plan that only says what's on screen is incomplete ("PPT" lesson).
+2. **Per-scene minimum:** (a) a camera move or ≥ 3-layer parallax; (b) ≥ 1 physical entrance (spring with overshoot,
+   gravity drop + squash, 3D flip with perspective); (c) secondary motion on every hold (idle float/tilt 1–2°, slow push
+   1.00→1.05, glare sweep, looping video); (d) an **object-driven** transition out (screen-becomes-world, element flies
+   into the lens, shatter, fold, match-cut, whip with directional blur).
+3. **Banned:** fades, crossfades, dissolves, plain slide-ins, "slide in → hold → slide out", end/outro cards, anything
+   static > 1.2 s, type sitting over product UI that is being shown (captions keep their own band).
+4. **One camera world** where possible: every cut is a move. Directional motion blur ONLY while moving; pixel-sharp holds.
+5. **Set pieces:** ≥ 2 hero moments built for THIS story (phone shatters into tiles, page folds into a QR, card flips into
+   the screen, one-becomes-many wall). Launch/hype: bass drop + explosion FX on section hits (flash, shockwave, debris,
+   camera shake, RGB split; the user asked for these), ≥ 2 real-3D set pieces, real product UI on a live iPhone.
+6. **Variety:** ≥ 4 distinct transition designs per video, none used for > 35 % of transitions, never the same type twice
+   in a row; never repeat a screen; change the overall style from the last video.
+7. **Pacing:** entrances 0.12–0.3 s, staggers ≤ 0.08 s, a visual change on every music beat or phrase; speed-ramp down
+   ONLY on the one key moment. Text windows ≥ 2.5 s, but the camera and secondary motion keep moving during them.
+8. **Crafted ≠ calm.** "Not AI-ish" means purposeful, physical, grounded motion (real device, floor + contact shadow),
+   not less motion.
+9. **Engine:** HyperFrames is the default, so build with the GSAP kit in `templates/motion-kit/` (`motion-kit.js` +
+   `motion-kit-demo.html`). Copy its functions; don't "port loosely" from the Remotion `.tsx` examples (they're
+   references only, and loose ports are how the moves got lost).
+10. **Gate:** render a 6–10 s motion test of the hardest beats first. The final must pass `scripts/motion_qa.py`
+   (dead stretches, transition variety, animation-map dead zones) before delivery.
 
 ### 0a-bis. Value-first scripts (user rule, 2026)
 ALWAYS ask the script angle first (problem-solving / storytelling / technical / demo / proof / educational / hype…) and recommend one for the market — never default to technical. Then run `references/value-scripting.md` (features → money/time/growth, jargon ban, relatable person, café-owner test). Assume a non-technical viewer unless told otherwise.
@@ -200,7 +237,8 @@ Run once at the start: `nvidia-smi --query-gpu=name,memory.total --format=csv` (
    ~80% of feedback lands at this stage.
 8. **Draft** (optional, C3): half-scale/720p only if motion/timing is unproven.
 9. **Final silent render** at 1080×1920 (1440×2560 if asked; never 4K for vertical shorts).
-   Avoid backdrop-filter/blur/large shadows on many layers (bake them as images).
+   Avoid backdrop-filter/static blur/large shadows on many layers (bake them as images). Directional motion blur on fast
+   moves is still REQUIRED (§0m.4; the kit's `motionBlur()` is cheap: one SVG filter on the moving layer only).
 10. **Mix**: `mix.py --voice … --music … --lufs -14` (ducked, two-pass loudnorm, bounded).
 11. **Export + QA**: `export.py … --platforms reels,shorts,linkedin` (runs qa.py). Deliver C4 with
     the gate report, captions per platform (`references/platforms.md` §captions/limits), SRT,
@@ -256,6 +294,8 @@ them into `~/.claude/skills/`. Don't wait to be asked.
 - Launch / hype reels: bass-heavy music (bass house, hard drop) + explosion FX on hits + ≥ 2 real-3D set pieces + real product
   UI driving a live phone preview. Calm "clean motion" was judged "lame".
 - Readability: any text / feature explanation stays ≥ 2.5 s (slow only those windows; keep other motion at speed).
+- **Motion: §0m Motion law on every video.** Named motion spec in every plan, motion test before full render, motion_qa.py gate.
+  "Animate everything" (10-23): every scene gets a camera move/parallax + physics entrance + secondary motion + object-driven transition.
 - Scripts: value-first for non-technical viewers (time / money / growth; no UTM/GA4 jargon); brand promos speak in first person ("we").
 - Look: crafted, not AI-ish; recreate UI as original illustration/rebuilt components, never pasted screenshots; B2B = no cartoons.
 - Own-footage reels: fresh style each time, graphics behind the speaker (depth sandwich, RVM matte), sharp (no upscaling,
@@ -263,7 +303,8 @@ them into `~/.claude/skills/`. Don't wait to be asked.
 - Covers / thumbnails: never show the face (no-face version only).
 - Voice: ElevenLabs (user's cloned voice "Smit") or Gemini TTS (Leda / Kore) — whatever the project picked; check every take with whisper.
 - Delivery: Desktop = final mp4 only; all work files in `E:\video studio and claude work\work\<project>`; QA (decode, −14 LUFS, true peak ≤ −1 dBTP) before delivering.
-- Combine all skills (old + new) on every video; log every lesson in `references/production-lessons.md` and sync the repo; push only when asked.
+- Combine all skills (old + new) on every video; log every lesson in `references/production-lessons.md`, sync the repo and
+  **push** (user rule 2026-11-25: "always update skills"; an unpushed lesson never reaches the other machine). Pull before every job.
 - Hardware: run the §3a GPU gate first — GPU tools only with a GPU, otherwise ask.
 - Higgsfield: ask yes/no for every video; every plan carries a credits/cost block (per tool, per job, total estimate).
 

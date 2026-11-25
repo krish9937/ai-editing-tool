@@ -228,6 +228,7 @@ craft and realism, not more effects. Rules:
   humanist sans (Lato/Inter-like) with a soft shadow, no box, 2–3 words,
   centred mid-frame; only real speech is captioned. On-screen headlines are
   rare, short, and set with care (tracking, weight, optical size).
+- **SUPERSEDED 2026-11-25 by content-studio SKILL §0m Motion law** (the calm rules below are from 2026-09 and produced "lame"/"PPT" results).
 - **Motion is motivated.** Cut on action (press → listen → result → error →
   retry → accepted). Soft fades/small rises, gentle overshoot only on
   character pops, one real "camera" payoff (rack focus from UI to real object,

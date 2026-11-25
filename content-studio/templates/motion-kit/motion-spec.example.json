@@ -1,0 +1,13 @@
+{
+  "_note": "Motion spec for motion-kit-demo.html. Write one of these in EVERY plan (SKILL §0m.1); motion_qa.py --spec checks it.",
+  "beats": [
+    {"t": 0.0,  "what": "phone + hook",      "camera": "push-in on phone rig", "entrance": "drop + crunch + stickers", "secondary": "idle float/tilt", "transition_out": "screen-becomes-world", "set_piece": true},
+    {"t": 3.0,  "what": "links world",       "camera": "parallax 2 layers",    "entrance": "type-on + spring-in",     "secondary": "parallax drift",  "transition_out": "whip"},
+    {"t": 4.6,  "what": "gallery + counter", "camera": "push-in",              "entrance": "deal-cards + count-up",   "secondary": "push",            "transition_out": "card-flip", "set_piece": false},
+    {"t": 6.6,  "what": "page card",         "camera": "idle card",            "entrance": "card-flip back face",     "secondary": "glare sweep",     "transition_out": "fold"},
+    {"t": 8.0,  "what": "QR + URL",          "camera": "idle QR",              "entrance": "fold reveal + type-on",   "secondary": "idle",            "transition_out": "shatter", "set_piece": true},
+    {"t": 9.5,  "what": "product name",      "camera": "push-in",              "entrance": "crunch",                  "secondary": "push",            "transition_out": "fly-into-lens"},
+    {"t": 10.9, "what": "one link",          "camera": "scale settle",         "entrance": "lens reveal",             "secondary": "settle",          "transition_out": "match-cut"},
+    {"t": 11.5, "what": "CTA",               "camera": "settle",               "entrance": "spring-in",               "secondary": "hold <= 1.5 s"}
+  ]
+}
