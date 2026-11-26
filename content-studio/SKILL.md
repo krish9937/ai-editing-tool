@@ -287,6 +287,7 @@ into one pass. Vague feedback ("not good") → ask WHAT (opening/middle/text/aud
 ## 7. Keep learning
 After every delivery or feedback round, append the lesson to `references/production-lessons.md`
 (and the user's memory). The repo is the MASTER copy: `E:\video studio and claude work\claude-video-studio\`
+(renamed from `ai-editing-tool` on 2026-11-26; GitHub `krish9937/claude-video-studio`, and the old URL redirects)
 (since 2026-10-22). Edit lessons there, then run `E:\video studio and claude work\sync-skills.ps1` to copy
 them into `~/.claude/skills/`. Don't wait to be asked.
 
