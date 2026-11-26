@@ -690,3 +690,11 @@ ad-libbing from my script. Delivered as a 58 s cut built only from his lines.
 - Laptop render: auto workers got the job killed for low memory (18 large clips at 60 fps). `-w 2` finished in ~6 min.
 - Mix: voice chain + music bed −19 dB with sidechain duck + synthesized whooshes (filtered pink noise) on transitions + a
   low thump on the shatter → −13.0 LUFS / −1.1 dBTP. qa.py + motion_qa PASS (0 frozen, 0 dead zones, 9 transition designs).
+- **User correction (same day): "don't zoom in on me showing the product."** For a founder's own screen-recorded tour,
+  the default is the FULL recording, locked (only the browser bar cropped), with the founder's face bubble visible; no camera
+  zooms and no scaling transitions (slides and cuts only). Instead of zooms, **highlight every tap**: find UI-change spikes
+  (frame diff with the face bubble masked), confirm each visually (scrolls aren't taps), then an orange outline around the
+  tapped item from ~0.28 s before the tap, a ripple from the tap point, clear it ~0.16 s after, plus a soft click SFX.
+  Ask before zooming a founder's tour. They asked for "a little" more audio: master −12 LUFS, voice +1 dB, bed −21 dB.
+- motion_qa now counts playing `<video>` clips as motion when judging composition dead zones (a locked screen recording
+  had falsely failed with 8 "dead zones").

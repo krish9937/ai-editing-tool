@@ -123,8 +123,25 @@ if a.comp:
             fails.append("animation-map failed: " + (r.stderr or r.stdout)[-400:].strip())
         else:
             m = json.load(open(mp, encoding="utf-8"))
+            # playing <video class="clip"> (screen recordings, footage) IS motion even with no tween running:
+            # subtract those spans before judging dead zones (Bio Pages tour, user asked for a locked full-screen recording)
+            clips = []
+            try:
+                html = open(os.path.join(a.comp, "index.html"), encoding="utf-8").read()
+                for tag in re.findall(r"<video[^>]*>", html):
+                    s_ = re.search(r'data-start="([0-9.]+)"', tag); d_ = re.search(r'data-duration="([0-9.]+)"', tag)
+                    if s_ and d_: clips.append((float(s_.group(1)), float(s_.group(1)) + float(d_.group(1))))
+            except OSError:
+                pass
+            def uncovered(z0, z1):
+                pts = [z0]; spans = sorted(c for c in clips if c[1] > z0 and c[0] < z1); left = 0.0; cur = z0
+                for c0, c1 in spans:
+                    if c0 > cur: left = max(left, c0 - cur)
+                    cur = max(cur, c1)
+                return max(left, z1 - cur)
             dz = [z for z in (m.get("deadZones") or []) if float(z.get("duration", 0)) >= a.max_still
-                  and not (float(z.get("start", 0)) >= dur - a.end_hold - 0.05)]
+                  and not (float(z.get("start", 0)) >= dur - a.end_hold - 0.05)
+                  and uncovered(float(z["start"]), float(z["end"])) >= a.max_still]
             report["deadZones"] = dz
             for z in dz:
                 fails.append(f"dead zone {z['start']}-{z['end']}s in the composition (no tween running; add secondary motion)")
