@@ -73,7 +73,13 @@ it (the shopfront moved more per frame than the approved GTA reel); the failure 
 9. **Engine:** HyperFrames is the default, so build with the GSAP kit in `templates/motion-kit/` (`motion-kit.js` +
    `motion-kit-demo.html`). Copy its functions; don't "port loosely" from the Remotion `.tsx` examples (they're
    references only, and loose ports are how the moves got lost).
-10. **Gate:** render a 6–10 s motion test of the hardest beats first. The final must pass `scripts/motion_qa.py`
+10. **Review rules from Bio Pages 16:9 v2 (8/10, 2026-11-26), the benchmark for a SaaS feature promo:**
+   the type layer never touches the device or product cards (≥ 60 px clear, measured per beat); every listed word lands
+   with ITS item (drive both from one anchor); the hook second must be the MOST alive (payoff word by ~0.8 s, camera
+   already fast); data screens keep a live element (pulsing dots, ticking number, push) until the cut; in-phone page
+   swaps are clipped to the screen mask and finish before the camera settles (no strip of the old page); mask or crop
+   controls that aren't shipped (e.g. Geo); a feature is real only if its component is MOUNTED in the app (grep the mount).
+11. **Gate:** render a 6–10 s motion test of the hardest beats first. The final must pass `scripts/motion_qa.py`
    (dead stretches, transition variety, animation-map dead zones) before delivery.
 
 ### 0a-bis. Value-first scripts (user rule, 2026)

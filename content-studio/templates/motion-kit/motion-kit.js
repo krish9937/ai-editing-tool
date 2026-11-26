@@ -22,6 +22,10 @@
  * - Randomness is seeded (MK.rand), so every render is identical.
  * - Motion blur is directional, only while moving, then filter:none so holds stay pixel-sharp.
  * - Put secondary motion (idle/push/parallax) on a WRAPPER ("rig") so it never fights the element's entrance.
+ * - NEVER call tl.seek() during the build once tweens exist (breaks earlier fromTo tweens in the real render).
+ *   Measure layout before the first tween, or from offsets.
+ * - HyperFrames forces visibility:visible on active .clip <video> elements, so hiding a PARENT with autoAlpha doesn't hide
+ *   them. Toggle `display` on clip videos and their containers; any custom show helper must use visibility:inherit.
  * - Every transition is logged; MK.finish() enforces variety (>= 4 designs, none > 35 %, never the same twice in
  *   a row) and reports problems with console.error so `hyperframes validate` surfaces them.
  */
@@ -166,11 +170,11 @@
    *  frame, then `next` (the world that screen showed) continues the move from 1.12 -> 1. cam = the group to scale. */
   MK.zoomThrough = function (tl, cam, target, next, t, o = {}) {
     const dur = o.dur || 0.7;
-    // measure the target where it IS at time t (entrances/idle before t move it), then restore the playhead
-    const c = $(cam), prev = tl.time();
-    tl.seek(t, false);
-    const r = rectIn($(target), c);
-    tl.seek(prev, false);
+    // NEVER tl.seek() here to measure "where the target is at t": a forward/back seek after kit fromTo tweens exist made
+    // earlier words invisible in the REAL render while snapshots looked fine (Bio Pages v2, 2026-11-26). Measure the
+    // build-time layout, or pass o.rect = {x, y, w, h} in cam coordinates if the target has moved by time t.
+    const c = $(cam);
+    const r = o.rect || rectIn($(target), c);
     const s = Math.max(MK.W / r.w, MK.H / r.h) * 1.04;
     const x = MK.W / 2 - (r.x + r.w / 2) * s, y = MK.H / 2 - (r.y + r.h / 2) * s;
     tl.set(c, { transformOrigin: "0 0" }, 0);

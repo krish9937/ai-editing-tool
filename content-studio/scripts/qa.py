@@ -67,6 +67,11 @@ if not a.no_motion:
     print(mr.stdout.strip())
     if mr.returncode != 0:
         fail.append("motion gate failed (see MOTION FAIL above)")
+try:  # upload weight (Bio Pages v2 shipped 333 MB at 90 Mbps for 30 s)
+    br = float(info.get("format", {}).get("bit_rate", 0)) / 1e6
+    if br > 60: print(f"WARNING: {br:.0f} Mbps is too heavy to upload; also export a posting copy (4K ~35-45 Mbps or 1080p60 ~16 Mbps)")
+except (TypeError, ValueError):
+    pass
 if fail:
     print("FAIL:", " | ".join(fail)); sys.exit(1)
 print("PASS")

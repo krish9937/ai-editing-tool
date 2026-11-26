@@ -641,3 +641,27 @@ ffprobe on PATH; animation-map needs HYPERFRAMES_SKILL_PKG_VERSION + HYPERFRAMES
 - **Landscape worlds from portrait wallpapers:** crop a 1080x608 band around the subject, Real-ESRGAN realesr-general-x4v3 (about 1 s/frame on the 3060, so video wallpapers go frame by frame), then Depth-Anything-V2 parallax at 3840x2160/60 for photos (base overscan 1.03, <= 2.5 % travel). 100 % crops stayed clean on photographic wallpapers.
 - **Drop on the reveal without new music:** cut exactly one bar (4 kicks) before the riser. The kick grid stays uniform, so every anchor in the film keeps K(n).
 - **A 1080p60 GPU draft of a Three.js + DOM film rendered in about 2 min (3 workers, hardware WebGL)**, so a full draft is cheaper than a range-limited motion test; cut the 0-15 s test from it.
+
+## 2026-11-26: REVIEW of Bio Pages 16:9 v2 (laptop side, frame by frame + motion gate). Verdict 8/10, up from 6/10
+What made the jump (keep doing this for every SaaS feature promo; this film is now the benchmark):
+- The brief → Motion law → motion kit → gate chain works. v1 (frozen first 1.5 s, the same phone-left/triptych-right layout 6×,
+  blur dissolves, product never named, 5.5 s static end card) became: frame 0 moving, shatter from the hook, 5 creator worlds
+  with 5 DIFFERENT transitions (whip, dive through the phone's buttons, blurred crane, phone-as-card turn, dot into the lens),
+  the product named on the music drop, 4 real features on razor-sharp real UI (41-looks wall, block picker, Redirect countdown,
+  Insights map), page → QR fold → café card → story sticker, CTA pressed on a landed phone, no end card. 4K60, −9.1 LUFS, TP −1.3.
+- Structure that sold it: Hook → Problem → REVEAL on the drop → 4 concrete features → payoff → CTA (snapcn anatomy).
+What still cost 2 points (now rules in SKILL §0m.10; the first three are motion_qa warnings):
+1. The hook second was the calmest second of the film (activity 0.0016) → motion_qa warns "second 0 nearly still".
+2. Insights went still for ~2 s after the counters finished (23–25 s) → motion_qa warns on near-still runs ≥ 2 s.
+3. A white flash/void frame at the reveal → motion_qa warns on frames > 40 % plain white (outside the last 2.5 s).
+4. Headline type touched the phone ("Redirect.") and ran under the QR card ("you.") → keep ≥ 60 px clearance from the
+   product layer; check bbox overlap per beat in snapshots.
+5. A strip of the previous page showed down the phone's left edge during an in-screen page swap → clip swaps to the screen mask.
+6. "Music. Video. Shop." while the EMAIL icon flew in → drive each word and its item from the same anchor.
+7. The block toolbar showed the Geo icon (not on any plan) → mask/crop controls that aren't shipped.
+8. 333 MB at 90 Mbps for 30 s → qa.py now warns > 60 Mbps; always add a posting copy.
+Brief-writing lesson (mine): the laptop's frontend copy was outdated, and I listed "Import from Linktree" from the brand file. The
+GPU session found the dialog isn't mounted anywhere and swapped in Redirect. Briefs written away from the latest repo must
+mark every feature "verify it's mounted" and say which real feature to fall back to.
+Kit/QA fixes made from the GPU machine's v2 lessons: zoomThrough no longer seeks the timeline (pass o.rect instead);
+README warns about tl.seek and .clip video visibility; motion_qa scans every .html/.js for MK.finish and warns on build-time tl.seek.

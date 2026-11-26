@@ -63,6 +63,38 @@ for f in freezes:
         fails.append(f"frozen {f['duration']}s at {f['start']}s (> {a.max_still}s with nothing moving)")
 print(f"video: {dur:.2f}s, frozen stretches >= {a.max_still}s: {len(freezes)}")
 
+# ---------- 1b. calm windows + plain-white frames (WARN; from the Bio Pages v2 review 2026-11-26) ----------
+# v2 passed the freeze check, but its first second was the calmest of the film and the Insights beat sat nearly still
+# after the counters finished. Per-second mean frame difference makes that visible.
+try:
+    import numpy as np
+    W_, H_ = 96, 54
+    raw = subprocess.run([FFMPEG, "-v", "error", "-i", a.video, "-vf", f"fps=10,scale={W_}:{H_}", "-f", "rawvideo",
+                          "-pix_fmt", "rgb24", "-"], capture_output=True).stdout
+    fr = np.frombuffer(raw, np.uint8).reshape(-1, H_, W_, 3).astype(np.int16)
+    if len(fr) > 2:
+        diff = np.abs(np.diff(fr, axis=0)).mean(axis=(1, 2, 3)) / 255.0   # per 0.1 s
+        sec = [float(diff[i:i + 10].mean()) for i in range(0, len(diff), 10)]
+        report["motion_per_second"] = [round(x, 4) for x in sec]
+        calm = 0.0025
+        if sec and sec[0] < calm:
+            warns.append(f"second 0 is nearly still (activity {sec[0]:.4f}); the hook should be the most alive moment")
+        run = []
+        for i, v in enumerate(sec[:-2] if len(sec) > 3 else sec):   # ignore the final hold
+            if v < calm:
+                run.append(i)
+            else:
+                if len(run) >= 2: warns.append(f"nearly still {run[0]}-{run[-1] + 1}s (activity < {calm}); keep a live element moving")
+                run = []
+        if len(run) >= 2: warns.append(f"nearly still {run[0]}-{run[-1] + 1}s (activity < {calm})")
+        white = (fr.min(axis=3) > 245).mean(axis=(1, 2))
+        endcut = int(max(0, dur - 2.5) * 10)
+        wt = [i / 10 for i, w in enumerate(white[:endcut]) if w > 0.40]
+        if wt:
+            warns.append(f"{len(wt)} sampled frames are > 40 % plain white (first at {wt[0]:.1f}s): white void between worlds")
+except Exception as e:  # numpy missing etc.: the gate still runs
+    warns.append(f"activity/white check skipped ({e.__class__.__name__})")
+
 # ---------- 2. composition dead zones via animation-map ----------
 def find_animation_map():
     env = os.environ.get("MK_ANIMATION_MAP")
@@ -98,12 +130,20 @@ if a.comp:
                 fails.append(f"dead zone {z['start']}-{z['end']}s in the composition (no tween running; add secondary motion)")
             print(f"animation-map: {len(m.get('tweens') or [])} tweens, dead zones >= {a.max_still}s: {len(dz)}")
     # motion-kit self-report (written into <html data-mk-report> by MK.finish); read it from the source for kit builds
-    try:
-        src = open(os.path.join(a.comp, "index.html"), encoding="utf-8").read()
-        if "motion-kit.js" in src and "MK.finish" not in src:
-            fails.append("motion-kit loaded but MK.finish(tl) is never called (variety check skipped)")
-    except OSError:
-        pass
+    # scan every authored .html/.js (builds often live in film.js, not index.html)
+    src = ""
+    for root_, dirs, files in os.walk(a.comp):
+        dirs[:] = [d for d in dirs if d not in ("node_modules", ".hyperframes", "renders", ".git")]
+        for fn in files:
+            if fn.endswith((".html", ".js", ".mjs")) and fn != "motion-kit.js":
+                try:
+                    src += open(os.path.join(root_, fn), encoding="utf-8", errors="replace").read()
+                except OSError:
+                    pass
+    if "motion-kit" in src and "MK.finish" not in src:
+        fails.append("motion-kit loaded but MK.finish(tl) is never called (variety check skipped)")
+    if re.search(r"tl\.seek\([^)]*\)", src.replace("tl.seek(0)", "")):
+        warns.append("tl.seek(...) found in the build code: a build-time seek after kit tweens breaks the real render (verify on MP4 frames)")
 
 # ---------- 3. the beat-by-beat motion spec ----------
 if a.spec:

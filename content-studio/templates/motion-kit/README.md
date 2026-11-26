@@ -32,6 +32,11 @@ Files
 - Call `MK.finish(tl)`, then also write `window.__timelines["main"] = tl;` literally (HyperFrames' static contract check greps for it).
   `MK.finish` checks the transition log (≥ 4 designs, none > 35 %, never twice in a row, ≥ 1 entrance, ≥ 1 secondary)
   and reports problems with `console.error`.
+- **Never `tl.seek()` during the build once tweens exist.** A measuring seek made the hook words invisible in the REAL
+  render of Bio Pages v2 while `hyperframes snapshot` looked fine. `zoomThrough` measures build-time layout; pass
+  `{rect:{x,y,w,h}}` (cam coordinates) if the target has moved by then. Always verify on frames pulled from the MP4.
+- HyperFrames forces `visibility:visible` on active `.clip` videos: hiding a parent with autoAlpha won't hide them.
+  Toggle `display` on clip videos and their containers.
 - Put secondary motion on a **rig wrapper**, not the element that has an entrance (they'd fight over transforms).
 - Scenes = absolute full-frame layers; later in the DOM = on top. Hide later scenes at t=0 with `MK.hide`.
 - `shatter`/`foldInto` clone the element's **build-time** DOM (ids kept so id-based CSS applies); text typed later won't be in the shards.
