@@ -1,5 +1,7 @@
 # Value-first scripting for NON-technical viewers (user rule, 2026-10-06)
 
+> This file = WHAT to say. HOW to build, format and test the script: `script-craft.md` (learned 2026-11-26).
+
 ## 0. ALWAYS ask the script ANGLE first (user rule) — never default to technical
 In the intake, ask which kind of video this is, and RECOMMEND one based on the market/audience:
 | Angle | Best when | Example |

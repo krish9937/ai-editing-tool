@@ -84,6 +84,9 @@ it (the shopfront moved more per frame than the approved GTA reel); the failure 
 
 ### 0a-bis. Value-first scripts (user rule, 2026)
 ALWAYS ask the script angle first (problem-solving / storytelling / technical / demo / proof / educational / hype…) and recommend one for the market — never default to technical. Then run `references/value-scripting.md` (features → money/time/growth, jargon ban, relatable person, café-owner test). Assume a non-technical viewer unless told otherwise.
+Then BUILD it with `references/script-craft.md`: parameters → title first → hook (pattern interrupt → pain → promise, scaled
+to the format) → body framework → write for the ear → engagement patterns → our beat-table format (VO column holds ONLY spoken
+words + emotion tags; visuals/motion/SFX in their own columns) → read-aloud + TTS + "So what?" checks.
 
 ### 0a. Retention law (user rule, 2026) — the first 2 seconds decide if anyone stays
 - Frame 0 is ALREADY moving and shows the most striking visual of the whole video + a curiosity hook. No calm openers, establishing shots, home screens or slow builds.
