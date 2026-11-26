@@ -373,7 +373,9 @@
    *  BOTH sets of spans are built up front (a span injected later by tl.set never animates). */
   MK.rewrite = function (tl, target, oldText, newText, t, o = {}) {
     const e = $(target);
-    e.style.position = e.style.position || "relative";
+    // only make it a positioning context if it isn't one already: forcing "relative" on an absolutely
+    // positioned headline moved it into normal flow (Bio Pages tour, 2026-11-26)
+    if (getComputedStyle(e).position === "static") e.style.position = "relative";
     e.innerHTML = "";
     const a = document.createElement("span"), b = document.createElement("span");
     a.style.display = b.style.display = "inline-block";
