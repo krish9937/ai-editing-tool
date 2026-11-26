@@ -286,7 +286,7 @@ into one pass. Vague feedback ("not good") → ask WHAT (opening/middle/text/aud
 
 ## 7. Keep learning
 After every delivery or feedback round, append the lesson to `references/production-lessons.md`
-(and the user's memory). The repo is the MASTER copy: `E:\video studio and claude work\ai-editing-tool\`
+(and the user's memory). The repo is the MASTER copy: `E:\video studio and claude work\claude-video-studio\`
 (since 2026-10-22). Edit lessons there, then run `E:\video studio and claude work\sync-skills.ps1` to copy
 them into `~/.claude/skills/`. Don't wait to be asked.
 
@@ -318,7 +318,7 @@ them into `~/.claude/skills/`. Don't wait to be asked.
 - Higgsfield: ask yes/no for every video; every plan carries a credits/cost block (per tool, per job, total estimate).
 
 ## 9. Setting up on a new device
-1. `git clone https://github.com/krish9937/ai-editing-tool` → copy each skill folder (content-studio, reel-maker,
+1. `git clone https://github.com/krish9937/claude-video-studio` → copy each skill folder (content-studio, reel-maker,
    shorts-from-long, video-studio, motion-broll, hyperframes…) into `~/.claude/skills/`.
 2. Memory: Claude Code keeps memory in `~/.claude/projects/<launch-folder-encoded>/memory/` (e.g. launched from
    `C:\Windows\System32` → `C--Windows-System32`). Launch Claude once from the folder you will work in, then copy the old
