@@ -665,3 +665,28 @@ GPU session found the dialog isn't mounted anywhere and swapped in Redirect. Bri
 mark every feature "verify it's mounted" and say which real feature to fall back to.
 Kit/QA fixes made from the GPU machine's v2 lessons: zoomThrough no longer seeks the timeline (pass o.rect instead);
 README warns about tl.seek and .clip video visibility; motion_qa scans every .html/.js for MK.finish and warns on build-time tl.seek.
+
+## 2026-11-26: linkutm Bio Pages product tour from the founder's own screen recording (16:9, 58 s, bold captions)
+Input: a 2:31 Screen-Studio-style export (2592×1532, 60 fps, face-cam bubble burned in, browser bar visible), the founder
+ad-libbing from my script. Delivered as a 58 s cut built only from his lines.
+- **Cutting a founder's ad-lib:** take word timings (faster-whisper small, word_timestamps), choose each kept line by
+  its FIRST word and the NEXT word after it: start = first.s − 0.06, end = next.s − 0.03. **Don't snap cuts to energy
+  minima**: ±0.12 s snapping clipped word edges ("tap", "pages", "interesting", "designs", "Claim"). Then re-transcribe
+  the cut track and diff it against the intended lines before building anything.
+- faster-whisper + av ≥ 16 → `open() got an unexpected keyword argument 'metadata_errors'`: decode the wav yourself and
+  pass the numpy array to `model.transcribe()`.
+- **Blurry face-cam:** the user asked for graphics instead of his face on the hook. Hook/problem/reveal/CTA = HyperFrames
+  graphics (profile phone → fold → "Looks like you." page → card-flip to a grey "Boring lists." phone → shatter →
+  Bio Pages reveal); the recording grows out of the phone screen (clip-path inset from the screen rect to full) and
+  shrinks back into the CTA phone at the end.
+- **J-cuts with a burned-in face bubble:** when a line's audio comes from a different moment than the screen shown, frame
+  the camera window to EXCLUDE the bubble, or the lips visibly don't match.
+- **Scan the recording for personal/system UI:** a Chrome right-click menu flashed for 0.6 s mid-tour. Step through the
+  kept video ranges at 4 fps and re-cut around it. Crop the browser bar (URL, bookmarks, extensions) always.
+- Camera = per-clip `transform` on a 2592-wide `<video class="clip">` from window A→B (sine.inOut) = continuous secondary
+  motion; keep window widths ≥ 1400 source px so 1080p output never upscales UI text. Chips (handle, block count,
+  theme count, domain) explain while the camera moves; numbers verified in the app (the theme filter shows "All 41").
+- motion-kit bug found and fixed: `MK.rewrite` forced `position:relative` on absolutely positioned headlines.
+- Laptop render: auto workers got the job killed for low memory (18 large clips at 60 fps). `-w 2` finished in ~6 min.
+- Mix: voice chain + music bed −19 dB with sidechain duck + synthesized whooshes (filtered pink noise) on transitions + a
+  low thump on the shatter → −13.0 LUFS / −1.1 dBTP. qa.py + motion_qa PASS (0 frozen, 0 dead zones, 9 transition designs).
