@@ -725,5 +725,12 @@ spoken word in orange ("B"), BLUR the URL (not crop), only SMALL context graphic
   then concat `-c copy`.
 - Audio = voice sliced with the SAME frame-snapped ranges (8 ms fades) → highpass/afftdn/comp/loudnorm −16, bed −35 LUFS
   sidechained, soft click per chip.
-- Open question logged: 2026-11-26 rule says "don't zoom a founder's own tour"; this plan listed ≤1.45× zooms and was
-  approved — offered a locked no-zoom re-render as the alternative.
+- **USER CORRECTION (same day, v2):** "when i am demonstrating the link in bio i dont want you to zoom" + "why didn't you
+  add little graphics and stickers while i am saying??" → second time the no-zoom rule was broken; a "go ahead" on a plan
+  that lists zooms does NOT override it. NEVER put zooms in a plan for the user's own demo. v2 = locked full frame +
+  ~60 word-timed 3D emoji stickers (Fluent Emoji 3D, MIT, raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/
+  <Name>/3D/<name>_3d.png, skin-tone ones under /Default/), die-cut white edge (alpha dilate 25 px), soft shadow, short
+  orange label pill, spring pop + overshoot rotation, slow float, 0.2 s shrink-out, soft pop SFX; placed in EMPTY UI
+  zones (blank sidebar under the nav, blank editor area, strip beside a modal) so the demo is never covered. Rapid lists
+  ("creators, influencers, D2C, B2B") = one sticker per word in a row. "Small graphics" for this user = MANY playful
+  word-synced stickers, not a few text chips. Brand glyphs not in emoji sets (Instagram, US flag) drawn in PIL.
