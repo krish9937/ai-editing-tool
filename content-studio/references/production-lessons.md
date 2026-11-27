@@ -698,3 +698,32 @@ ad-libbing from my script. Delivered as a 58 s cut built only from his lines.
   Ask before zooming a founder's tour. They asked for "a little" more audio: master −12 LUFS, voice +1 dB, bed −21 dB.
 - motion_qa now counts playing `<video>` clips as motion when judging composition dead zones (a locked screen recording
   had falsely failed with 8 "dead zones").
+
+## 2026-11-27: user's own 5:49 Bio Pages walkthrough → 3:55 clean cut (16:9 4K60, style-B captions, small chips)
+Input: 2592×1620 60 fps screen recording with a baked-in webcam bubble (x22–332, y22–300), full Chrome chrome + taskbar,
+continuous English talk (no pauses > 1 s) with ~25 verbal fumbles. User picked: landscape, dark-pill captions with the
+spoken word in orange ("B"), BLUR the URL (not crop), only SMALL context graphics ("not covering the whole window").
+- **Fumble audit the user expects** = word-level transcript (fillers kept: `initial_prompt` with "umm, uh", no VAD) +
+  restarts/repeats/misspoken brand names + screen-vs-words mismatches (example.com never filled, zero-data insights,
+  stray page detours). A 3 s contact sheet alone is NOT "watching it"; the user called that out.
+- **Show subtitle styles on a REAL frame before asking.** White shadowed captions vanish on a white SaaS UI; dark pill
+  or mono strip are the only legible options there. Render 4 styles on one frame → user picks in one reply.
+- **Cut edges:** whisper word ends are early on soft endings ("setting(s)", "convenien(ce)") but energy-extension
+  overshoots into glued next words ("uh you", "say when", "class-I"). Rule that worked: extend an END until RMS drops
+  below 2.5× noise floor, capped at next_word.start − 0.03 if there's a real gap, else +0.03 s; extend a START backward
+  only when the previous word has a real gap (never across a glued boundary). Re-transcribe the cut voice and diff — took
+  3 passes to get clean.
+- **Shorten in-speech pauses** > 0.75 s to ~0.35 s inside each kept line (cuts 5–10 % with no visible jump).
+- **Baked-in face bubble + camera moves:** lift the bubble from each source frame, fill its rectangle with per-row
+  median colours of the browser chrome (plate), and re-composite it as a clean rounded bubble (ring + shadow) at a fixed
+  output corner AFTER the camera warp — the face never gets cropped by zooms.
+- When zoomed (> 1.05×) clamp the camera top below the browser chrome (bookmarks bar showed personal links otherwise).
+- Also blur the bottom-left Chrome status bubble (link hover shows the URL) and tab hover cards, not just the omnibox.
+- **Pipeline (no HTML engine needed for footage edits):** one Python pass: ffmpeg decode pipe → cv2.warpAffine camera
+  (sub-pixel, no zoom jitter) → numpy alpha blends for bubble/chips/captions (PIL-rendered, cached) → NVENC pipe with
+  `unsharp`. Single process ≈ 3 fps at 4K; split into 4 parts by output-frame span, each decoding from `-ss first/fps`,
+  then concat `-c copy`.
+- Audio = voice sliced with the SAME frame-snapped ranges (8 ms fades) → highpass/afftdn/comp/loudnorm −16, bed −35 LUFS
+  sidechained, soft click per chip.
+- Open question logged: 2026-11-26 rule says "don't zoom a founder's own tour"; this plan listed ≤1.45× zooms and was
+  approved — offered a locked no-zoom re-render as the alternative.
