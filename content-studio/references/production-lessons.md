@@ -774,3 +774,7 @@ Built from linkutm-PROMPT-momo-truck-comic-GPU.md. Higgsfield 283.75 of 333.25 c
   Swapped Noor's 12 lines into the finished 4K without re-rendering: per caption chunk, start on the chunk's cue, speed-up only
   (<= 1.2x, dense lines 1.3x), never slow down; v2 fused "One link" -> "Unlink" (fix: "One... link" in the TTS text only).
   Rule: Indian-accent voices -> v2 expressive (or v3 stability 0 + accent tag); always offer 3 samples by ear before a full VO.
+- **USER: "why does this have 2 narration voices, even the old one is still there?"** My VO-swap erased each old line with
+  `out[int((t0-0.06)*SR):...] = 0`; line 1 starts at 0 s -> negative start index -> empty slice -> the old hook stayed under
+  the new one. Clamp slice starts with max(0, ...), and after ANY voice swap verify per line: corr(old_track, new_track) must be
+  ~0 on replaced lines (1.00 on untouched ones), plus a scan for old-take fragments left in the gaps. Whisper alone hears one voice.
