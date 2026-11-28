@@ -778,3 +778,9 @@ Built from linkutm-PROMPT-momo-truck-comic-GPU.md. Higgsfield 283.75 of 333.25 c
   `out[int((t0-0.06)*SR):...] = 0`; line 1 starts at 0 s -> negative start index -> empty slice -> the old hook stayed under
   the new one. Clamp slice starts with max(0, ...), and after ANY voice swap verify per line: corr(old_track, new_track) must be
   ~0 on replaced lines (1.00 on untouched ones), plus a scan for old-take fragments left in the gaps. Whisper alone hears one voice.
+- **USER: "the voice lags / gets stuck ~1 s mid-sentence, not matched with the video".** Cause: I fitted the new VO by splitting
+  each sentence into caption chunks and starting every chunk on the OLD chunk cue; the new voice spoke faster, so each chunk
+  ended early and waited for the next cue = dead air mid-sentence. Fix that works: each line = ONE continuous natural take at the
+  line start (uniform atempo <= 1.15 only if it would hit the next line), then RETIME the picture to the voice: captions from
+  the new word alignment + a VOT anchor table (film/vot.js) driving every in-line beat (stamps, clock flip, rewrites, CTA press)
+  and SFX cues -> 4K re-render. Never time a voice to an old voice's cues; time the picture to the voice.
