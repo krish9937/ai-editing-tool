@@ -768,3 +768,9 @@ Built from linkutm-PROMPT-momo-truck-comic-GPU.md. Higgsfield 283.75 of 333.25 c
   4K-strict checks (motion_qa at 4K thresholds) on the draft before the final.
 - Capture lessons: the persona tagger can tag a whole GROUP block with its last child's title; select page blocks
   structurally (closest data-blk, `.min-w-0` items) and verify in a snapshot.
+- **USER CORRECTION (same day): "why does she have a british accent and why no expression in narration?"** Noor (Indian accent,
+  "chill") on eleven_v3 Text-to-Dialogue @ stability 0.5 drifted British and read flat; my numeric voice QA could not hear it.
+  Fix the user chose from 3 one-line samples: eleven_multilingual_v2, stability .35 / similarity .9 / style .65 / speaker boost.
+  Swapped Noor's 12 lines into the finished 4K without re-rendering: per caption chunk, start on the chunk's cue, speed-up only
+  (<= 1.2x, dense lines 1.3x), never slow down; v2 fused "One link" -> "Unlink" (fix: "One... link" in the TTS text only).
+  Rule: Indian-accent voices -> v2 expressive (or v3 stability 0 + accent tag); always offer 3 samples by ear before a full VO.
