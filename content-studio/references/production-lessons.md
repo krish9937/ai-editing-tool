@@ -734,3 +734,37 @@ spoken word in orange ("B"), BLUR the URL (not crop), only SMALL context graphic
   zones (blank sidebar under the nav, blank editor area, strip beside a modal) so the demo is never covered. Rapid lists
   ("creators, influencers, D2C, B2B") = one sticker per word in a row. "Small graphics" for this user = MANY playful
   word-synced stickers, not a few text chips. Brand glyphs not in emoji sets (Instagram, US flag) drawn in PIL.
+
+## 2026-11-28: linkutm Link in Bio "momo truck" motion comic (16:9 4K60, ONE-SHOT GPU brief, 72.6 s)
+Built from linkutm-PROMPT-momo-truck-comic-GPU.md. Higgsfield 283.75 of 333.25 cr (6+3 refs, 12+1 stills, 12+1 Kling 4.0 clips).
+- **Kling i2v + `--image-references` (character sheets) splices the SHEET into the clip** around 2.5-3.4 s (C2a/C2b/C2c/C4/C8/C6
+  all cut to a turnaround). Use only the clean range (frame-step), or omit refs for close-ups (C6 retake without refs = clean 5 s).
+  Kling 4.0 = 18.75 cr either way (`higgsfield generate cost kling4_0 --mode image-to-video --start-image <jpg> ...`).
+- **Nano Banana Pro writes the character's name on clothes** ("BUNTY" on the hoodie) and labels sheets: fix with a 2 cr edit
+  ("make the hoodie plain, remove all text") BEFORE using it as a reference, or every still inherits it.
+- **Real QR on AI art:** prompt a BLANK white sticker everywhere; per clip, track the white quad inside a ROI (HSV V>228,S<40,
+  approxPolyDP, jump guard, 5-frame corner smoothing, hold <= 4 missed frames) on the ESRGAN frames, warp the real QR into an
+  86 % inset, and blend ONLY on near-white pixels so the hand stays in front. Get the ROI from a real frame (two wrong guesses
+  tracked steam). The same trick paints a camera viewfinder (truck + QR + "lnkutm.me/you") onto a blank phone screen.
+- ESRGAN realesr-animevideov3 x2 beat Lanczos+unsharp on comic ink (cleaner lines, no ringing); no RIFE on comic clips.
+- **ElevenLabs Text-to-Dialogue with-timestamps:** `voice_segments` times are loose (lines bleed into neighbours); evaluate
+  takes by GLOBAL script<->whisper token alignment (difflib), not by segment windows. A whole line can be mumbled ("Arre…
+  where's the truck?" -> "Bunty is"): swap whole lines from another take, cut at energy-silence, 10 ms fades. Take 3 was worse
+  than 1+2 on every metric: v3 variance is high, keep the best per-line take rather than re-rolling forever.
+- **GSAP render order:** a full-length "driver" tween at t=0 with onUpdate renders BEFORE later tweens, so reading a later
+  tween's proxy there is one frame stale (panel morph never applied). Compute per-frame values from tl.time() + parseEase.
+- **3D rotationY page-turn on a full-frame scene = solid black capture** (whole page, captions too). Use a 2D sweep.
+- Flying strips / clones appended to scene A are hidden by scene B's higher z-index: raise A for the transition.
+- GSAP transforms on a root `<svg>` didn't show (momo); wrap SVG props in a div. flyIntoLens: keep the source scene above
+  the next one until the object fills the lens, or the cut reads as a hard cut.
+- shatter/foldInto clone build-time DOM and LOSE shadow roots (real-app pages): build custom folds with pre-mounted copies.
+- **4K motion gate is stricter than the 1080p draft:** a 1.37 s freeze (small DM bubbles only) passed at 1080p and failed at
+  4K. Keep camera secondary motion (handheld idle) running through every freeze until the next move.
+- animation-map crashed on Tailwind class selectors from the captured app (`text-[0.85em]`): fixed in
+  hyperframes-animation/scripts/animation-map-sampling.mjs (escape / treat as missing). It also needs
+  HYPERFRAMES_SKILL_PKG_VERSION=0.8.185 + PRODUCER_HEADLESS_SHELL_PATH, or it can't find a browser.
+- **RAM (15 GB laptop):** 4K render -w 2 was killed by the memory reaper (the 4K encoder alone holds ~3 GB). -w 1 finishes.
+  Ask for >= 8 GB free before -w 2 at 4K. HyperFrames has no partial-range render: a late fix = full re-render, so run the
+  4K-strict checks (motion_qa at 4K thresholds) on the draft before the final.
+- Capture lessons: the persona tagger can tag a whole GROUP block with its last child's title; select page blocks
+  structurally (closest data-blk, `.min-w-0` items) and verify in a snapshot.

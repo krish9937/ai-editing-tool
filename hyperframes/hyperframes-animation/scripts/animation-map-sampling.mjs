@@ -20,7 +20,16 @@ export async function sampleTweenBboxes(page, selector, times) {
 
       return sampleTimes.map((time) => {
         seek(time);
-        const el = document.querySelector(sel);
+        // Selectors built from utility classes (Tailwind "text-[0.85em]", "w-1/2", "md:flex") are invalid CSS unless
+        // escaped, and shadow-DOM nodes never match document.querySelector: treat both as "missing", never crash.
+        let el = null;
+        try { el = document.querySelector(sel); }
+        catch (e) {
+          try {
+            const safe = sel.replace(/\.([^\s.#>+~]*[\[\]\/:%][^\s.#>+~]*)/g, (m, c) => "." + CSS.escape(c));
+            el = document.querySelector(safe);
+          } catch (e2) { el = null; }
+        }
         if (!el) return { t: time, x: 0, y: 0, w: 0, h: 0, missing: true };
         const rect = el.getBoundingClientRect();
         const style = getComputedStyle(el);
